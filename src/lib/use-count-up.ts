@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { countUpValue } from './overview-charts.ts';
+import { easeOutCubic } from './overview-charts.ts';
 
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
@@ -24,7 +24,7 @@ export function useCountUp(target: number, duration = 700) {
     setValue(start);
     const tick = (now: number) => {
       const p = Math.min(1, (now - t0) / duration);
-      const next = Math.round(start + (target - start) * (countUpValue(1, p)));
+      const next = Math.round(start + (target - start) * easeOutCubic(p));
       from.current = next;
       setValue(next);
       if (p < 1) frame = requestAnimationFrame(tick);

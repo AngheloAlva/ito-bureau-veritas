@@ -11,7 +11,7 @@ export function ProjectCard({ project, data }: { project: Project; data: Data })
     <article>
       <Card size="sm" className="h-full">
         <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-muted-foreground">{project.code}</span><Badge>{project.status}</Badge></div>
+          <div className="flex flex-wrap items-center justify-between gap-3"><span className="font-mono text-xs font-semibold tabular-nums text-muted-foreground">{project.code}</span><Badge>{project.status}</Badge></div>
           <div className="w-full sm:ml-auto sm:w-48"><Progress tone="teal" value={project.physicalProgress}><ProgressLabel>Avance físico registrado</ProgressLabel><ProgressValue /></Progress></div>
           <h2 className="mt-2 text-xl font-semibold tracking-tight"><Link className="record-link" href={`/proyectos/${project.id}`}>{project.name} →</Link></h2>
           <CardDescription>{project.location} · {project.specialty}</CardDescription>

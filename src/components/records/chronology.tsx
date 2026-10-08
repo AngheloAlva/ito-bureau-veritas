@@ -9,7 +9,7 @@ import { Badge, date, Empty, Panel, time } from './presentation';
 export function ChronologyEvent({ at, actor, title, children }: { at: string; actor?: string; title: string; children?: ReactNode }) {
   return (
     <li className="relative flex flex-col gap-2 border-l-2 border-border pb-6 pl-5 last:pb-0 before:absolute before:-left-1 before:top-1 before:size-1.5 before:bg-muted-foreground">
-      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground"><time dateTime={at} className="tabular-nums">{time(at)}</time>{actor ? <span>{actor}</span> : null}</div>
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground"><time dateTime={at} className="font-mono tabular-nums">{time(at)}</time>{actor ? <span>{actor}</span> : null}</div>
       <h3 className="text-sm font-semibold">{title}</h3>
       {children}
     </li>
@@ -50,7 +50,7 @@ export function ProjectChronology({ projectId }: { projectId: string }) {
             return (
               <li key={finding.id} className="flex min-w-0 flex-col gap-1 bg-card p-3 text-sm">
                 <div className="flex flex-col items-start gap-2">
-                  <RecordLink kind="finding" id={finding.id}><span className="text-xs text-muted-foreground">{finding.code} · </span>{finding.title}</RecordLink>
+                  <RecordLink kind="finding" id={finding.id}><span className="font-mono text-xs tabular-nums text-muted-foreground">{finding.code} · </span>{finding.title}</RecordLink>
                   <div className="flex flex-wrap gap-1"><Badge>{finding.state}</Badge><Badge>{finding.severity}</Badge></div>
                 </div>
                 <details className="operational-disclosure">

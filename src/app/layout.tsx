@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 import { DemoProvider } from '@/components/demo-provider';
 import { Shell } from '@/components/shell';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={cn('font-sans', GeistSans.variable)}>
+    <html lang="es" className={cn('font-sans', GeistSans.variable, GeistMono.variable)}>
       <body>
         <TooltipProvider>
           <DemoProvider>

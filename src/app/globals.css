@@ -7,11 +7,12 @@
 :root {
   --brand-blue: #00049e;
   --brand-graphite: #333333;
-  --background: #ffffff;
+  --background: oklch(0.98 0.005 250);
+  --surface: #ffffff;
   --foreground: var(--brand-graphite);
-  --card: var(--background);
+  --card: var(--surface);
   --card-foreground: var(--foreground);
-  --popover: var(--background);
+  --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: var(--brand-blue);
   --primary-foreground: #ffffff;
@@ -30,7 +31,7 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.25rem;
   --sidebar: var(--brand-graphite);
   --sidebar-foreground: #ffffff;
   --sidebar-primary: var(--brand-blue);
@@ -39,6 +40,8 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #555555;
   --sidebar-ring: #ffffff;
+  --sidebar-active-bar: #8a93ff;
+  --sidebar-active-fg: #c7cbff;
   --warning: #805209;
   --warning-surface: #fff5df;
   --success: #226044;
@@ -52,6 +55,8 @@
 @theme inline {
   --font-heading: var(--font-geist-sans);
   --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-active-fg: var(--sidebar-active-fg);
   --color-correction: var(--correction);
   --color-correction-surface: var(--correction-surface);
   --color-warning: var(--warning);
@@ -130,6 +135,9 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-active-bar: #8a93ff;
+  --sidebar-active-fg: #c7cbff;
+  --surface: oklch(0.205 0 0);
 }
 
 @layer base {

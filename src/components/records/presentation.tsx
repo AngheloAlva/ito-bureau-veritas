@@ -12,7 +12,7 @@ export function Heading({ eyebrow, title, children }: { eyebrow: string; title: 
   return (
     <div data-slot="page-heading" className="flex flex-wrap items-end justify-between gap-4">
       <div className="flex min-w-0 flex-col gap-2">
-        <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">{eyebrow}</p>
+        <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">{eyebrow}</p>
         <h1 className="text-3xl font-semibold tracking-tight text-balance">{title}</h1>
       </div>
       {children}

@@ -39,14 +39,14 @@ export function FindingTable({ findings, filters }: { findings: Finding[]; filte
           return (
             <TableRow key={finding.id}>
               <TableCell className="min-w-64 max-w-96 whitespace-normal">
-                <RecordLink kind="finding" id={finding.id}><span className="block text-xs font-normal text-muted-foreground">{finding.code}</span>{finding.title}</RecordLink>
+                <RecordLink kind="finding" id={finding.id}><span className="block font-mono text-xs font-normal tabular-nums text-muted-foreground">{finding.code}</span>{finding.title}</RecordLink>
                 {inspection ? <div className="mt-2 text-xs text-muted-foreground"><RecordLink kind="inspection" id={inspection.id}>Visita {inspection.code} · {date(inspection.date)}</RecordLink></div> : null}
               </TableCell>
-              <TableCell>{project ? <Link className="record-link" href={`/proyectos/${project.id}`}>{project.code}</Link> : 'Sin proyecto'}</TableCell>
+              <TableCell>{project ? <Link className="record-link font-mono tabular-nums" href={`/proyectos/${project.id}`}>{project.code}</Link> : 'Sin proyecto'}</TableCell>
               <TableCell>{data.users.find(user => user.id === finding.responsibleId)?.name}</TableCell>
               <TableCell><Badge>{finding.severity}</Badge></TableCell>
               <TableCell><Badge>{finding.state}</Badge></TableCell>
-              <TableCell className="tabular-nums"><time dateTime={finding.dueDate}>{date(finding.dueDate)}</time><div className="mt-1">{overdue ? <Badge>Vencido</Badge> : finding.state !== 'Cerrado' && finding.dueDate === REFERENCE_DATE ? <Badge>Vence hoy</Badge> : null}</div></TableCell>
+              <TableCell className="font-mono tabular-nums"><time dateTime={finding.dueDate}>{date(finding.dueDate)}</time><div className="mt-1">{overdue ? <Badge>Vencido</Badge> : finding.state !== 'Cerrado' && finding.dueDate === REFERENCE_DATE ? <Badge>Vence hoy</Badge> : null}</div></TableCell>
             </TableRow>
           );
         })}
@@ -74,9 +74,9 @@ export function InspectionTable({ inspections, showProject = true, filters }: { 
         {!inspections.length ? <TableRow><TableCell colSpan={showProject ? 7 : 6}>Sin visitas para estos filtros. Cambie o quite un filtro.</TableCell></TableRow> : null}
         {inspections.map(inspection => (
           <TableRow key={inspection.id}>
-            <TableCell className="min-w-64 max-w-96 whitespace-normal"><RecordLink kind="inspection" id={inspection.id}><span className="block text-xs font-normal text-muted-foreground">{inspection.code}</span>{inspection.activity}</RecordLink></TableCell>
+            <TableCell className="min-w-64 max-w-96 whitespace-normal"><RecordLink kind="inspection" id={inspection.id}><span className="block font-mono text-xs font-normal tabular-nums text-muted-foreground">{inspection.code}</span>{inspection.activity}</RecordLink></TableCell>
             {showProject ? <TableCell><Link className="record-link" href={`/proyectos/${inspection.projectId}`}>{data.projects.find(project => project.id === inspection.projectId)?.code}</Link></TableCell> : null}
-            <TableCell className="tabular-nums"><time dateTime={inspection.date}>{date(inspection.date)}</time></TableCell>
+            <TableCell className="font-mono tabular-nums"><time dateTime={inspection.date}>{date(inspection.date)}</time></TableCell>
             <TableCell>{inspection.sector}<span className="block text-xs text-muted-foreground">{inspection.specialty}</span></TableCell>
             <TableCell>{data.users.find(user => user.id === inspection.inspectorId)?.name}</TableCell>
             <TableCell><Badge>{inspection.visitState}</Badge></TableCell>

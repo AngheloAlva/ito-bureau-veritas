@@ -16,7 +16,7 @@ export function Verification({ finding, focusReturnRef }: { finding: Finding; fo
   const [open, setOpen] = useState(false);
   return <FormDialog title="Revisión del inspector" description={`${finding.code} · Revise la acción y sus evidencias antes de cerrar o devolver.`}
     open={open} onOpenChange={setOpen} focusReturnRef={focusReturnRef}
-    trigger={<Button type="button" size="sm"><CheckCircleIcon data-icon="inline-start" />Revisar corrección</Button>}>
+    trigger={<Button type="button" size="sm" data-workflow-action><CheckCircleIcon data-icon="inline-start" />Revisar corrección</Button>}>
     {open ? <VerificationForm finding={finding} onSaved={() => setOpen(false)} /> : null}
   </FormDialog>;
 }

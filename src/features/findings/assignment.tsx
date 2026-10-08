@@ -17,10 +17,10 @@ import { assignFinding, changeDueDate, isOverdue } from '@/domain/core';
 
 export function Assignment({ finding: f }: { finding: Finding }) {
   const d = useDemo();
-  return <Panel title="Responsable y plazo">
+  return <Panel rule title="Responsable y plazo">
     <dl className="flex flex-col gap-4 text-sm">
       <div><dt className="flex items-center gap-2 text-xs text-muted-foreground"><UserCircleIcon aria-hidden="true" />Responsable de corrección</dt><dd className="mt-1 font-medium">{d.data.users.find(u => u.id === f.responsibleId)?.name}</dd></div>
-      <div><dt className="flex items-center gap-2 text-xs text-muted-foreground"><CalendarBlankIcon aria-hidden="true" />Fecha compromiso</dt><dd className="mt-1 font-mono font-medium tabular-nums">{date(f.dueDate)}{isOverdue(f) ? ' · Vencido' : ''}</dd></div>
+      <div><dt className="flex items-center gap-2 text-xs text-muted-foreground"><CalendarBlankIcon aria-hidden="true" />Fecha compromiso</dt><dd className="mt-1 font-medium"><span className="font-mono tabular-nums">{date(f.dueDate)}</span>{isOverdue(f) ? <span className="text-destructive"> · Vencido</span> : null}</dd></div>
     </dl>
     {d.user.role === 'Inspector' && f.state !== 'Cerrado' ? <AssignmentDialog key={`${f.id}-${d.user.id}`} finding={f} /> : null}
   </Panel>;

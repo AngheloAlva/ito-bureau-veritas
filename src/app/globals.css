@@ -187,8 +187,8 @@
 /* Immutable finding history uses a semantic drawing helper. */
 @layer components {
   .finding-history { @apply ml-2 list-none p-0; }
-  .finding-history > li { @apply relative border-l-2 pb-6 pl-6; }
-  .finding-history > li::before { content: ''; @apply absolute -left-1 top-2 size-1.5 bg-primary; }
+  .finding-history > li { @apply relative border-l pb-6 pl-6; }
+  .finding-history > li::before { content: ''; @apply absolute -left-[3.5px] top-2 size-1.5 rounded-full bg-muted-foreground; }
   .finding-history > li:last-child { @apply pb-0; }
 }
 

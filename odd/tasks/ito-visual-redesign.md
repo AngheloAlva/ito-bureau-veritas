@@ -17,7 +17,7 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - [x] 3. Overview: KPI tiles, finding lifecycle flow, real-data charts, animated counters, H-001 easy to locate.
 - [x] 3b. User feedback: remove colored accent borders (left/top) everywhere; adopt BV signature short gradient underline (lavender→sky blue) under titles/eyebrows; severity bar with values on segments and color-only legend; load design skills (interface-design, better-ui, better-colors).
 - [x] 4. Analysis: scanning animation, staggered results, per-finding specific reasons, project × specialty heatmap.
-- [ ] 5. Finding detail + header: lifecycle stepper hero with primary action on top; visible demo role switcher.
+- [x] 5. Finding detail + header: lifecycle stepper hero with primary action on top; visible demo role switcher.
 - [ ] 6. Technical SVG line illustrations for projects and empty states.
 - [ ] 7. Browser verification of the demo script and docs update.
 
@@ -34,3 +34,4 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - Task 3b follow-up: heading rule spans text width via `.bv-title` background gradient (user feedback); screenshot checked.
 - Task 4: data-backed reasons/suggestions per priority (explain()), concentration heatmap (concentrationMatrix), 4-step scanning state with live counts, staggered reveal, richer empty state; parent fixes: solid brand-blue CTA, "falta 1 día", lighter heatmap scale with "N vencido(s)" text; RED→GREEN analysis-reasons tests; 51/51 tests; screenshots checked. Note: seed spreads findings evenly so heatmap shows little concentration.
 - Task 4 review advisories (follow-up, task 7): R3-stale-summary (summary tiles use live indicators, not the analysis snapshot, after data edits) and R3-matrix-assertions (heatmap test assertions thin).
+- Task 5: finding hero with stepper + role-aware primary action (primaryActionFor probes transitionFinding), "Cambiar a <Rol>" via selectUser, visible "Viendo como" segmented role switcher; RED→GREEN finding-actions tests; 55/55; browser-checked H-001 Abierto→En corrección via hero.

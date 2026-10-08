@@ -19,7 +19,7 @@ export function Correction(props: Props) {
   const [open, setOpen] = useState(false);
   return <FormDialog title="Corrección del responsable" description={`${props.finding.code} · Registre la acción y seleccione su respaldo para remitir.`}
     open={open} onOpenChange={setOpen} focusReturnRef={props.focusReturnRef}
-    trigger={<Button type="button" size="sm"><WrenchIcon data-icon="inline-start" />Preparar corrección</Button>}>
+    trigger={<Button type="button" size="sm" data-workflow-action><WrenchIcon data-icon="inline-start" />Preparar corrección</Button>}>
     {open ? <CorrectionForm {...props} onSaved={() => setOpen(false)} /> : null}
   </FormDialog>;
 }

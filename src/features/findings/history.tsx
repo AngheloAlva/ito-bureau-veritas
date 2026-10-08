@@ -10,7 +10,7 @@ const changeLabels: Record<string, string> = {
 };
 export function FindingHistory({ findingId }: { findingId: string }) {
   const d = useDemo();
-  return <Panel title="Cronología operacional" description="Hora America/Santiago">
+  return <Panel rule title="Cronología operacional" description="Hora America/Santiago">
     <ol className="finding-history text-sm break-words">
       {d.data.events.filter(e => e.findingId === findingId).map(event => <li key={event.id}>
         <div className="mb-1 flex flex-col gap-1 text-xs text-muted-foreground">

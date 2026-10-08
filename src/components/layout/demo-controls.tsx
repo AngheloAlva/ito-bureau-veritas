@@ -27,6 +27,32 @@ export function ContextSelect({ id, label, value, items, onChange, compact = fal
   );
 }
 
+const SHORT_ROLE: Record<Role, string> = { 'Inspector': 'Inspector', 'Responsable de corrección': 'Responsable', 'Coordinador': 'Coordinador' };
+const ROLES: Role[] = ['Inspector', 'Responsable de corrección', 'Coordinador'];
+
+/** Always-visible "Viendo como" switcher: segmented on wide screens, compact select on narrow ones. */
+export function RoleSwitcher() {
+  const demo = useDemo();
+  return (
+    <div className="ml-auto flex min-w-0 shrink-0 items-center gap-2 2xl:ml-0">
+      <div className="hidden min-w-0 flex-col leading-tight xl:flex">
+        <span className="text-[0.6875rem] font-semibold tracking-wide text-muted-foreground uppercase">Viendo como</span>
+        <span className="max-w-48 truncate text-xs font-medium" title={`${demo.user.name} · ${demo.user.role}`}>{demo.user.name}</span>
+      </div>
+      <div role="group" aria-label="Viendo como (rol de demo)" className="hidden items-center gap-0.5 rounded-sm border bg-muted/50 p-0.5 md:flex">
+        {ROLES.map(role => {
+          const active = demo.user.role === role;
+          return <button key={role} type="button" aria-pressed={active} title={`${role}${active ? ` · ${demo.user.name}` : ''}`} onClick={() => demo.selectRole(role)}
+            className={`min-h-9 rounded-sm px-3 text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring ${active ? 'bg-[var(--brand-blue)] text-white' : 'text-muted-foreground hover:bg-background hover:text-foreground'}`}>{SHORT_ROLE[role]}</button>;
+        })}
+      </div>
+      <div className="w-40 md:hidden">
+        <ContextSelect id="demo-role-compact" label="Viendo como" compact value={demo.user.role} items={ROLES.map(role => ({ value: role, label: `${SHORT_ROLE[role]}${demo.user.role === role ? ` · ${demo.user.name}` : ''}` }))} onChange={role => demo.selectRole(role as Role)} />
+      </div>
+    </div>
+  );
+}
+
 export function DemoControls() {
   const demo = useDemo();
   const [resetOpen, setResetOpen] = useState(false);

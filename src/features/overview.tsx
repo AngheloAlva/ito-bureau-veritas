@@ -3,18 +3,14 @@
 import Link from 'next/link';
 import { useDemo } from '@/components/demo-provider';
 import { Heading } from '@/components/records/presentation';
-import type { ProgressTone } from '@/components/ui/progress';
 import { indicators, scopedFindings, isOverdue, isActive } from '@/domain/core';
 import { overviewTraceability } from '@/lib/overview-traceability';
 import { OperationalMetrics } from './overview/metrics';
 import { PendingQueue } from './overview/pending-queue';
-import { Distribution } from './overview/distributions';
+import { SeverityChart, ProjectChart } from './overview/distributions';
+import { Lifecycle } from './overview/lifecycle';
+import { projectBreakdown } from '@/lib/overview-charts';
 import { Traceability } from './overview/traceability';
-
-const stateTones: Record<string, ProgressTone> = {
-  Abierto: 'neutral', 'En corrección': 'warning', 'Pendiente de verificación': 'teal', Cerrado: 'success',
-};
-const severityTones: Record<string, ProgressTone> = { Crítica: 'danger', Alta: 'warning' };
 
 export function Overview() {
   const { data, projectId } = useDemo();
@@ -26,28 +22,19 @@ export function Overview() {
 
   return (
     <>
-      <Heading eyebrow="Bitácora operacional · corte 08 octubre 2026" title="Control de pendientes" />
+      <Heading eyebrow="Resumen · corte 08 octubre 2026" title="Control de pendientes" />
       <p className="text-sm text-muted-foreground">{project ? `${project.code} · ${project.name}` : 'Cartera completa'} · Priorizar compromisos, revisar el origen y acreditar el cierre.</p>
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,5fr)_minmax(16rem,2fr)]">
+      <OperationalMetrics stats={stats} scope={scope} />
+      <Lifecycle byState={stats.byState} total={stats.total} scope={scope} />
+      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)]">
         <PendingQueue findings={alerts} scope={scope} data={data} />
-        <aside aria-label="Balance y análisis" className="flex min-w-0 flex-col gap-6">
-          <OperationalMetrics stats={stats} scope={scope} />
-          <div className="flex flex-col gap-2 px-1">
-            <h2 className="text-sm font-semibold">Preparar la revisión</h2>
-            
-            <Link className="record-link inline-flex min-h-10 items-center text-sm" href={`/analisis${projectId ? `?project=${encodeURIComponent(projectId)}` : ''}`}>Abrir análisis simulado →</Link>
-          </div>
+        <aside aria-label="Gráficos del alcance" className="flex min-w-0 flex-col gap-6">
+          <SeverityChart counts={stats.bySeverity} total={stats.total} scope={scope} />
+          <ProjectChart rows={projectBreakdown(data, projectId || undefined)} />
+          <Link className="record-link inline-flex min-h-10 items-center px-1 text-sm" href={`/analisis${projectId ? `?project=${encodeURIComponent(projectId)}` : ''}`}>Abrir análisis simulado →</Link>
         </aside>
       </div>
       <Traceability trace={trace} />
-      <section aria-labelledby="overview-distributions" className="flex flex-col gap-4 pt-2">
-        <div><h2 id="overview-distributions" className="text-lg font-semibold">Lectura de la cartera</h2><p className="text-xs text-muted-foreground">Distribuciones actuales del alcance completo; no representan avance físico ni tendencia.</p></div>
-        <div className="grid items-start gap-4 lg:grid-cols-3">
-          <Distribution title="Por estado" tone={key => stateTones[key] ?? 'neutral'} counts={stats.byState} total={stats.total} href={key => `/hallazgos?${scope}state=${encodeURIComponent(key)}`} />
-          <Distribution title="Por severidad" tone={key => severityTones[key] ?? 'neutral'} counts={stats.bySeverity} total={stats.total} href={key => `/hallazgos?${scope}severity=${encodeURIComponent(key)}`} />
-          <Distribution title="Por proyecto" counts={stats.byProject} total={stats.total} href={key => `/hallazgos?project=${encodeURIComponent(key)}`} label={key => data.projects.find(item => item.id === key)?.code ?? key} />
-        </div>
-      </section>
     </>
   );
 }

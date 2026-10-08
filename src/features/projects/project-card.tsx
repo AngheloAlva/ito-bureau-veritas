@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Data, Project } from '@/domain/types';
 import { indicators } from '@/domain/core';
 import { Badge } from '@/components/records/presentation';
+import { ProjectIllustration } from '@/components/illustrations';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { Progress, ProgressLabel, ProgressValue } from '@/components/ui/progress';
 
@@ -10,6 +11,7 @@ export function ProjectCard({ project, data }: { project: Project; data: Data })
   return (
     <article>
       <Card size="sm" className="h-full">
+        <div className="blueprint-surface mx-3 mt-3 flex h-28 items-center justify-center overflow-hidden rounded-sm text-primary/70" aria-hidden="true"><ProjectIllustration projectId={project.id} specialty={project.specialty} className="h-full w-auto max-w-full" /></div>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-3"><span className="font-mono text-xs font-semibold tabular-nums text-muted-foreground">{project.code}</span><Badge>{project.status}</Badge></div>
           <div className="w-full sm:ml-auto sm:w-48"><Progress tone="teal" value={project.physicalProgress}><ProgressLabel>Avance físico registrado</ProgressLabel><ProgressValue /></Progress></div>

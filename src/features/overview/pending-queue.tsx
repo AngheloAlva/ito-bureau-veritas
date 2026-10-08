@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import type { Finding, Data } from '@/domain/types';
 import { isOverdue } from '@/domain/core';
-import { Badge, date, Empty, Panel } from '@/components/records/presentation';
+import { Badge, date, Panel } from '@/components/records/presentation';
+import { ClosedCheckIllustration } from '@/components/illustrations';
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty';
 
 export function PendingQueue({ findings, scope, data }: { findings: Finding[]; scope: string; data: Data }) {
   const ordered = [...findings].sort((a, b) => Number(b.severity === 'Crítica') - Number(a.severity === 'Crítica') || a.dueDate.localeCompare(b.dueDate) || a.code.localeCompare(b.code));
@@ -45,7 +47,7 @@ export function PendingQueue({ findings, scope, data }: { findings: Finding[]; s
               </details>
             ) : null}
           </div>
-        ) : <Empty>Sin vencidos ni críticos activos en este alcance.</Empty>}
+        ) : <Empty illustration={<ClosedCheckIllustration className="h-24 w-auto" />}><EmptyHeader><EmptyTitle>Sin pendientes</EmptyTitle><EmptyDescription>Sin vencidos ni críticos activos en este alcance.</EmptyDescription></EmptyHeader></Empty>}
         <p className="text-xs text-muted-foreground">Corte: 08/10/2026</p>
       </Panel>
     </div>

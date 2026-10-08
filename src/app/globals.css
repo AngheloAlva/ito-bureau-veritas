@@ -243,3 +243,23 @@
   .analysis-scan-line { display: none; }
   .analysis-enter { animation: none; }
 }
+
+/* Faint blueprint grid used behind technical illustrations. */
+.blueprint-surface {
+  background-color: color-mix(in oklab, var(--brand-blue) 3%, transparent);
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--brand-blue) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--brand-blue) 5%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.analysis-scan-line {
+  animation: analysis-scan 4.5s ease-in-out infinite alternate;
+}
+@keyframes analysis-scan {
+  from { transform: translateY(-22px); }
+  to { transform: translateY(40px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .analysis-scan-line { animation: none; }
+}

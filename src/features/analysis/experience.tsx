@@ -1,6 +1,7 @@
 'use client';
 
 import { CheckIcon, SparkleIcon } from '@phosphor-icons/react';
+import { AnalysisIllustration } from '@/components/illustrations';
 import { Button } from '@/components/ui/button';
 import { ANALYSIS_STAGES, type RunState } from '@/lib/analysis-run';
 import { useCountUp } from '@/lib/use-count-up';
@@ -24,7 +25,7 @@ export function AnalysisEmpty({ scope, counts, onStart, disabled }: {
         <p className="text-xs text-muted-foreground">Análisis simulado para demostración · reglas deterministas</p>
       </div>
     </div>
-    <div data-slot="analysis-illustration" className="hidden min-h-48 md:block" aria-hidden="true" />
+    <div data-slot="analysis-illustration" className="blueprint-surface hidden min-h-48 items-center justify-center rounded-sm p-4 text-primary/70 md:flex" aria-hidden="true"><AnalysisIllustration className="h-48 w-auto" /></div>
   </section>;
 }
 

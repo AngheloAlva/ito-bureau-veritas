@@ -1,7 +1,8 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
+import { EmptyRecordsIllustration } from "@/components/illustrations"
 
-function Empty({ className, ...props }: React.ComponentProps<"div">) {
+function Empty({ className, children, illustration, ...props }: React.ComponentProps<"div"> & { illustration?: React.ReactNode | false }) {
   return (
     <div
       data-slot="empty"
@@ -10,7 +11,10 @@ function Empty({ className, ...props }: React.ComponentProps<"div">) {
         className
       )}
       {...props}
-    />
+    >
+      {illustration === false ? null : <div className="blueprint-surface rounded-sm p-2 text-primary/70" aria-hidden="true">{illustration ?? <EmptyRecordsIllustration className="h-24 w-auto" />}</div>}
+      {children}
+    </div>
   )
 }
 

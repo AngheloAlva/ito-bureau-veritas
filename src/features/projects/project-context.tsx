@@ -2,12 +2,14 @@ import Link from 'next/link';
 import type { Data, Project } from '@/domain/types';
 import { indicators } from '@/domain/core';
 import { Badge, Panel } from '@/components/records/presentation';
+import { ProjectIllustration } from '@/components/illustrations';
 import { Progress, ProgressLabel, ProgressValue } from '@/components/ui/progress';
 
 export function ProjectContext({ project, data }: { project: Project; data: Data }) {
   const stats = indicators(data, project.id);
   return (
     <Panel title="Contexto de obra">
+      <div className="blueprint-surface flex h-32 items-center justify-center overflow-hidden rounded-sm text-primary/70" aria-hidden="true"><ProjectIllustration projectId={project.id} specialty={project.specialty} className="h-full w-auto max-w-full" /></div>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <Badge>{project.status}</Badge>
         <div className="w-full min-w-0 sm:w-48">

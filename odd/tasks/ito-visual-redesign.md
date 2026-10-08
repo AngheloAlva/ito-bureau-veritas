@@ -15,6 +15,7 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - [x] 1. Foundations: radius tokens, `rounded-none` → `rounded-sm`, Geist Mono for codes/dates, reduce uppercase tracking, stronger brand color use.
 - [x] 2. Data and copy: varied responsible people, remove "(ficticio)" suffixes, consolidate defensive microcopy, single demo-data notice.
 - [x] 3. Overview: KPI tiles, finding lifecycle flow, real-data charts, animated counters, H-001 easy to locate.
+- [x] 3b. User feedback: remove colored accent borders (left/top) everywhere; adopt BV signature short gradient underline (lavender→sky blue) under titles/eyebrows; severity bar with values on segments and color-only legend; load design skills (interface-design, better-ui, better-colors).
 - [ ] 4. Analysis: scanning animation, staggered results, per-finding specific reasons, project × specialty heatmap.
 - [ ] 5. Finding detail + header: lifecycle stepper hero with primary action on top; visible demo role switcher.
 - [ ] 6. Technical SVG line illustrations for projects and empty states.
@@ -29,3 +30,4 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - Task 2 follow-up: seed correction evidence/transitions attributed to the assigned responsible (review advisory R3-seed-correction-attribution); RED→GREEN, 46/46 tests.
 - Task 3: KPI tiles with hydration-safe count-up, lifecycle strip with filtered links, severity stacked bar, project active/closed bars, H-001 highlighted "Caso de demostración"; RED→GREEN on overview-charts helpers; typecheck clean, 49/49 tests; screenshots checked.
 - Task 3 follow-up: count-up interpolates with easeOutCubic (review advisory R3-count-up-rounding); hook has no DOM test runner, verified by typecheck + 49/49 tests.
+- Task 3b: accent stripes removed (9→2, remaining are neutral timeline connectors), `.bv-rule` gradient underline + --brand-sky/--brand-lavender tokens, severity/project values over segments with color-only legend; skills interface-design, better-ui, better-colors loaded; 49/49 tests; screenshot checked after dev-server restart (stale CSS).

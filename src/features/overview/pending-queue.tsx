@@ -10,7 +10,7 @@ export function PendingQueue({ findings, scope, data }: { findings: Finding[]; s
     const project = data.projects.find(item => item.id === inspection?.projectId);
     const reason = [isOverdue(finding) ? 'Vencido' : '', finding.severity === 'Crítica' ? 'Crítico activo' : ''].filter(Boolean).join(' · ');
     return (
-      <li key={finding.id} className={`grid gap-2 py-3 first:pt-0 sm:grid-cols-[minmax(0,1fr)_auto] ${finding.id === 'H-001' ? 'rounded-sm border-l-4 border-primary bg-primary/5 px-3 first:pt-3' : ''}`}>
+      <li key={finding.id} className={`grid gap-2 py-3 first:pt-0 sm:grid-cols-[minmax(0,1fr)_auto] ${finding.id === 'H-001' ? 'rounded-sm border border-primary/30 bg-primary/5 px-3 first:pt-3' : ''}`}>
         <div className="flex min-w-0 flex-col gap-2">
           <Link href={`/hallazgos/${finding.id}`} className="record-link text-sm leading-snug"><span className="mr-2 font-mono text-xs text-muted-foreground">{finding.code}</span>{finding.title}</Link>
           {finding.id === 'H-001' ? <span className="w-fit rounded-sm bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">Caso de demostración · empezar aquí</span> : null}
@@ -34,7 +34,7 @@ export function PendingQueue({ findings, scope, data }: { findings: Finding[]; s
   };
   return (
     <div className="overview-attention">
-      <Panel title="Atención prioritaria" description={`${findings.length} hallazgos únicos · críticos activos primero, luego fecha compromiso. Vencimiento y severidad pueden coincidir.`} footer={<Link className="record-link text-sm min-h-11 inline-flex items-center" href={`/hallazgos?${scope}active=1`}>Consultar todos los activos →</Link>}>
+      <Panel rule title="Atención prioritaria" description={`${findings.length} hallazgos únicos · críticos activos primero, luego fecha compromiso. Vencimiento y severidad pueden coincidir.`} footer={<Link className="record-link text-sm min-h-11 inline-flex items-center" href={`/hallazgos?${scope}active=1`}>Consultar todos los activos →</Link>}>
         {ordered.length ? (
           <div>
             <ol className="flex flex-col divide-y">{ordered.slice(0, 5).map(renderFinding)}</ol>

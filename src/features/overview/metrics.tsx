@@ -6,10 +6,10 @@ import type { indicators } from '@/domain/core';
 import { useCountUp } from '@/lib/use-count-up';
 
 type Tone = 'brand' | 'danger' | 'warning';
-const tones: Record<Tone, { bar: string; icon: string; num: string }> = {
-  brand: { bar: 'bg-primary', icon: 'bg-primary/10 text-primary', num: 'text-foreground' },
-  danger: { bar: 'bg-destructive', icon: 'bg-destructive/10 text-destructive', num: 'text-destructive' },
-  warning: { bar: 'bg-warning', icon: 'bg-warning-surface text-warning', num: 'text-warning' },
+const tones: Record<Tone, { icon: string; num: string }> = {
+  brand: { icon: 'bg-primary/10 text-primary', num: 'text-foreground' },
+  danger: { icon: 'bg-destructive/10 text-destructive', num: 'text-destructive' },
+  warning: { icon: 'bg-warning-surface text-warning', num: 'text-warning' },
 };
 
 function Tile({ count, label, note, href, icon: Icon, tone }: { count: number; label: string; note: string; href: string; icon: typeof ClockCountdownIcon; tone: Tone }) {
@@ -17,8 +17,7 @@ function Tile({ count, label, note, href, icon: Icon, tone }: { count: number; l
   const t = tones[tone];
   return (
     <li className="min-w-0">
-      <Link href={href} className="group relative flex h-full min-h-32 flex-col gap-3 overflow-hidden rounded-sm border bg-card p-4 pl-5 transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-        <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-1 ${t.bar}`} />
+      <Link href={href} className="group relative flex h-full min-h-32 flex-col gap-3 overflow-hidden rounded-sm border bg-card p-4 transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
         <span className="flex items-center justify-between gap-2 text-sm font-medium text-muted-foreground">
           {label}
           <span aria-hidden="true" className={`flex size-8 items-center justify-center rounded-sm ${t.icon}`}><Icon className="size-4" /></span>

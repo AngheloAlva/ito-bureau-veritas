@@ -42,7 +42,7 @@ export function ProjectChronology({ projectId }: { projectId: string }) {
     <Panel title="De la visita al cierre" description="Visita → hallazgo → corrección → verificación. Registros más recientes primero.">
       {inspections.length ? <ol className="flex flex-col gap-3">{[...inspections].sort((a, b) => b.date.localeCompare(a.date)).map(inspection => {
         const linked = findings.filter(finding => finding.inspectionId === inspection.id);
-        return <li key={inspection.id} className="flex min-w-0 flex-col gap-2 border-l-2 border-primary bg-muted/50 p-3">
+        return <li key={inspection.id} className="flex min-w-0 flex-col gap-2 rounded-sm border bg-muted/50 p-3">
           <RecordLink kind="inspection" id={inspection.id}><span className="flex items-center gap-2 text-xs text-muted-foreground"><CalendarCheckIcon aria-hidden="true" />{inspection.code} · {date(inspection.date)}</span><span className="block mt-1">{inspection.activity}</span></RecordLink>
           <Badge>{inspection.visitState}</Badge>
           {linked.length ? <ul className="flex flex-col gap-2">{linked.map(finding => {

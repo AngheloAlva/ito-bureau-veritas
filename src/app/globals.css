@@ -7,6 +7,8 @@
 :root {
   --brand-blue: #00049e;
   --brand-graphite: #333333;
+  --brand-sky: #00a8e8;
+  --brand-lavender: #a9a6f5;
   --background: oklch(0.98 0.005 250);
   --surface: #ffffff;
   --foreground: var(--brand-graphite);
@@ -57,6 +59,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-active-fg: var(--sidebar-active-fg);
+  --color-brand-sky: var(--brand-sky);
+  --color-brand-lavender: var(--brand-lavender);
   --color-correction: var(--correction);
   --color-correction-surface: var(--correction-surface);
   --color-warning: var(--warning);
@@ -163,10 +167,19 @@
     @apply min-h-11 cursor-pointer content-center py-2 text-xs font-medium text-foreground hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring;
     overflow-wrap: anywhere;
   }
-  .overview-attention { @apply min-w-0 border-t-2 border-destructive; }
+  .overview-attention { @apply min-w-0; }
   .overview-trace { @apply grid list-none gap-6 p-0 sm:grid-cols-2 xl:grid-cols-4; }
-  .overview-trace > li { @apply flex min-w-0 flex-col gap-3 border-t-2 border-border pt-4; overflow-wrap: anywhere; }
-  .overview-trace > li:last-child { @apply border-success; }
+  .overview-trace > li { @apply flex min-w-0 flex-col gap-3 rounded-sm border bg-card p-4; overflow-wrap: anywhere; }
+  .overview-trace > li:last-child { @apply border-success/40 bg-success-surface; }
+}
+
+/* Bureau Veritas signature: short lavender-to-sky rule under headings. Use sparingly. */
+.bv-rule {
+  display: block;
+  width: 3.5rem;
+  height: 3px;
+  border-radius: 9999px;
+  background-image: linear-gradient(90deg, var(--brand-lavender), var(--brand-sky));
 }
 
 /* Immutable finding history uses a semantic drawing helper. */

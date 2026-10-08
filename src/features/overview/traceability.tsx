@@ -13,7 +13,7 @@ export function Traceability({ trace }: { trace: Trace }) {
     { title: 'Cierre verificado', icon: SealCheckIcon, value: trace.verifiedClosures.length, unit: 'acreditados', note: 'Cerrados con respaldo y transición comentada de un inspector al corte.', records: trace.verifiedClosures, route: 'hallazgos' },
   ];
   return (
-    <Panel title="De la visita al cierre" description="Visitas del 01–08 octubre 2026 y sus registros relacionados al corte del 08/10. No es un embudo ni una serie histórica; las cantidades no se suman.">
+    <Panel rule title="De la visita al cierre" description="Visitas del 01–08 octubre 2026 y sus registros relacionados al corte del 08/10. No es un embudo ni una serie histórica; las cantidades no se suman.">
       <ol className="overview-trace">
         {stages.map(({ title, icon: Icon, value, unit, note, records, route }, index) => (
           <li key={title}>

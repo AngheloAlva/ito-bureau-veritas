@@ -44,3 +44,9 @@ export function projectScopeHref(pathname: string, search: string, hash: string,
 export function clearListFilters(href: string, kind: FilterKind): string {
   return updateListFilters(href, Object.fromEntries(FILTER_KEYS[kind].map(key => [key, ''])));
 }
+
+/** Data-driven suffix for the findings summary; empty when nothing awaits verification. */
+export function verificationSummary(rows: readonly { state: string }[]): string {
+  const n = rows.filter(r => r.state === 'Pendiente de verificación').length;
+  return n === 0 ? '' : `${n} ${n === 1 ? 'pendiente' : 'pendientes'} de verificación`;
+}

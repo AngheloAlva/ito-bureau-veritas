@@ -99,6 +99,6 @@ const bySpecialty: Record<string, (p: Props) => React.JSX.Element> = { Mecánica
 const byId: Record<string, (p: Props) => React.JSX.Element> = { p1: PumpStationIllustration, p2: ServiceGalleryIllustration, p3: WaterPipelineIllustration };
 
 export function ProjectIllustration({ projectId, specialty, ...props }: Props & { projectId?: string; specialty?: string }) {
-  const Component = (projectId && byId[projectId]) || (specialty && bySpecialty[specialty]) || PumpStationIllustration;
+  const Component = (projectId && Object.hasOwn(byId, projectId) ? byId[projectId] : undefined) || (specialty && Object.hasOwn(bySpecialty, specialty) ? bySpecialty[specialty] : undefined) || PumpStationIllustration;
   return <Component {...props} />;
 }

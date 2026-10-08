@@ -26,3 +26,14 @@ test('lifecycle steps follow the flow order with counts', () => {
   assert.deepEqual(steps.map(s => s.state), ['Abierto', 'En corrección', 'Pendiente de verificación', 'Cerrado']);
   assert.deepEqual(steps.map(s => s.count), [2, 1, 3, 4]);
 });
+
+import { countUpFrame } from '../src/lib/overview-charts.ts';
+test('countUpFrame: integer, monotonic from start to target in both directions', () => {
+  for (const [s, t] of [[0, 14], [3, 20], [20, 3], [5, 5]]) {
+    const frames = Array.from({ length: 21 }, (_, i) => countUpFrame(s, t, i / 20));
+    assert.equal(frames[0], s); assert.equal(frames[20], t);
+    assert.ok(frames.every(Number.isInteger));
+    for (let i = 1; i < frames.length; i++) assert.ok(t >= s ? frames[i] >= frames[i - 1] : frames[i] <= frames[i - 1]);
+  }
+  assert.equal(countUpFrame(0, 10, 0.5), countUpValue(10, 0.5));
+});

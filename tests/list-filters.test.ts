@@ -58,3 +58,12 @@ test('parsing successive history snapshots has no stale initialization', () => {
   assert.equal(states[1].from, '2026-10-08');
   assert.equal(states[1].state, '');
 });
+
+import { verificationSummary } from '../src/lib/list-filters.ts';
+test('verificationSummary is data-driven', () => {
+  const rows = (...s: string[]) => s.map(state => ({ state }));
+  assert.equal(verificationSummary(rows('Abierto', 'Cerrado')), '');
+  assert.equal(verificationSummary([]), '');
+  assert.equal(verificationSummary(rows('Pendiente de verificación', 'Abierto')), '1 pendiente de verificación');
+  assert.equal(verificationSummary(rows('Pendiente de verificación', 'Pendiente de verificación')), '2 pendientes de verificación');
+});

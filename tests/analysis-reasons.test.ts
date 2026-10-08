@@ -35,3 +35,31 @@ test('concentration matrix counts active and overdue per project × specialty', 
   const scoped = concentrationMatrix(seed, 'p1');
   assert.deepEqual(scoped.projects.map(p => p.id), ['p1']);
 });
+
+test('heatmap has a single hotspot: P-002 × Civil, 4 active and 3 overdue', () => {
+  const seed = createSeed();
+  const m = concentrationMatrix(seed);
+  const cell = (p: string, s: string, mm = m) => mm.cells.find(c => c.projectId === p && c.specialty === s);
+  assert.equal(m.max, 4);
+  assert.deepEqual(m.cells.filter(c => c.active === m.max).map(c => [c.projectId, c.specialty]), [['p2', 'Civil']]);
+  assert.deepEqual([cell('p2', 'Civil')!.active, cell('p2', 'Civil')!.overdue], [4, 3]);
+  assert.ok(m.cells.filter(c => !(c.projectId === 'p2' && c.specialty === 'Civil')).every(c => c.active <= 2));
+  assert.equal(cell('p3', 'Eléctrica'), undefined);
+  assert.equal(cell('p3', 'Hidráulica'), undefined);
+  const p2 = concentrationMatrix(seed, 'p2');
+  assert.deepEqual(p2.cells.map(c => c.projectId), ['p2', 'p2', 'p2']);
+  assert.equal(p2.max, 4);
+  assert.equal(concentrationMatrix(seed, 'p3').max, 1);
+});
+
+test('open findings do not claim registered correction evidence; analysis keeps counts snapshot', () => {
+  const seed = createSeed();
+  const a = analyze(seed);
+  assert.doesNotMatch(a.priorities.find(p => p.findingId === 'H-001')!.reason, /evidencia de corrección registrada/);
+  assert.match(a.priorities.find(p => p.findingId === 'H-001')!.reason, /sin evidencia de corrección|vencido/);
+  assert.equal(a.counts!.active, 14);
+  const before = { ...a.counts! };
+  seed.findings[0].state = 'Cerrado';
+  assert.deepEqual(a.counts, before);
+  assert.equal(analyze(seed).counts!.active, 13);
+});

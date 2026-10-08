@@ -8,7 +8,7 @@ import { SelectField } from '@/components/shared/select-field';
 import { TextField } from '@/components/shared/text-field';
 import { CheckField } from '@/components/shared/check-field';
 import { FilterToolbar } from '@/components/shared/filter-toolbar';
-import { parseListFilters, updateListFilters, clearListFilters } from '@/lib/list-filters';
+import { parseListFilters, updateListFilters, clearListFilters, verificationSummary } from '@/lib/list-filters';
 import { STATES, SEVERITIES, REFERENCE_DATE } from '@/domain/types';
 import { scopedFindings, isActive, isOverdue } from '@/domain/core';
 
@@ -55,7 +55,7 @@ export function Findings() {
         <CheckField name="active" label="Solo activos" checked={active === '1'} onCheckedChange={v => change('active', v ? '1' : '')} />
       </FieldGroup>
     </FilterToolbar>
-    <p role="status" className="text-sm text-muted-foreground tabular-nums">{count} · Un pendiente de verificación sigue activo.</p>
+    <p role="status" className="text-sm text-muted-foreground tabular-nums">{[count, verificationSummary(rows)].filter(Boolean).join(' · ')}</p>
     <FindingTable findings={rows} filters={{
       state: { value: state, options: STATES.map(value => ({ value, label: value })), onChange: value => change('state', value) },
       severity: { value: severity, options: SEVERITIES.map(value => ({ value, label: value })), onChange: value => change('severity', value) },

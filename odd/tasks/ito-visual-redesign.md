@@ -19,6 +19,8 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - [x] 4. Analysis: scanning animation, staggered results, per-finding specific reasons, project × specialty heatmap.
 - [x] 5. Finding detail + header: lifecycle stepper hero with primary action on top; visible demo role switcher.
 - [x] 6. Technical SVG line illustrations for projects and empty states.
+- [x] 6b. Pending adjustments A (data/logic + tests): seed hotspot for heatmap, H-001 evidence wording, analysis summary from snapshot, findings summary line with 0 results, ProjectIllustration safe lookup, missing tests (heatmap, count-up, hero action).
+- [ ] 6c. Pending adjustments B (visual + docs): narrow bar segments, stepper connector lines, blueprint grid intensity, remove "ficticio" from docs.
 - [ ] 7. Browser verification of the demo script and docs update.
 
 ## Evidence
@@ -37,3 +39,4 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - Task 5: finding hero with stepper + role-aware primary action (primaryActionFor probes transitionFinding), "Cambiar a <Rol>" via selectUser, visible "Viendo como" segmented role switcher; RED→GREEN finding-actions tests; 55/55; browser-checked H-001 Abierto→En corrección via hero.
 - Task 6: inline SVG line illustrations (3 projects + analysis/empty/closed) in src/components/illustrations, used on project cards/detail, analysis empty state, Empty default and empty pending queue; test-first N/A (static decorative SVG), verified by typecheck, 55/55 tests and screenshots. Note: blueprint grid very faint; table empty rows keep text-only message.
 - Task 6 review advisory (follow-up): R3-prototype-lookup in ProjectIllustration (use Object.hasOwn / Map).
+- Task 6b: hotspot P-002×Civil (4 active, 3 overdue, unique max), Abierto findings no longer claim registered correction evidence, analysis tiles from snapshot counts (fallback to live), data-driven verification summary in findings list, Object.hasOwn illustration lookup, tests for matrix/countUpFrame/state×role; RED→GREEN (hotspot test written after seed change); 60/60.

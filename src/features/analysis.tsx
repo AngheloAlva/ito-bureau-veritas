@@ -49,7 +49,8 @@ function AnalysisWorkspace({ projectId }: { projectId: string }) {
   const coverage = `${inspections.length} visitas · ${findings.length} hallazgos vinculados`;
   const stale = analysis ? isAnalysisStale(analysis, demo.data) : false;
   const [animate, setAnimate] = useState(false);
-  const stats = analysis ? indicators(demo.data, projectId || undefined) : null;
+  // Tiles come from the analysis snapshot; caches without counts fall back to live data.
+  const stats = analysis ? (analysis.counts ?? indicators(demo.data, projectId || undefined)) : null;
 
   function start() {
     setReportFor(null);

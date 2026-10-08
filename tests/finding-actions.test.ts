@@ -36,3 +36,19 @@ test('Cerrado y Coordinador: sin acción primaria', () => {
   const coord = seed.users.find(u => u.role === 'Coordinador')!;
   assert.equal(primaryActionFor(seed, h(), coord.id)!.canAct, false);
 });
+
+test('estado × rol: quién puede actuar en cada etapa del ciclo de H-001', () => {
+  const stages = [
+    ['Abierto', 'start', { u1: false, u2: true, u3: false }],
+    ['En corrección', 'submit', { u1: false, u2: true, u3: false }],
+    ['Pendiente de verificación', 'verify', { u1: true, u2: false, u3: false }],
+  ] as const;
+  let data = seed;
+  for (const [state, id, can] of stages) {
+    if (state !== 'Abierto') data = transitionFinding(data, 'H-001', 'u2', state, state === 'En corrección' ? {} : { action: 'x', evidenceId: 'e-correction', comment: 'ok' });
+    for (const [user, ok] of Object.entries(can)) {
+      const a = primaryActionFor(data, h(data), user)!;
+      assert.equal(a.id, id); assert.equal(a.canAct, ok, `${state} ${user}`);
+    }
+  }
+});

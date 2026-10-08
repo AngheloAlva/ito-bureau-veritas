@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { indicators, isActive, isAnalysisStale, isOverdue } from '@/domain/core';
 import type { Analysis } from '@/domain/types';
+import { pluralize } from '@/lib/format';
 import { useAnalysisStore } from './analysis/store';
 import { concentrationMatrix } from '@/domain/analysis-matrix';
 import { ConcentrationHeatmap } from './analysis/heatmap';
@@ -46,7 +47,7 @@ function AnalysisWorkspace({ projectId }: { projectId: string }) {
   const evidenceCount = demo.data.evidence.filter(item => item.findingId && findings.some(f => f.id === item.findingId)).length;
   const matrix = concentrationMatrix(demo.data, projectId || undefined);
   const counts: ScopeCounts = { inspections: inspections.length, findings: findings.length, evidence: evidenceCount, active: findings.filter(isActive).length, overdue: findings.filter(f => isOverdue(f)).length, groups: matrix.cells.length };
-  const coverage = `${inspections.length} visitas · ${findings.length} hallazgos vinculados`;
+  const coverage = `${pluralize(inspections.length, 'visita')} · ${findings.length} ${findings.length === 1 ? 'hallazgo vinculado' : 'hallazgos vinculados'}`;
   const stale = analysis ? isAnalysisStale(analysis, demo.data) : false;
   const [animate, setAnimate] = useState(false);
   // Tiles come from the analysis snapshot; caches without counts fall back to live data.
@@ -64,15 +65,15 @@ function AnalysisWorkspace({ projectId }: { projectId: string }) {
       <div className="flex items-start gap-3"><ClipboardTextIcon className="mt-7 shrink-0 text-muted-foreground" size={28} aria-hidden="true" /><div className="min-w-0 flex-1"><Heading eyebrow="Visitas, hallazgos y fuentes" title="Análisis asistido">
         <div className="flex flex-wrap items-center gap-3"><Badge variant="secondary">Simulado</Badge>{cached ? <Button className="analysis-action no-print" onClick={start} disabled={running || !demo.hydrated}><SparkleIcon data-icon="inline-start" />Analizar registros</Button> : null}</div>
       </Heading></div></div>
-      <p className="text-sm text-muted-foreground">Alcance: {scope} <span className="mx-2" aria-hidden="true">·</span><span className="tabular-nums">{coverage}</span></p>
+      <p className="text-sm text-muted-foreground">Alcance: {scope} · <span className="tabular-nums">{coverage}</span></p>
       {running ? <AnalysisProgress state={state} counts={counts} onCancel={() => controller.cancel()} /> : null}
-      {!running && current && state.reason ? <p role="status" className="text-sm text-muted-foreground">{state.reason === 'changed' ? 'Los registros cambiaron. Vuelve a analizar para incluir los cambios.' : 'Análisis cancelado. Puedes volver a intentarlo.'}</p> : null}
+      {!running && current && state.reason ? <p role="status" className="text-sm text-muted-foreground">{state.reason === 'changed' ? 'Los registros cambiaron. Vuelva a analizar para incluir los cambios.' : 'Análisis cancelado. Puede volver a intentarlo.'}</p> : null}
       <div aria-busy={running} className="flex flex-col gap-6">
         {!analysis && !running ? <AnalysisEmpty scope={scope} counts={counts} onStart={start} disabled={!demo.hydrated} /> : null}
         {analysis && stats ? <>
-          {stale ? <div className="rounded-sm bg-warning-surface p-4 text-sm text-warning"><strong>Análisis desactualizado.</strong> Los registros cambiaron; vuelve a analizar para actualizar las prioridades.</div> : null}
+          {stale ? <div className="rounded-sm bg-warning-surface p-4 text-sm text-warning"><strong>Análisis desactualizado.</strong> Los registros cambiaron; vuelva a analizar para actualizar las prioridades.</div> : null}
           <div className={animate ? 'analysis-enter' : undefined}>
-            <Panel rule title="Resumen del análisis" description={`Generado ${time(analysis.generatedAt)} · datos v${analysis.dataVersion}`}>
+            <Panel rule title="Resumen del análisis" description={`Generado ${time(analysis.generatedAt)}`}>
               <div className="flex flex-wrap items-center gap-3"><Badge variant="secondary">Análisis simulado para demostración</Badge></div>
               <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">{[['Activos', stats.active], ['Vencidos', stats.overdue], ['Críticos activos', stats.criticalActive], ['Prioridades', analysis.priorities.length]].map(([label, value]) => <div key={label} className="flex flex-col gap-1 rounded-sm border p-3"><dt className="text-xs text-muted-foreground">{label}</dt><dd className="font-mono text-2xl font-semibold tabular-nums">{value}</dd></div>)}</dl>
             </Panel>

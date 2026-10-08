@@ -1,11 +1,11 @@
 import type React from 'react';
 import Link from 'next/link';
-import { ArrowSquareOutIcon } from '@phosphor-icons/react';
+import { ArrowRightIcon } from '@phosphor-icons/react';
 import type { Analysis, Data } from '@/domain/types';
 import { Badge, date, Empty, Panel } from '@/components/records/presentation';
 
 export function Sources({ ids, data }: { ids: string[]; data: Data }) {
-  return <div className="flex flex-wrap items-center gap-3 text-xs"><span className="text-muted-foreground">Fuentes:</span>{ids.map(id => <Link key={id} className="record-link inline-flex min-h-10 items-center gap-2 rounded-md border px-3" href={id.startsWith('H-') ? `/hallazgos/${id}` : `/inspecciones/${id}`}>{id.startsWith('H-') ? id : data.inspections.find(inspection => inspection.id === id)?.code ?? id}<ArrowSquareOutIcon aria-hidden="true" size={14} /></Link>)}</div>;
+  return <div className="flex flex-wrap items-center gap-3 text-xs"><span className="text-muted-foreground">Fuentes:</span>{ids.map(id => <Link key={id} className="record-link inline-flex min-h-10 items-center gap-2 rounded-md border px-3" href={id.startsWith('H-') ? `/hallazgos/${id}` : `/inspecciones/${id}`}>{id.startsWith('H-') ? id : data.inspections.find(inspection => inspection.id === id)?.code ?? id}<ArrowRightIcon aria-hidden="true" size={14} /></Link>)}</div>;
 }
 
 export function AnalysisPriorities({ analysis, data, animate = false }: { analysis: Analysis; data: Data; animate?: boolean }) {

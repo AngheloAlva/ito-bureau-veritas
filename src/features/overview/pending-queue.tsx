@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { pluralize } from '@/lib/format';
 import type { Finding, Data } from '@/domain/types';
 import { isOverdue } from '@/domain/core';
 import { Badge, date, Panel } from '@/components/records/presentation';
@@ -36,7 +37,7 @@ export function PendingQueue({ findings, scope, data }: { findings: Finding[]; s
   };
   return (
     <div className="overview-attention">
-      <Panel rule title="Atención prioritaria" description={`${findings.length} hallazgos únicos · críticos activos primero, luego fecha compromiso. Vencimiento y severidad pueden coincidir.`} footer={<Link className="record-link text-sm min-h-11 inline-flex items-center" href={`/hallazgos?${scope}active=1`}>Consultar todos los activos →</Link>}>
+      <Panel rule title="Atención prioritaria" description={`${pluralize(findings.length, 'hallazgo único', 'hallazgos únicos')} · críticos activos primero, luego fecha compromiso. Vencimiento y severidad pueden coincidir.`} footer={<Link className="record-link text-sm min-h-11 inline-flex items-center" href={`/hallazgos?${scope}active=1`}>Consultar todos los activos →</Link>}>
         {ordered.length ? (
           <div>
             <ol className="flex flex-col divide-y">{ordered.slice(0, 5).map(renderFinding)}</ol>

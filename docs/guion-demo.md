@@ -2,44 +2,44 @@
 
 ## Preparación
 
-Ejecutar `pnpm dev`, abrir localhost y confirmar «Restablecer demo». Seleccionar cartera completa y rol Inspector / Ana Rojas. No usar datos reales. Ensayar también en móvil y teclado antes de la reunión; este documento no declara que el ensayo haya ocurrido.
+Ejecutar `pnpm dev`, abrir localhost y restablecer con el menú de identidad (icono de persona, arriba a la derecha) → «Restablecer demo». Elegir «Cartera completa» como alcance. En «Viendo como» (en móvil es un selector) elegir Inspector / Ana Rojas. Usar solo datos de ejemplo. Ensayar también en móvil y con teclado antes de la reunión; este documento no declara que el ensayo haya ocurrido.
 
 ## 0:00–0:45 · Contexto y prioridades
 
-«Esto es una demostración con datos ficticios, no un sistema de producción ni un procedimiento oficial. La fecha de referencia es el 8 de octubre de 2026.»
+«Es una demostración con datos de ejemplo, no un sistema de producción ni un procedimiento oficial. La fecha de referencia es el 8 de octubre de 2026.»
 
-Mostrar las cuatro cifras del resumen y abrir la tarjeta Vencidos: la tabla combina alcance y vencimiento. Regresar y mostrar que los gráficos cuentan registros, sin inventar tendencias. Abrir H-001 desde una alerta.
+En el Resumen mostrar los indicadores «Hallazgos activos», «Hallazgos vencidos», «Críticos activos» e «Inspecciones del período», y la franja «Ciclo de vida del hallazgo». Abrir «Hallazgos vencidos»: la tabla combina alcance y vencimiento. Volver. En «Atención prioritaria» abrir H-001, marcado «Caso de demostración · empezar aquí».
 
 ## 0:45–1:30 · Trazabilidad de origen
 
-Leer «Registro incompleto de prueba de estanqueidad». Aclarar que falta respaldo: **no significa que la instalación falló**. Abrir el proyecto P-001 y la inspección I-001 desde los enlaces. Mostrar resultado, fecha, hallazgos asociados y abrir el documento ficticio en una nueva pestaña. Volver a H-001.
+Leer «Registro incompleto de prueba de estanqueidad». Aclarar que falta respaldo: **no significa que la instalación falló**. Abrir el proyecto P-001 y la inspección I-001 desde los enlaces. Mostrar resultado, fecha, hallazgos asociados y el documento de ejemplo. Volver a H-001.
 
 ## 1:30–2:45 · Corrección por el responsable
 
-Seleccionar Responsable de corrección / Diego Soto. Pulsar «Iniciar corrección». Escribir: «Se solicitó el registro firmado y se contrastará con el tramo inspeccionado». Pulsar «Agregar evidencia de ejemplo», seleccionar ese respaldo y abrirlo para mostrar que es un archivo local ficticio. Pulsar «Remitir a verificación».
+El botón principal del hallazgo indica qué rol puede actuar: pulsar «Cambiar a Responsable de corrección» (o usar «Viendo como») para ser Diego Soto. Pulsar «Iniciar corrección». Luego «Preparar corrección», escribir: «Se solicitó el registro firmado y se contrastará con el tramo inspeccionado», seleccionar la evidencia de corrección (o «Adjuntar respaldo de corrección» para crear una referencia de ejemplo; queda seleccionada) y pulsar «Remitir a verificación».
 
-Mostrar que sigue activo y vencido; el responsable no recibe un botón de cierre. Abrir la cronología: actor, fecha, transición, acción y evidencia seleccionada.
+Mostrar que sigue activo y vencido; el responsable no recibe botón de cierre. Abrir la cronología: actor, fecha, transición, acción y evidencia seleccionada.
 
 ## 2:45–3:45 · Verificación independiente
 
-Cambiar a Inspector / Ana Rojas. Mostrar el campo de persona verificadora y el motivo obligatorio de devolución. Para el flujo corto, escribir «Se revisó el ejemplo y su correspondencia con el tramo 1; verificación ficticia» y pulsar «Verificar y cerrar».
+Pulsar «Cambiar a Inspector». Con «Revisar corrección» se ven la acción registrada y la evidencia seleccionada, la persona verificadora y el comentario obligatorio. Para el flujo corto, escribir «Se revisó el ejemplo y su correspondencia con el tramo 1» y pulsar «Verificar y cerrar».
 
-Si hay tiempo, primero devolver con «Falta identificar el tramo en el respaldo», luego repetir la remisión como Diego y cerrar como Ana. Nunca saltar estados.
+Si hay tiempo, primero «Devolver a corrección» con «Falta identificar el tramo en el respaldo», repetir la remisión como Diego y cerrar como Ana. Nunca se saltan estados.
 
 ## 3:45–4:45 · Cifras y análisis
 
-Volver al resumen: activos y vencidos disminuyen en uno y cerrados aumenta en uno. Abrir Análisis asistido, seleccionar cartera o P-001 y «Analizar registros». H-001 ya no es prioridad activa. Abrir una fuente; mostrar agrupación por proyecto/especialidad, razones y límites. «Es simulado: reglas deterministas, no IA generativa». Generar el borrador y mostrar impresión si el tiempo lo permite.
+Volver al Resumen: activos y vencidos bajan en uno y los cerrados suben en uno. Abrir Análisis asistido, elegir cartera o P-001 y pulsar «Analizar registros»; se muestran los pasos del análisis. H-001 ya no es prioridad activa. Abrir una fuente (enlace interno, misma pestaña). Mostrar «Concentración de pendientes»: el punto crítico es P-002 × Civil. Revisar razones y límites. «Es simulado: reglas deterministas, no IA generativa». Pulsar «Generar borrador de informe» e imprimir si hay tiempo.
 
-Para enseñar la advertencia, generar un análisis antes del siguiente registro, crear el hallazgo y volver: aparecerá desactualizado; regenerar lo actualizará.
+Para mostrar la advertencia, crear un registro después del análisis y volver: aparece «Análisis desactualizado»; «Analizar registros» lo actualiza. Recargar la página descarta el análisis.
 
 ## 4:45–6:15 · Datos nuevos y visita independiente
 
-Como Ana, crear una inspección en P-001 con fecha 08/10/2026, sector, especialidad, actividad y resultado general. Se abre su detalle como Programada. Registrar un hallazgo con descripción, ubicación, severidad, Diego y plazo 09/10/2026. Se genera código automático. Si se elige 07/10/2026, marcar la confirmación explícita de vencido.
+Como Ana, crear una inspección en P-001 con fecha 08/10/2026, sector, especialidad, actividad y resultado general. Se abre su detalle como Programada. Registrar un hallazgo con descripción, ubicación, severidad, Diego y plazo 09/10/2026; el código es automático. Con 07/10/2026 hay que confirmar que nace vencido.
 
-Volver a la inspección recién creada y «Completar visita»: el hallazgo continúa abierto. Abrir P-001 o el resumen y mostrar que las cifras/listados incorporan el nuevo registro. En H-001 abierto de una demo restablecida, o en el nuevo hallazgo, se puede enseñar reasignación a Lucía y cambio de plazo con historia.
+En la inspección nueva pulsar «Completar visita»: el hallazgo sigue abierto. Abrir P-001 o el Resumen: cifras y listados incluyen el nuevo registro. En un hallazgo abierto se puede mostrar la reasignación a Lucía y el cambio de plazo en la cronología.
 
 ## 6:15–7:00 · Cierre y validación del enfoque
 
-Mostrar persistencia recargando un detalle y aclarar que solo vive en este navegador; el análisis se regenera tras recarga. «Restablecer demo» solicita confirmación para repetir el relato.
+Recargar un detalle para mostrar que los cambios persisten solo en este navegador. «Restablecer demo» pide confirmación y permite repetir el relato.
 
-Preguntar qué nomenclatura, documentos, roles y estados deberían validarse. Solicitar un formato vacío/anonimizado. Confirmar quién asistirá a una siguiente presentación. Backend, autenticación, IA real, integraciones y Power BI requieren un alcance posterior.
+Preguntar qué nomenclatura, documentos, roles y estados conviene validar. Solicitar un formato vacío o anonimizado y confirmar quién asistirá a la siguiente presentación. Backend, autenticación, IA real, integraciones y Power BI requieren un alcance posterior.

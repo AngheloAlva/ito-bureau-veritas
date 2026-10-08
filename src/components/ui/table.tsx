@@ -10,7 +10,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
       tabIndex={0}
       role="region"
       aria-label="Tabla de registros; desplácese horizontalmente para ver todas las columnas"
-      className="relative min-w-0 w-full max-w-full overflow-x-auto border border-border bg-card focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+      className="scroll-shadow relative min-w-0 w-full max-w-full overflow-x-auto border border-border focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
     >
       <table
         data-slot="table"

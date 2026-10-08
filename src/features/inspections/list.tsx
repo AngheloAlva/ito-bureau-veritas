@@ -1,5 +1,6 @@
 'use client';
 
+import { pluralize } from '@/lib/format';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useDemo } from '@/components/demo-provider';
@@ -46,7 +47,7 @@ export function Inspections() {
   const rows = d.data.inspections.filter(i => (!p || i.projectId === p) && (!from || i.date >= from)
     && (!to || i.date <= to) && (!inspector || i.inspectorId === inspector) && (!specialty || i.specialty === specialty)
     && (!visitState || i.visitState === visitState));
-  const count = `${rows.length} inspecciones encontradas`;
+  const count = `${pluralize(rows.length, 'inspección', 'inspecciones')} ${rows.length === 1 ? 'encontrada' : 'encontradas'}`;
   return <div className="flex min-w-0 flex-col gap-6">
     <Heading eyebrow="Registro de visitas" title="Inspecciones">
       {canCreate ? <FormDialog title="Nueva inspección"

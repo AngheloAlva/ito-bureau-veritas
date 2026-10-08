@@ -13,19 +13,20 @@ export function ConcentrationHeatmap({ data, projectId }: { data: Data; projectI
   const cell = (pid: string, specialty: string) => matrix.cells.find(c => c.projectId === pid && c.specialty === specialty);
   return <Panel rule title="Concentración de pendientes" description="Hallazgos activos por proyecto y especialidad. Revisar responsables y evidencias donde se acumulan.">
     {matrix.cells.length ? <>
-      <div className="overflow-x-auto">
+      <p className="text-xs text-muted-foreground md:hidden" aria-hidden="true">Desplácese horizontalmente para ver más especialidades →</p>
+      <div className="scroll-shadow relative max-w-full min-w-0 overflow-x-auto" tabIndex={0} role="region" aria-label="Mapa de concentración; desplácese horizontalmente para ver todas las especialidades">
         <table className="w-full border-separate border-spacing-1 text-sm">
           <caption className="sr-only">Hallazgos activos por proyecto y especialidad, con cantidad de vencidos</caption>
           <thead><tr><th scope="col" className="p-1 text-left text-xs font-medium text-muted-foreground"><span className="sr-only">Proyecto</span></th>
             {matrix.specialties.map(s => <th key={s} scope="col" className="p-1 text-center text-xs font-medium text-muted-foreground">{s}</th>)}</tr></thead>
           <tbody>{matrix.projects.map(p => <tr key={p.id}>
-            <th scope="row" className="w-64 min-w-40 p-1 text-left align-middle font-normal"><span className="block font-mono text-xs tabular-nums">{p.code}</span><span className="block max-w-56 truncate text-xs text-muted-foreground" title={p.name}>{p.name}</span></th>
+            <th scope="row" className="min-w-36 p-1 sm:w-64 text-left align-middle font-normal"><span className="block font-mono text-xs tabular-nums">{p.code}</span><span className="block max-w-56 truncate text-xs text-muted-foreground" title={p.name}>{p.name}</span></th>
             {matrix.specialties.map(s => { const c = cell(p.id, s); return c
-              ? <td key={s} className="h-14 min-w-20 rounded-sm text-center align-middle" style={tint(c.active, matrix.max)}>
+              ? <td key={s} className="relative h-14 min-w-20 rounded-sm text-center align-middle" style={tint(c.active, matrix.max)}>
                 <span className="block font-mono text-base font-semibold tabular-nums">{c.active}</span>
                 {c.overdue ? <span className="block text-[11px] font-medium" aria-hidden="true">{c.overdue} {c.overdue === 1 ? 'vencido' : 'vencidos'}</span> : null}
                 <span className="sr-only">{c.active === 1 ? ' activo' : ' activos'}{c.overdue ? `, ${c.overdue} ${c.overdue === 1 ? 'vencido' : 'vencidos'}` : ''}</span></td>
-              : <td key={s} className="h-14 rounded-sm bg-muted/50 text-center align-middle text-muted-foreground"><span aria-hidden="true">·</span><span className="sr-only">Sin pendientes</span></td>; })}
+              : <td key={s} className="relative h-14 min-w-20 rounded-sm bg-muted/50 text-center align-middle text-muted-foreground"><span aria-hidden="true">·</span><span className="sr-only">Sin pendientes</span></td>; })}
           </tr>)}</tbody>
         </table>
       </div>

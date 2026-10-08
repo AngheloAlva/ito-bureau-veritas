@@ -5,8 +5,10 @@ import { CheckCircleIcon, ArrowUUpLeftIcon } from '@phosphor-icons/react';
 import { useDemo } from '@/components/demo-provider';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
-import { ValidatedForm, FormError } from '@/components/shared/validated-form';
+import { FormError } from '@/components/shared/validated-form';
 import { FormDialog } from '@/components/shared/form-dialog';
+import { LiveValidatedForm } from './live-validated-form';
+import { date } from '@/components/records/presentation';
 import { SelectField } from '@/components/shared/select-field';
 import { TextField } from '@/components/shared/text-field';
 import { transitionFinding } from '@/domain/core';
@@ -36,9 +38,15 @@ function VerificationForm({ finding: f, onSaved }: { finding: Finding; onSaved: 
       onSaved();
     } catch (err) { setError(err instanceof Error ? err.message : 'No se pudo verificar.'); }
   }
-  return <ValidatedForm onSubmit={submit}>
+  const submitted = d.data.events.filter(e => e.findingId === f.id && e.changes.evidenceId).sort((a, b) => Date.parse(b.at) - Date.parse(a.at))[0];
+  const evidence = d.data.evidence.find(e => e.id === submitted?.changes.evidenceId?.after);
+  return <LiveValidatedForm valid={Boolean(comment.trim())} onSubmit={submit}>
     <FieldGroup>
       <FormError message={error} />
+      <section aria-label="Acción y evidencia registradas" className="flex flex-col gap-3 rounded-sm border bg-muted/30 p-3 text-sm">
+        <div><h3 className="text-xs font-medium text-muted-foreground">Acción correctiva registrada</h3><p className="mt-1 whitespace-pre-wrap [overflow-wrap:anywhere]">{f.correctiveAction || 'Sin registro.'}</p></div>
+        <div><h3 className="text-xs font-medium text-muted-foreground">Evidencia de corrección</h3><p className="mt-1 [overflow-wrap:anywhere]">{evidence ? <a className="record-link" href={evidence.reference} target="_blank" rel="noreferrer">{evidence.name} ↗</a> : 'Sin evidencia seleccionada.'}{evidence ? <span className="block text-xs text-muted-foreground">{evidence.phase} · {date(evidence.addedAt)}</span> : null}</p></div>
+      </section>
       <SelectField name="verifier" label="Persona verificadora" value={d.user.id} onValueChange={d.selectUser}
         options={d.data.users.filter(u => u.role === 'Inspector').map(u => ({ value: u.id, label: u.name }))} />
       <TextField name="comment" label="Comentario de verificación / motivo de devolución" required multiline value={comment} onChange={e => setComment(e.target.value)}
@@ -48,5 +56,5 @@ function VerificationForm({ finding: f, onSaved }: { finding: Finding; onSaved: 
         <Button variant="outline" type="submit" name="intent" value="return"><ArrowUUpLeftIcon data-icon="inline-start" />Devolver a corrección</Button>
       </div>
     </FieldGroup>
-  </ValidatedForm>;
+  </LiveValidatedForm>;
 }

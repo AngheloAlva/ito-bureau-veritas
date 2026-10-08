@@ -18,7 +18,7 @@ export function ContextSelect({ id, label, value, items, onChange, compact = fal
     <Field className="min-w-0 gap-1">
       <FieldLabel htmlFor={id} className={compact ? 'sr-only' : undefined}>{label}</FieldLabel>
       <Select items={items} value={value} onValueChange={next => { if (next !== null) onChange(next); }}>
-        <SelectTrigger id={id} className="min-h-11 w-full"><SelectValue /></SelectTrigger>
+        <SelectTrigger id={id} className="min-h-11 w-full min-w-0"><SelectValue className="min-w-0 truncate" /></SelectTrigger>
         <SelectContent alignItemWithTrigger={false} align="start">
           <SelectGroup>{items.map(item => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectGroup>
         </SelectContent>
@@ -46,7 +46,7 @@ export function RoleSwitcher() {
             className={`min-h-9 rounded-sm px-3 text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring ${active ? 'bg-[var(--brand-blue)] text-white' : 'text-muted-foreground hover:bg-background hover:text-foreground'}`}>{SHORT_ROLE[role]}</button>;
         })}
       </div>
-      <div className="w-40 md:hidden">
+      <div className="w-44 max-w-full md:hidden">
         <ContextSelect id="demo-role-compact" label="Viendo como" compact value={demo.user.role} items={ROLES.map(role => ({ value: role, label: `${SHORT_ROLE[role]}${demo.user.role === role ? ` · ${demo.user.name}` : ''}` }))} onChange={role => demo.selectRole(role as Role)} />
       </div>
     </div>

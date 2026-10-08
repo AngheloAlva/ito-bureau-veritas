@@ -5,8 +5,7 @@ import { Badge as PrimitiveBadge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Empty as EmptyRoot, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty';
 
-export const date = (value: string) => value.split('-').reverse().join('/');
-export const time = (value: string) => new Intl.DateTimeFormat('es-CL', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Santiago' }).format(new Date(value));
+export { formatDate as date, formatDateTime as time } from '@/lib/format';
 
 export function Heading({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) {
   return (

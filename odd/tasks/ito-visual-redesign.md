@@ -21,7 +21,7 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - [x] 6. Technical SVG line illustrations for projects and empty states.
 - [x] 6b. Pending adjustments A (data/logic + tests): seed hotspot for heatmap, H-001 evidence wording, analysis summary from snapshot, findings summary line with 0 results, ProjectIllustration safe lookup, missing tests (heatmap, count-up, hero action).
 - [x] 6c. Pending adjustments B (visual + docs): narrow bar segments, stepper connector lines, blueprint grid intensity, remove "ficticio" from docs.
-- [ ] 7. Browser verification of the demo script and docs update.
+- [x] 7. Browser verification of the demo script and docs update.
 
 ## Evidence
 
@@ -44,3 +44,4 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 - Task 6c review advisory (follow-up, task 7): R3-hidden-project-counts — tiny project segments show their value only in a title tooltip (not visible/accessible without hover).
 - Task 7 (part): project card header compacted (code+status row, title, meta with coordination, full-width progress) per user feedback; screenshot checked.
 - Task 7 walkthrough (gentle-ai-verify): full H-001 script passed at 1440/390/1024, no console/hydration errors. Issues to fix: mobile /analisis horizontal overflow (sr-only text in heatmap), wide tables without scroll affordance on 390/1024 (hallazgos, proyectos/p1 visitas), dialog stale validation errors, internal evidence IDs in options, attach hint/order, inspector panel copy for Abierto, duplicated timeline transition text, mixed date formats, "datos vN" internal text, source chips external icon without new tab, plural "1 hallazgos", header scope select clipped at 390, stepper wrap at 1024, sticky status banner, tú/usted copy, spacing; plus guion-demo.md refresh.
+- Task 7 fixes: no horizontal overflow at 390 (analisis/hallazgos/home measured), findings as cards below md, scroll shadows on tables, dialog live validation + human evidence labels, state-aware workflow copy, single timeline transition, unified DD/MM/YYYY · HH:MM dates (src/lib/format.ts), pluralize, header wraps at 390, compact stepper below xl, status banner clears on route change, usted copy; guion-demo.md rewritten; RED→GREEN format tests; 64/64; screenshots 390/1024/1440 checked. Remaining: P-001 visits table still needs horizontal scroll at 1440 (scroll shadow shown); H-001 seed sample correction evidence; reset edge cases; free-text specialty.

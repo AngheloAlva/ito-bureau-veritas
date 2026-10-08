@@ -42,21 +42,21 @@ export function FindingHero({ finding: f, project: p, inspection: i }: { finding
         <div><dt className="text-xs text-muted-foreground">Fecha compromiso</dt><dd className="mt-0.5 font-medium"><span className="font-mono tabular-nums">{date(f.dueDate)}</span>{overdue ? <span className="text-destructive"> · Vencido hace {daysLate(f.dueDate)} d</span> : f.state === 'Cerrado' ? <span className="text-muted-foreground"> · Cerrado</span> : null}</dd></div>
       </dl>
     </div>
-    <div className="flex flex-col gap-4 border-t pt-5 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-      <ol aria-label="Etapas del hallazgo" className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:gap-0">
+    <div className="flex flex-col gap-4 border-t pt-5 xl:flex-row xl:items-center xl:justify-between xl:gap-8">
+      <ol aria-label="Etapas del hallazgo" className="grid min-w-0 flex-1 grid-cols-4 gap-2 xl:flex xl:items-center xl:gap-0">
         {STATES.map((state, index) => {
           const done = index < current || f.state === 'Cerrado';
           const here = index === current && f.state !== 'Cerrado';
-          return <li key={state} aria-current={here ? 'step' : undefined} className={`flex min-w-0 items-center gap-2 text-xs ${index < STATES.length - 1 ? 'sm:flex-1' : ''}`}>
+          return <li key={state} aria-current={here ? 'step' : undefined} className={`flex min-w-0 flex-col items-center gap-1.5 text-center text-xs xl:flex-row xl:text-left ${index < STATES.length - 1 ? 'xl:flex-1' : ''}`}>
             <span aria-hidden="true" className={`flex size-6 shrink-0 items-center justify-center rounded-full font-mono tabular-nums ${here ? 'bg-[var(--brand-blue)] text-white' : done ? 'bg-success-surface text-success' : 'bg-muted text-muted-foreground'}`}>{done ? <CheckIcon weight="bold" /> : index + 1}</span>
             <span className={here ? 'font-semibold text-foreground' : done ? 'text-foreground' : 'text-muted-foreground'}>{state}<span className="sr-only">{done ? ' (completado)' : here ? ' (etapa actual)' : ' (pendiente)'}</span></span>
-            {index < STATES.length - 1 ? <span aria-hidden="true" className={`hidden h-px min-w-4 flex-1 sm:mx-3 sm:block ${done ? 'bg-[var(--brand-blue)]' : 'bg-border'}`} /> : null}
+            {index < STATES.length - 1 ? <span aria-hidden="true" className={`hidden h-px min-w-4 flex-1 xl:mx-3 xl:block ${done ? 'bg-[var(--brand-blue)]' : 'bg-border'}`} /> : null}
           </li>;
         })}
       </ol>
-      <div className="flex shrink-0 flex-col gap-2 lg:items-end">
+      <div className="flex shrink-0 flex-col gap-2 xl:items-end">
         {action?.canAct ? <Button type="button" className="min-h-11 bg-[var(--brand-blue)] text-white hover:bg-[var(--brand-blue)]/90" onClick={run}><ArrowRightIcon data-icon="inline-start" />{action.label}</Button>
-          : action && actor ? <div className="flex flex-col gap-2 text-sm lg:items-end">
+          : action && actor ? <div className="flex flex-col gap-2 text-sm xl:items-end">
             <p className="text-muted-foreground">Acción disponible para: <span className="font-medium text-foreground">{action.requiredRole} ({actor.name})</span></p>
             <Button type="button" variant="outline" className="min-h-11" onClick={() => d.selectUser(actor.id)}><UserSwitchIcon data-icon="inline-start" />Cambiar a {action.requiredRole}</Button>
           </div>

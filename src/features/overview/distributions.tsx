@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { pluralize } from '@/lib/format';
 import { Empty, Panel } from '@/components/records/presentation';
 import { SEVERITIES } from '@/domain/types';
 import type { projectBreakdown } from '@/lib/overview-charts';
@@ -11,7 +12,7 @@ const sevColor: Record<string, string> = { Baja: 'bg-muted-foreground/40', Media
 export function SeverityChart({ counts, total, scope }: { counts: Record<string, number>; total: number; scope: string }) {
   const summary = SEVERITIES.map(s => `${s}: ${counts[s] ?? 0}`).join(', ');
   return (
-    <Panel rule title="Por severidad" description={`${total} hallazgos · distribución actual`}>
+    <Panel rule title="Por severidad" description={`${pluralize(total, 'hallazgo')} · distribución actual`}>
       {total ? <>
         <div role="img" aria-label={`Hallazgos por severidad. ${summary}. Total ${total}.`} className="flex gap-0.5">
           {SEVERITIES.map(s => counts[s] ? (

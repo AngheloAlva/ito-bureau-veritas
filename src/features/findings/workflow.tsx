@@ -19,11 +19,13 @@ export function Workflow({ finding: f, evidenceId, onEvidenceChange }: {
   const inspector = d.user.role === 'Inspector';
   const responsible = d.data.users.find(u => u.id === f.responsibleId)?.name;
   const canVerify = inspector && f.state === 'Pendiente de verificación';
-  const title = inspector ? 'Revisión del inspector' : d.user.role === 'Responsable de corrección' ? 'Corrección del responsable' : 'Seguimiento del hallazgo';
+  const title = f.state === 'Abierto' ? 'Siguiente paso: iniciar la corrección'
+    : f.state === 'En corrección' ? 'Corrección del responsable'
+    : f.state === 'Pendiente de verificación' ? 'Revisión del inspector' : 'Seguimiento del hallazgo';
   const nextStep = f.state === 'Cerrado' ? 'Verificación completada. Consulte el respaldo y la cronología.'
     : f.state === 'Pendiente de verificación' ? 'Inspector: revisar evidencias y cerrar o devolver con comentario.'
     : f.state === 'En corrección' ? `${responsible}: registrar la acción, seleccionar evidencia y remitir.`
-    : `${responsible}: iniciar la corrección.`;
+    : `Responsable de la corrección: ${responsible}.`;
   return <div id="finding-workflow" className="scroll-mt-24"><Panel title={title} rule>
     <p ref={focusReturnRef} tabIndex={-1} className="text-sm text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">{f.code} · {nextStep}</p>
     {f.state === 'Abierto' && own ? <Button size="sm" className="w-fit" data-workflow-action onClick={() => d.run(() => d.apply(data => transitionFinding(data, f.id, d.user.id, 'En corrección', { action: f.correctiveAction, evidenceId: '', comment: '' })), 'Estado actualizado: En corrección.')}><ArrowRightIcon data-icon="inline-start" />Iniciar corrección</Button> : null}

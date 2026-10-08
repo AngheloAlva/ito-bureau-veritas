@@ -9,6 +9,7 @@ import { TextField } from '@/components/shared/text-field';
 import { CheckField } from '@/components/shared/check-field';
 import { FilterToolbar } from '@/components/shared/filter-toolbar';
 import { parseListFilters, updateListFilters, clearListFilters, verificationSummary } from '@/lib/list-filters';
+import { pluralize } from '@/lib/format';
 import { STATES, SEVERITIES, REFERENCE_DATE } from '@/domain/types';
 import { scopedFindings, isActive, isOverdue } from '@/domain/core';
 
@@ -39,7 +40,7 @@ export function Findings() {
     && (!severity || item.severity === severity) && (!responsible || item.responsibleId === responsible)
     && (!active || isActive(item)) && (!due || (due === 'overdue' ? isOverdue(item) : isActive(item) && item.dueDate === REFERENCE_DATE))
     && `${item.code} ${item.title}`.toLocaleLowerCase('es').includes(query.toLocaleLowerCase('es')));
-  const count = `${rows.length} hallazgos encontrados`;
+  const count = `${pluralize(rows.length, 'hallazgo')} ${rows.length === 1 ? 'encontrado' : 'encontrados'}`;
   return <div className="flex min-w-0 flex-col gap-6">
     <Heading eyebrow="Seguimiento de correcciones" title="Hallazgos" />
     <p className="text-sm text-muted-foreground">{p ? d.data.projects.find(item => item.id === p)?.name : 'Cartera completa'} · Vencimiento al 08/10/2026.</p>

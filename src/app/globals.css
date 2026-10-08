@@ -265,3 +265,13 @@
 @media (prefers-reduced-motion: reduce) {
   .analysis-scan-line { animation: none; }
 }
+
+/* Edge shadows appear only on the side that still has hidden content (local covers over scroll shadows). */
+.scroll-shadow {
+  background:
+    linear-gradient(to right, var(--card), var(--card)) left center / 24px 100% local no-repeat,
+    linear-gradient(to left, var(--card), var(--card)) right center / 24px 100% local no-repeat,
+    linear-gradient(to right, rgb(0 0 0 / 0.16), transparent) left center / 14px 100% scroll no-repeat,
+    linear-gradient(to left, rgb(0 0 0 / 0.16), transparent) right center / 14px 100% scroll no-repeat;
+  background-color: var(--card);
+}

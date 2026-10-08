@@ -36,13 +36,13 @@ test('ordered stages reveal one captured deterministic result and save only on c
   f.controller.subscribe(() => stages.push(f.controller.getSnapshot().stage));
   f.controller.start(f.data, 'p1');
   assert.equal(f.controller.getSnapshot().stage, 0);
-  f.advance(800);
+  f.advance(500);
   assert.equal(f.controller.getSnapshot().stage, 1);
   assert.deepEqual(f.controller.getSnapshot().result, analyze(original, 'p1', AT));
-  f.advance(800);
-  f.advance(800);
+  f.advance(500);
+  f.advance(500);
   assert.equal(f.saved.length, 0);
-  f.advance(800);
+  f.advance(500);
   assert.deepEqual(stages, [0, 1, 2, 3, 4]);
   assert.deepEqual(f.saved, [analyze(original, 'p1', AT)]);
   assert.deepEqual(f.data, original);

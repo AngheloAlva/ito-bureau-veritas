@@ -12,8 +12,8 @@ export interface RunState {
   reason?: 'cancelled' | 'changed';
 }
 export const ANALYSIS_STAGES = [
-  'Organizar visitas', 'Revisar severidad y plazos',
-  'Vincular fuentes', 'Preparar prioridades',
+  'Leyendo inspecciones', 'Cruzando hallazgos y plazos',
+  'Revisando evidencias', 'Agrupando por proyecto y especialidad',
 ] as const;
 const IDLE: RunState = { running: false, stage: 0, key: '', version: -1 };
 
@@ -67,7 +67,7 @@ export function createAnalysisRun(scheduler: Scheduler, save: (key: string, resu
         if (!valid() || stage <= state.stage) return;
         if (stage === 4) { save(key, result); clear(); }
         publish({ running: stage < 4, stage, key, version: data.version, result, data });
-      }, stage * 800));
+      }, stage * 500));
     },
   };
 }

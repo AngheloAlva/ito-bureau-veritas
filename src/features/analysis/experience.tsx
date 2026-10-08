@@ -1,36 +1,60 @@
-import { ClipboardTextIcon, LinkSimpleIcon, MagnifyingGlassIcon, SparkleIcon } from '@phosphor-icons/react';
+'use client';
+
+import { CheckIcon, SparkleIcon } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { ANALYSIS_STAGES, type RunState } from '@/lib/analysis-run';
+import { useCountUp } from '@/lib/use-count-up';
 
-export function AnalysisEmpty({ scope, coverage, onStart, disabled }: {
-  scope: string; coverage: string; onStart: () => void; disabled: boolean;
+export interface ScopeCounts { inspections: number; findings: number; evidence: number; active: number; overdue: number; groups: number }
+
+export function AnalysisEmpty({ scope, counts, onStart, disabled }: {
+  scope: string; counts: ScopeCounts; onStart: () => void; disabled: boolean;
 }) {
-  return <section className="flex min-h-96 flex-col items-center justify-center gap-6 rounded-xl border bg-card px-6 py-12 text-center" aria-labelledby="analysis-empty-title">
-    <div className="relative flex size-28 items-center justify-center rounded-3xl bg-muted text-muted-foreground" aria-hidden="true">
-      <ClipboardTextIcon size={64} weight="light" />
-      <span className="absolute -right-3 bottom-2 rounded-xl border bg-card p-3"><MagnifyingGlassIcon size={28} /></span>
-      <span className="absolute -left-3 top-3 rounded-lg border bg-card p-2"><LinkSimpleIcon size={20} /></span>
+  const items = [['Inspecciones', counts.inspections], ['Hallazgos', counts.findings], ['Evidencias', counts.evidence]] as const;
+  return <section className="grid gap-8 rounded-sm border bg-card p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,16rem)] md:p-10" aria-labelledby="analysis-empty-title">
+    <div className="flex flex-col items-start gap-6">
+      <div className="flex flex-col gap-3">
+        <h2 id="analysis-empty-title" className="bv-title text-2xl font-semibold tracking-tight">De los registros a las prioridades</h2>
+        <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">El análisis lee las inspecciones, cruza severidad y plazos de cada hallazgo, revisa si tiene evidencias y agrupa lo pendiente por proyecto y especialidad. No modifica ningún registro.</p>
+      </div>
+      <dl className="flex flex-wrap gap-x-8 gap-y-3">{items.map(([label, value]) => <div key={label} className="flex flex-col"><dt className="text-xs text-muted-foreground">{label} en alcance</dt><dd className="font-mono text-2xl font-semibold tabular-nums">{value}</dd></div>)}</dl>
+      <p className="text-sm"><span className="text-muted-foreground">Alcance:</span> <span className="font-medium">{scope}</span></p>
+      <div className="flex flex-col items-start gap-2">
+        <Button size="lg" className="analysis-action h-11 px-6 text-base" onClick={onStart} disabled={disabled}><SparkleIcon data-icon="inline-start" />Analizar registros</Button>
+        <p className="text-xs text-muted-foreground">Análisis simulado para demostración · reglas deterministas</p>
+      </div>
     </div>
-    <div className="flex max-w-lg flex-col gap-3"><h2 id="analysis-empty-title" className="text-2xl font-semibold tracking-tight">De las visitas a las prioridades</h2>
-      <p className="text-sm leading-relaxed text-muted-foreground">Revisa severidad, plazos y fuentes para identificar qué requiere atención en {scope}.</p>
-      <p className="text-sm font-medium tabular-nums">{coverage}</p>
-    </div>
-    <Button className="analysis-action" onClick={onStart} disabled={disabled}><SparkleIcon data-icon="inline-start" />Analizar registros</Button>
-    <p className="text-xs text-muted-foreground">Lectura simulada de los registros · sin modificar datos</p>
+    <div data-slot="analysis-illustration" className="hidden min-h-48 md:block" aria-hidden="true" />
   </section>;
 }
 
-export function AnalysisProgress({ state, onCancel }: { state: RunState; onCancel: () => void }) {
+function StepCount({ value }: { value: number }) {
+  const shown = useCountUp(value, 420);
+  return <span className="font-mono tabular-nums">{shown}</span>;
+}
+
+export function AnalysisProgress({ state, counts, onCancel }: { state: RunState; counts: ScopeCounts; onCancel: () => void }) {
   const caption = ANALYSIS_STAGES[Math.min(state.stage, 3)];
-  return <section className="flex flex-col gap-4 rounded-xl border bg-card p-6" aria-label="Progreso del análisis simulado">
+  const detail = [
+    <><StepCount value={counts.inspections} /> inspecciones</>,
+    <><StepCount value={counts.active} /> activos · <StepCount value={counts.overdue} /> vencidos</>,
+    <><StepCount value={counts.evidence} /> evidencias</>,
+    <><StepCount value={counts.groups} /> grupos</>,
+  ];
+  return <section className="analysis-scan relative flex flex-col gap-5 overflow-hidden rounded-sm border bg-card p-6" aria-label="Progreso del análisis simulado">
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <div className="flex min-w-0 flex-col gap-1"><p role="status" aria-live="polite" aria-atomic="true" className="font-medium">{caption}</p>
-        <p className="text-xs text-muted-foreground">Etapa {state.stage + 1} de 4 · reglas deterministas sobre esta copia de registros</p></div>
+      <p role="status" aria-live="polite" aria-atomic="true" className="font-medium">{caption}…</p>
       <Button variant="outline" onClick={onCancel}>Cancelar análisis</Button>
     </div>
-    <div role="progressbar" aria-label="Etapas del análisis simulado" aria-valuemin={0} aria-valuemax={4} aria-valuenow={state.stage} aria-valuetext={caption} className="h-1.5 overflow-hidden rounded-full bg-muted">
-      <div className="analysis-progress-accent h-full origin-left" style={{ transform: `scaleX(${(state.stage + 1) / 4})` }} />
+    <ol className="flex flex-col gap-2 text-sm">{ANALYSIS_STAGES.map((stage, index) => index <= state.stage ? <li key={stage} className="flex items-center gap-3">
+      <span className={`flex size-5 items-center justify-center rounded-full ${index < state.stage ? 'bg-success-surface text-success' : 'bg-primary/10 text-primary'}`} aria-hidden="true">{index < state.stage ? <CheckIcon size={12} weight="bold" /> : <span className="size-1.5 rounded-full bg-current" />}</span>
+      <span className={index < state.stage ? 'text-muted-foreground' : 'font-medium'}>{stage}</span>
+      <span className="ml-auto text-xs text-muted-foreground">{detail[index]}</span>
+    </li> : <li key={stage} className="flex items-center gap-3 text-muted-foreground/60"><span className="size-5 rounded-full border border-dashed" aria-hidden="true" />{stage}</li>)}</ol>
+    <div className="relative flex flex-col gap-3" aria-hidden="true">
+      <div className="h-16 rounded-sm bg-muted" />
+      <div className="grid gap-3 sm:grid-cols-2"><div className="h-24 rounded-sm bg-muted" /><div className="h-24 rounded-sm bg-muted" /></div>
+      <div className="analysis-scan-line" />
     </div>
-    <ol className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-4" aria-hidden="true">{ANALYSIS_STAGES.map((stage, index) => <li key={stage} className={index <= state.stage ? 'font-medium text-foreground' : ''}>{index < state.stage ? '✓ ' : `${index + 1}. `}{stage}</li>)}</ol>
   </section>;
 }

@@ -10,7 +10,7 @@ export function Lifecycle({ byState, total, scope }: { byState: Record<string, n
   const steps = lifecycleSteps(byState);
   return (
     <section aria-labelledby="overview-flow" className="flex flex-col gap-3">
-      <div><h2 id="overview-flow" className="text-sm font-semibold">Ciclo de vida del hallazgo</h2><span aria-hidden="true" className="bv-rule mt-1.5" /><p className="text-xs text-muted-foreground">{total} hallazgos por estado actual. Cada paso abre la tabla filtrada; no es una tendencia.</p></div>
+      <div><h2 id="overview-flow" className="bv-title mb-1.5 text-sm font-semibold">Ciclo de vida del hallazgo</h2><p className="text-xs text-muted-foreground">{total} hallazgos por estado actual. Cada paso abre la tabla filtrada; no es una tendencia.</p></div>
       <ol className="grid list-none gap-2 p-0 sm:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] sm:items-stretch">
         {steps.flatMap((step, index) => {
           const card = (

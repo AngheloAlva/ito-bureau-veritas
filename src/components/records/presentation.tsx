@@ -13,8 +13,7 @@ export function Heading({ eyebrow, title, children }: { eyebrow: string; title: 
     <div data-slot="page-heading" className="flex flex-wrap items-end justify-between gap-4">
       <div className="flex min-w-0 flex-col gap-2">
         <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">{eyebrow}</p>
-        <h1 className="text-3xl font-semibold tracking-tight text-balance">{title}</h1>
-        <span aria-hidden="true" className="bv-rule" />
+        <h1 className="bv-title text-3xl font-semibold tracking-tight text-balance">{title}</h1>
       </div>
       {children}
     </div>
@@ -51,8 +50,7 @@ export function Panel({ title, description, children, footer, legacy = false, ru
     <section className="min-w-0">
       <Card size="sm">
         <CardHeader>
-          <CardTitle><h2 className="flex items-center gap-2">{Icon ? <Icon aria-hidden="true" /> : null}{title}</h2></CardTitle>
-          {rule ? <span aria-hidden="true" className="bv-rule" /> : null}
+          <CardTitle><h2 className={cn('flex items-center gap-2', rule && 'bv-title')}>{Icon ? <Icon aria-hidden="true" /> : null}{title}</h2></CardTitle>
           {description ? <CardDescription>{description}</CardDescription> : null}
         </CardHeader>
         <CardContent><div className={legacy ? 'legacy-content' : 'flex flex-col gap-4'}>{children}</div></CardContent>

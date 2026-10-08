@@ -173,13 +173,15 @@
   .overview-trace > li:last-child { @apply border-success/40 bg-success-surface; }
 }
 
-/* Bureau Veritas signature: short lavender-to-sky rule under headings. Use sparingly. */
-.bv-rule {
-  display: block;
-  width: 3.5rem;
-  height: 3px;
-  border-radius: 9999px;
+/* Bureau Veritas signature: lavender-to-sky rule spanning the heading text width. Use sparingly. */
+.bv-title {
+  width: fit-content;
+  max-width: 100%;
+  padding-bottom: 0.5rem;
   background-image: linear-gradient(90deg, var(--brand-lavender), var(--brand-sky));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 3px;
 }
 
 /* Immutable finding history uses a semantic drawing helper. */

@@ -1,0 +1,5 @@
+REGISTRO DE PRUEBA FICTICIO — SOLO DEMOSTRACIÓN
+Proyecto: Renovación de estación de bombeo. Tramo 1.
+Ejemplo de respaldo firmado: firma simulada de Diego Soto.
+Debe verificarse su correspondencia con el tramo inspeccionado.
+No acredita una prueba real ni conformidad técnica.

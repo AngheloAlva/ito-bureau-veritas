@@ -1,0 +1,51 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createSeed } from '../src/data/seed.ts';
+import { addExampleEvidence, createFinding, transitionFinding } from '../src/domain/core.ts';
+
+const at='2026-10-08T15:00:00.000Z';
+test('example evidence names and history distinguish detection from correction',()=>{
+ const seed=createSeed();
+ for(const phase of ['detección','corrección'] as const){
+  const next=addExampleEvidence(seed,'H-001','u1',phase,at);
+  const evidence=next.evidence.at(-1)!;
+  assert.equal(evidence.name,`Respaldo ficticio de ${phase} de demostración`);
+  assert.equal(next.events.at(-1)?.comment,`Evidencia de ${phase} de ejemplo agregada.`);
+  assert.equal(evidence.phase,phase);
+  assert.equal(evidence.reference,'/demo/evidencia.txt');
+  assert.equal(evidence.isExample,true);
+  assert.equal(evidence.findingId,'H-001');
+  assert.equal(evidence.addedBy,'u1');
+  assert.equal(evidence.addedAt,at);
+  assert.equal(next.events.at(-1)?.findingId,'H-001');
+  assert.equal(next.events.at(-1)?.actorId,'u1');
+  assert.equal(next.events.at(-1)?.at,at);
+  assert.equal(next.version,seed.version+1);
+  assert.deepEqual(next.events.slice(0,-1),seed.events);
+  assert.deepEqual(next.evidence.slice(0,-1),seed.evidence);
+  assert.deepEqual(next.findings,seed.findings);
+ }
+});
+test('new active finding accepts inspector detection but cannot remit it as correction',()=>{
+ const seed=createSeed();
+ const created=createFinding(seed,'u1',{inspectionId:'i1',title:'Ejemplo',description:'Ficticio',specialty:'Mecánica',location:'Tramo',severity:'Alta',responsibleId:'u2',dueDate:'2026-10-08'},false,at);
+ const id=created.findings.at(-1)!.id;
+ const detected=addExampleEvidence(created,id,'u1','detección',at);
+ assert.equal(detected.evidence.at(-1)?.findingId,id);
+ const correcting=transitionFinding(detected,id,'u2','En corrección',{at});
+ assert.throws(()=>transitionFinding(correcting,id,'u2','Pendiente de verificación',{action:'Acción ficticia',evidenceId:detected.evidence.at(-1)!.id,at}),/evidencia de corrección/);
+ const corrected=addExampleEvidence(correcting,id,'u2','corrección',at);
+ assert.equal(transitionFinding(corrected,id,'u2','Pendiente de verificación',{action:'Acción ficticia',evidenceId:corrected.evidence.at(-1)!.id,at}).findings.at(-1)?.state,'Pendiente de verificación');
+});
+test('evidence permissions reject non-inspector detection, foreign correction and all closed evidence',()=>{
+ const seed=createSeed();
+ for(const user of seed.users){
+  for(const phase of ['detección','corrección'] as const){
+   const allowed=user.role==='Inspector'||(user.role==='Responsable de corrección'&&user.id==='u2'&&phase==='corrección');
+   if(allowed) assert.doesNotThrow(()=>addExampleEvidence(seed,'H-001',user.id,phase,at));
+   else assert.throws(()=>addExampleEvidence(seed,'H-001',user.id,phase,at),/No puede agregar/);
+  }
+ }
+ const closed=seed.findings.find(f=>f.state==='Cerrado')!;
+ for(const user of seed.users) for(const phase of ['detección','corrección'] as const) assert.throws(()=>addExampleEvidence(seed,closed.id,user.id,phase,at),/No puede agregar/);
+});

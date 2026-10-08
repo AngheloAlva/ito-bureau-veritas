@@ -1,0 +1,4 @@
+MUESTRA GENÉRICA FICTICIA — SOLO DEMOSTRACIÓN
+Este recurso no corresponde a ningún hallazgo, proyecto ni tramo.
+Ilustra la selección de un archivo de corrección en la interfaz; no es un registro firmado ni acredita una acción ejecutada.
+No demuestra una prueba real, cierre técnico ni conformidad. En un sistema real se exige respaldo específico y verificado del hallazgo.

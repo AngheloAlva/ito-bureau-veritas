@@ -57,3 +57,11 @@ test('seed roster has varied responsibles and plain names',()=>{
  assert.ok(seed.users.every(u=>!/fictici/i.test(u.name)));
  assert.ok(seed.findings.every(f=>seed.users.some(u=>u.id===f.responsibleId&&u.role==='Responsable de corrección')));
 });
+
+test('seed corrections are attributed to the assigned responsible',()=>{
+ const seed=createSeed();
+ for(const f of seed.findings){
+  for(const e of seed.evidence.filter(x=>x.findingId===f.id&&x.phase==='corrección')) assert.equal(e.addedBy,f.responsibleId,f.id);
+  for(const ev of seed.events.filter(x=>x.findingId===f.id&&x.type==='transición'&&x.newState!=='Cerrado')) assert.equal(ev.actorId,f.responsibleId,f.id);
+ }
+});

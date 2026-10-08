@@ -26,3 +26,4 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 
 - Task 1: typecheck clean, 44/44 tests, `rounded-none` count 0, overview screenshot checked. Commit `10d8b82`; native review `review-625b4607fd5edd3e` approved and acknowledged.
 - Task 2: roster of 6 people (H-001 stays with Diego Soto), "(ficticio)" suffixes removed, single sidebar notice "Demo con datos ficticios · sin conexión a sistemas BV"; RED→GREEN on roster/evidence tests; typecheck clean, 45/45 tests. Follow-up: docs/verificacion.md, docs/alcance.md, docs/design-system.md still mention "ficticio" (task 7).
+- Task 2 follow-up: seed correction evidence/transitions attributed to the assigned responsible (review advisory R3-seed-correction-attribution); RED→GREEN, 46/46 tests.

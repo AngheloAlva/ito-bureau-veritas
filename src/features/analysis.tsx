@@ -67,7 +67,7 @@ function AnalysisWorkspace({ projectId }: { projectId: string }) {
           {stale ? <div className="rounded-lg bg-warning-surface p-4 text-sm text-warning"><strong>Análisis desactualizado.</strong> Los registros cambiaron; vuelve a analizar para actualizar las prioridades.</div> : null}
           <div className={preview ? 'analysis-reveal' : undefined}>
             <Panel title="Lectura operacional" description={`Generado ${time(analysis.generatedAt)} · datos v${analysis.dataVersion}`}>
-              <p className="text-lg font-medium leading-relaxed">{analysis.summary.replace('Análisis simulado para demostración: ', '')}</p>
+              <p className="text-lg font-medium leading-relaxed">{analysis.summary.replace('Análisis simulado: ', '')}</p>
               <p className="text-xs text-muted-foreground">{preview ? coverage : 'Resultado disponible en esta sesión, también al volver a este alcance.'}</p>
             </Panel>
           </div>

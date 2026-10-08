@@ -27,7 +27,7 @@ function EvidenceForm({ finding, phase, onSaved }: {
   finding: Finding; phase: Evidence['phase']; onSaved: (id: string) => void;
 }) {
   const d = useDemo();
-  const [name, setName] = useState(`Respaldo ficticio de ${phase}`);
+  const [name, setName] = useState(`Respaldo de ${phase}`);
   const [error, setError] = useState('');
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

@@ -45,7 +45,7 @@ export function PendingQueue({ findings, scope, data }: { findings: Finding[]; s
             ) : null}
           </div>
         ) : <Empty>Sin vencidos ni críticos activos en este alcance.</Empty>}
-        <p className="text-xs text-muted-foreground">Corte: 08/10/2026. Un atraso documental no implica por sí solo una falla técnica.</p>
+        <p className="text-xs text-muted-foreground">Corte: 08/10/2026</p>
       </Panel>
     </div>
   );

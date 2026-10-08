@@ -9,7 +9,7 @@ test('example evidence names and history distinguish detection from correction',
  for(const phase of ['detección','corrección'] as const){
   const next=addExampleEvidence(seed,'H-001','u1',phase,at);
   const evidence=next.evidence.at(-1)!;
-  assert.equal(evidence.name,`Respaldo ficticio de ${phase} de demostración`);
+  assert.equal(evidence.name,`Respaldo de ${phase} de ejemplo`);
   assert.equal(next.events.at(-1)?.comment,`Evidencia de ${phase} de ejemplo agregada.`);
   assert.equal(evidence.phase,phase);
   assert.equal(evidence.reference,'/demo/evidencia.txt');
@@ -48,4 +48,12 @@ test('evidence permissions reject non-inspector detection, foreign correction an
  }
  const closed=seed.findings.find(f=>f.state==='Cerrado')!;
  for(const user of seed.users) for(const phase of ['detección','corrección'] as const) assert.throws(()=>addExampleEvidence(seed,closed.id,user.id,phase,at),/No puede agregar/);
+});
+
+test('seed roster has varied responsibles and plain names',()=>{
+ const seed=createSeed();
+ assert.ok(new Set(seed.findings.map(f=>f.responsibleId)).size>=3);
+ assert.ok(seed.users.length>=6);
+ assert.ok(seed.users.every(u=>!/fictici/i.test(u.name)));
+ assert.ok(seed.findings.every(f=>seed.users.some(u=>u.id===f.responsibleId&&u.role==='Responsable de corrección')));
 });

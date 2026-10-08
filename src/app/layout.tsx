@@ -11,7 +11,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'ITO | Gestión de inspecciones',
-  description: 'Demostración con datos ficticios de inspecciones, correcciones y análisis simulado.',
+  description: 'Demostración de gestión de inspecciones, correcciones y análisis asistido.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

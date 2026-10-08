@@ -21,7 +21,7 @@ export function DemoProvider({children}:{children:ReactNode}) {
  },[]);
  const user=snapshot.data.users.find(u=>u.id===userId)??snapshot.data.users[0];
  function run(action:()=>void,message='Cambio guardado en la sesión demo.') {try{action();setError('');setNotice(message);return true;}catch(e){setNotice('');setError(e instanceof Error?e.message:'No se pudo completar el cambio.');return false;}}
- const value:Context={...snapshot,projectId,setProjectId,user,notice,error,storageError:snapshot.error,run,selectUser:setUserId,selectRole:role=>setUserId(snapshot.data.users.find(u=>u.role===role)!.id),apply:transform=>{if(!repository.current)throw new Error('Espere la carga de datos.');repository.current.apply(transform);},reset:()=>{run(()=>{if(!repository.current||!snapshot.hydrated)throw new Error('Espere la carga de datos.');repository.current.reset(true);},'Datos ficticios restablecidos.');}};
+ const value:Context={...snapshot,projectId,setProjectId,user,notice,error,storageError:snapshot.error,run,selectUser:setUserId,selectRole:role=>setUserId(snapshot.data.users.find(u=>u.role===role)!.id),apply:transform=>{if(!repository.current)throw new Error('Espere la carga de datos.');repository.current.apply(transform);},reset:()=>{run(()=>{if(!repository.current||!snapshot.hydrated)throw new Error('Espere la carga de datos.');repository.current.reset(true);},'Datos de la demo restablecidos.');}};
  return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;
 }
 export function useDemo(){const context=useContext(DemoContext);if(!context)throw new Error('Proveedor demo no disponible.');return context;}

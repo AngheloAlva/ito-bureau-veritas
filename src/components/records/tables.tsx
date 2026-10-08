@@ -46,7 +46,7 @@ export function FindingTable({ findings, filters }: { findings: Finding[]; filte
               <TableCell>{data.users.find(user => user.id === finding.responsibleId)?.name}</TableCell>
               <TableCell><Badge>{finding.severity}</Badge></TableCell>
               <TableCell><Badge>{finding.state}</Badge></TableCell>
-              <TableCell className="font-mono tabular-nums"><time dateTime={finding.dueDate}>{date(finding.dueDate)}</time><div className="mt-1">{overdue ? <Badge>Vencido</Badge> : finding.state !== 'Cerrado' && finding.dueDate === REFERENCE_DATE ? <Badge>Vence hoy</Badge> : null}</div></TableCell>
+              <TableCell><time className="font-mono tabular-nums" dateTime={finding.dueDate}>{date(finding.dueDate)}</time><div className="mt-1">{overdue ? <Badge>Vencido</Badge> : finding.state !== 'Cerrado' && finding.dueDate === REFERENCE_DATE ? <Badge>Vence hoy</Badge> : null}</div></TableCell>
             </TableRow>
           );
         })}

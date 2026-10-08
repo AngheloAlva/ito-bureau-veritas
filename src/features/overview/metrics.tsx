@@ -17,7 +17,6 @@ export function OperationalMetrics({ stats, scope }: { stats: ReturnType<typeof 
         </div>)}
       </dl>
       <Link className="record-link text-sm" href={`/hallazgos?${scope}state=Cerrado`}>{stats.closed} en estado Cerrado →</Link>
-      <p className="text-xs text-muted-foreground">El estado se consulta aquí; el respaldo del cierre se distingue en la trazabilidad inferior. El avance físico de obra es otra magnitud.</p>
     </Panel>
   );
 }

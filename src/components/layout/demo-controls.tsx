@@ -61,7 +61,7 @@ export function DemoControls() {
       </Popover>
       <AlertDialogContent initialFocus={cancelRef} finalFocus={triggerRef}>
         <AlertDialogHeader>
-          <AlertDialogTitle>¿Restablecer los datos ficticios?</AlertDialogTitle>
+          <AlertDialogTitle>¿Restablecer los datos de la demo?</AlertDialogTitle>
           <AlertDialogDescription>Se perderán los cambios de este navegador y se recuperarán los registros de ejemplo. Esta acción no se puede deshacer.</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

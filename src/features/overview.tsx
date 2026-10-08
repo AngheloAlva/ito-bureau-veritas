@@ -34,7 +34,7 @@ export function Overview() {
           <OperationalMetrics stats={stats} scope={scope} />
           <div className="flex flex-col gap-2 px-1">
             <h2 className="text-sm font-semibold">Preparar la revisión</h2>
-            <p className="text-xs text-muted-foreground">Reglas deterministas con fuentes; sin predicciones ni servicios externos.</p>
+            
             <Link className="record-link inline-flex min-h-10 items-center text-sm" href={`/analisis${projectId ? `?project=${encodeURIComponent(projectId)}` : ''}`}>Abrir análisis simulado →</Link>
           </div>
         </aside>

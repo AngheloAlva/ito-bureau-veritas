@@ -57,7 +57,7 @@ function NavigationContent() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="px-5 py-4">
-        <p className="text-xs text-muted-foreground">Demo</p>
+        <p className="text-xs text-sidebar-foreground/70">Demo con datos ficticios · sin conexión a sistemas BV</p>
       </SidebarFooter>
     </>
   );

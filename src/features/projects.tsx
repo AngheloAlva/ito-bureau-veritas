@@ -18,7 +18,7 @@ export function Projects() {
   const projects = data.projects.filter(project => !projectId || project.id === projectId);
   return (
     <>
-      <Heading eyebrow="Proyectos ficticios" title="Cartera de proyectos" />
+      <Heading eyebrow="Proyectos" title="Cartera de proyectos" />
       <p className="text-sm text-muted-foreground">{projects.length} proyectos en el alcance · Acceda a visitas, compromisos y respaldo documental por obra.</p>
       {projects.length ? <div className="grid gap-6 xl:grid-cols-2">{projects.map(project => <ProjectCard key={project.id} project={project} data={data} />)}</div> : <Empty>No hay proyectos en este alcance.</Empty>}
     </>

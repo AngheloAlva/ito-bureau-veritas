@@ -9,7 +9,7 @@ export function Assets({ documents = [], evidence = [] }: { documents?: Document
       {documents.map(document => (
         <li key={document.id} className="flex flex-col gap-2 py-3 first:pt-0">
           <a className="record-link inline-flex items-center gap-2" href={document.reference} target="_blank" rel="noreferrer">{document.name}<ArrowSquareOutIcon aria-hidden="true" className="size-4" /><span className="sr-only">(abre en otra pestaña)</span></a>
-          <p className="text-xs text-muted-foreground">{document.type} · {document.revision} · {date(document.date)} · Documento ficticio</p>
+          <p className="text-xs text-muted-foreground">{document.type} · {document.revision} · {date(document.date)}</p>
         </li>
       ))}
       {evidence.map(item => (

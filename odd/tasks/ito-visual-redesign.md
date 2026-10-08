@@ -13,7 +13,7 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 ## Tasks
 
 - [x] 1. Foundations: radius tokens, `rounded-none` → `rounded-sm`, Geist Mono for codes/dates, reduce uppercase tracking, stronger brand color use.
-- [ ] 2. Data and copy: varied responsible people, remove "(ficticio)" suffixes, consolidate defensive microcopy, single demo-data notice.
+- [x] 2. Data and copy: varied responsible people, remove "(ficticio)" suffixes, consolidate defensive microcopy, single demo-data notice.
 - [ ] 3. Overview: KPI tiles, finding lifecycle flow, real-data charts, animated counters, H-001 easy to locate.
 - [ ] 4. Analysis: scanning animation, staggered results, per-finding specific reasons, project × specialty heatmap.
 - [ ] 5. Finding detail + header: lifecycle stepper hero with primary action on top; visible demo role switcher.
@@ -24,4 +24,5 @@ Branch: `feat/visual-redesign` (baseline `c46b006`). Goal: make the demo visuall
 
 (commit ids recorded per task)
 
-- Task 1: typecheck clean, 44/44 tests, `rounded-none` count 0, overview screenshot checked. Commit: see `feat(ui): near-square radius, mono codes, brand accents`.
+- Task 1: typecheck clean, 44/44 tests, `rounded-none` count 0, overview screenshot checked. Commit `10d8b82`; native review `review-625b4607fd5edd3e` approved and acknowledged.
+- Task 2: roster of 6 people (H-001 stays with Diego Soto), "(ficticio)" suffixes removed, single sidebar notice "Demo con datos ficticios · sin conexión a sistemas BV"; RED→GREEN on roster/evidence tests; typecheck clean, 45/45 tests. Follow-up: docs/verificacion.md, docs/alcance.md, docs/design-system.md still mention "ficticio" (task 7).

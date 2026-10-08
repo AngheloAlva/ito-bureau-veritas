@@ -18,7 +18,7 @@ export function DemoStatus() {
 export function RecordsLoading() {
   return (
     <section aria-busy="true" className="flex flex-col gap-6">
-      <p role="status" className="text-sm text-muted-foreground">Cargando registros ficticios…</p>
+      <p role="status" className="text-sm text-muted-foreground">Cargando registros…</p>
       <div aria-hidden="true" className="flex flex-col gap-4">
         <Skeleton className="h-8 w-64 max-w-full" />
         <Skeleton className="h-20 w-full" />

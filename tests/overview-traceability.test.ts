@@ -62,7 +62,7 @@ test('cierre acreditado exige estado y transición de inspector con comentario, 
   assert.equal(overviewTraceability(data).verifiedClosures.length, 0);
 });
 
-test('alcance vacío devuelve listas vacías sin porcentajes ficticios', () => {
+test('alcance vacío devuelve listas vacías sin porcentajes inventados', () => {
   const result = overviewTraceability({ ...fixture(), inspections: [], findings: [] });
   for (const records of Object.values(result)) assert.deepEqual(records, []);
 });

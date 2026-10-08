@@ -3,7 +3,7 @@
 ## Real y funcional en esta aplicación
 
 - Rutas Next App Router en español; controles HTML nativos, foco visible, formularios adaptables y tablas desplazables en móvil.
-- Un solo estado compartido validado: proyectos, inspecciones, hallazgos, usuarios ficticios, documentos, evidencias e historial.
+- Un solo estado compartido validado: proyectos, inspecciones, hallazgos, usuarios de ejemplo, documentos, evidencias e historial.
 - Creación de visitas/hallazgos; completar una visita independientemente de sus hallazgos.
 - Transiciones por rol/persona: solo responsable asignado corrige, inspector verifica/cierra o devuelve con motivo. No se puede cerrar directamente desde Abierto.
 - Acción obligatoria y respaldo seleccionado para remitir; comentario y actor inspector para cierre. Cambios de asignación/plazo dejan eventos. Fecha vencida nueva requiere confirmación.
@@ -14,12 +14,12 @@
 - Borrador de informe y diálogo de impresión nativo; no generación de PDF en servidor.
 - Pruebas de dominio/repositorio; validación TypeScript, ESLint y build. No confundirlas con revisión visual, ensayo de navegador o certificación WCAG.
 
-## Simulado o ficticio
+## Simulado
 
 | Elemento | Qué significa |
 | --- | --- |
 | Proyectos, usuarios y observaciones | No son contratos, personas ni inspecciones reales. |
-| Avance físico | Dato ficticio registrado, no calculado desde cierre de hallazgos. |
+| Avance físico | Dato ilustrativo registrado, no calculado desde cierre de hallazgos. |
 | Rol/persona | Selector de experiencia demo, no autenticación ni seguridad real. |
 | Análisis asistido | Reglas: críticos activos, altos vencidos, otros vencidos; sin modelo generativo/predictivo. |
 | Documentos/evidencias | Archivos de texto incluidos, no actas oficiales, firmas reales ni fotos de terreno. |
@@ -34,6 +34,6 @@ IA real, API externa, secretos, backend de producción, login real, permisos cor
 
 ## Posible extensión futura: LLM de servidor
 
-Solo tras validar P0 y requisitos. Un proveedor intercambiable exclusivamente en servidor recibiría registros ficticios del alcance mínimo. Credencial fuera del cliente/repositorio/logs; salida estructurada validada y referencias cotejadas con IDs existentes; documentos/descripciones tratados como datos, no instrucciones. Timeout, límites, manejo de fallos y fallback simulado claramente identificado. La IA nunca cambia ni cierra hallazgos automáticamente. Sin RAG documental en esta versión.
+Solo tras validar P0 y requisitos. Un proveedor intercambiable exclusivamente en servidor recibiría registros del alcance mínimo. Credencial fuera del cliente/repositorio/logs; salida estructurada validada y referencias cotejadas con IDs existentes; documentos/descripciones tratados como datos, no instrucciones. Timeout, límites, manejo de fallos y fallback simulado claramente identificado. La IA nunca cambia ni cierra hallazgos automáticamente. Sin RAG documental en esta versión.
 
 Antes de datos reales: confirmar formatos y procesos, seguridad, retención, autenticación, backend, alojamiento y obligaciones contractuales. Esta entrega no implementa esa extensión.

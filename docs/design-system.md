@@ -1,11 +1,24 @@
 # Sistema de diseño ITO
 
+## Lenguaje visual actual
+
+Toda la demo usa datos ilustrativos (aviso en UI: «Demo con datos ficticios · sin conexión a sistemas BV»); no se repite por registro.
+
+- **Tokens de marca:** `--brand-blue` #00049e (acciones, CTA sólidos), `--brand-sky` #00a8e8, `--brand-lavender` #a9a6f5.
+- **`.bv-title`:** subrayado degradado lavanda→cielo bajo títulos de sección.
+- **`.blueprint-surface`:** cuadrícula técnica de 16 px con línea mayor cada 64 px, azul de marca a 8 %/14 % sobre tinte 3,5 %; solo detrás de ilustraciones.
+- **Formas:** `rounded-sm`. Sin franjas de acento de color en tarjetas.
+- **Tipografía:** Geist; Geist Mono para códigos y fechas, con números tabulares.
+- **Gráficos:** valores sobre los segmentos y leyendas solo con color; segmentos que ocupan menos del 8 % omiten la etiqueta (queda en `title` y en la leyenda). Las barras usan `flex-grow` por valor con `min-width: 0`, sin desbordar.
+- **Ciclo de vida del hallazgo:** pasos `<ol>` con `aria-current` y conectores horizontales finos (azul de marca completado, `border` pendiente); verticales en móvil.
+- **Ilustraciones:** `src/components/illustrations`.
+
 Control operativo T1–T4 verificado tras corregir densidad; revisión humana del usuario pendiente. Evidencia y límites: [cierre operativo T4](verificacion.md#cierre-operativo-t4). Se conserva debajo la historia previa.
 
 ## Control operativo — T1 (verificado)
 
 - Detalle de proyecto: columnas 3:2 desde `xl`, sin ancho fijo de cronología; una columna debajo de ese breakpoint. Contexto compacto con estado y avance físico etiquetado arriba, metadatos agrupados y enlaces de hallazgos en superficie neutra. «Analizar proyecto» es un enlace independiente con el gradiente existente reservado al análisis simulado.
-- Tarjetas de cartera: el mismo avance físico arriba y recuentos enlazados subordinados al nombre de obra. Se eliminan notas ficticias repetidas; la declaración Demo global permanece. El avance sigue siendo un dato declarado, no un cálculo de cierre.
+- Tarjetas de cartera: el mismo avance físico arriba y recuentos enlazados subordinados al nombre de obra. Se eliminan notas repetidas; la declaración Demo global permanece. El avance sigue siendo un dato declarado, no un cálculo de cierre.
 - Firma de trazabilidad: cada visita contiene sus hallazgos; cada hallazgo muestra acción correctiva real y última transición registrada desde pendiente de verificación, con fecha, actor y comentario. La ausencia de datos se declara, sin reconstruir historia. Se conservan vistas previas y últimos movimientos.
 - Sin sticky: contexto izquierdo en flujo normal. Aunque el bloque compacto cabe, fijarlo en la misma pila cubriría contenido inferior. No hay scroll vertical anidado ni controles clonados.
 - Composición sin nuevo helper determinista: excepción de RED unitario para presentación. T4 verificó funcionalidad, densidad, desbordamiento y teclado; no acredita accesibilidad integral.
@@ -95,10 +108,10 @@ The generated mobile hook uses `useSyncExternalStore` with an SSR false snapshot
 - `layout/header.tsx` retains the exact scope rule: only list routes `/hallazgos`, `/inspecciones`, `/analisis` read and replace `project` in the URL while preserving other query parameters. Project/detail routes keep their own record context. It adds a compact reference date and a disclaimer visible even when navigation is closed.
 - `layout/demo-controls.tsx` uses labelled FieldGroup + Base Select for scope/role/person. Role/person lists and selection actions are unchanged. Reset uses AlertDialog, disabled before hydration. The provider exposes the existing confirmed repository reset, never calls `window.confirm`, and checks hydration. Its repository and permission logic are unchanged. The generated Base `AlertDialogAction` is only a Button, so the composition explicitly closes the controlled dialog after confirmation.
 - `layout/status.tsx` retains separate operation/storage errors (`role=alert`) and saved notices (`role=status`), and supplies Skeleton with loading status while records hydrate.
-- `components/records.tsx` is a compatibility facade for T3 imports. `records/presentation.tsx` owns Heading, semantic Badge, Empty, Panel, date/time formatting. `tables.tsx` uses proper Table headers, visible count captions and obvious source links. `assets.tsx` retains existing local resource URLs and fictitious provenance. `chronology.tsx` owns visit history and a project visit-to-closure trail derived only from stored inspection/finding events; its project preview explicitly limits to eight events and never invents missing history.
+- `components/records.tsx` is a compatibility facade for T3 imports. `records/presentation.tsx` owns Heading, semantic Badge, Empty, Panel, date/time formatting. `tables.tsx` uses proper Table headers, visible count captions and obvious source links. `assets.tsx` retains existing local resource URLs and sample provenance. `chronology.tsx` owns visit history and a project visit-to-closure trail derived only from stored inspection/finding events; its project preview explicitly limits to eight events and never invents missing history.
 - `overview.tsx` keeps the route entry point and domain selectors. `overview/metrics.tsx`, `pending-queue.tsx`, `distributions.tsx` separate KPI links, the focal operational queue, and current-domain counts. The 2:1 queue/support composition replaces the previous equal-weight card grid. Every KPI carries the existing matching filters; closed percentage is calculated by the domain, with no-data explicitly handled.
-- `projects.tsx` retains both exports, with `projects/project-card.tsx` and `project-context.tsx` separating portfolio summaries and contextual facts. Detail links, own-project scope, assets, visits/findings and recorded chronology are grouped deliberately. Physical progress remains a declared fictitious value, not a closure calculation.
-- `analysis.tsx` retains both public exports. `analysis/store.tsx` preserves session-only per-scope cache at the persistent layout level. `priorities.tsx` owns justified priorities, source links and concentration groups. `report.tsx` owns draft text/source links and fictitious disclaimer. Generation, stale-version warnings, professional limitations and printing retain their existing business rules.
+- `projects.tsx` retains both exports, with `projects/project-card.tsx` and `project-context.tsx` separating portfolio summaries and contextual facts. Detail links, own-project scope, assets, visits/findings and recorded chronology are grouped deliberately. Physical progress remains a declared illustrative value, not a closure calculation.
+- `analysis.tsx` retains both public exports. `analysis/store.tsx` preserves session-only per-scope cache at the persistent layout level. `priorities.tsx` owns justified priorities, source links and concentration groups. `report.tsx` owns draft text/source links and demo disclaimer. Generation, stale-version warnings, professional limitations and printing retain their existing business rules.
 
 ## T3 component structure
 
@@ -133,7 +146,7 @@ Asset: `public/brand/bureau-veritas-chile.svg`, original white fill, 111×138 vi
 
 SHA256: `bb5155a179faa68add95415a2757373cf9f796a2c1094c48923db946cc9c3090` (11,912 bytes). Related sticky/site-specific selectors contain different logos and were not adopted. If refreshing yields a different digest, stop adoption and report; never fabricate or recolor it. Display on graphite/blue, with descriptive alt text and preserved aspect ratio.
 
-Use is explicitly user-requested for this fictitious-data demo, not evidence of trademark permission or Bureau Veritas endorsement. Keep the visible demo/fictitious notice in the future shell. T1 bundles the asset but does not yet insert it into navigation.
+Use is explicitly user-requested for this illustrative-data demo, not evidence of trademark permission or Bureau Veritas endorsement. Keep the visible demo notice in the future shell. T1 bundles the asset but does not yet insert it into navigation.
 
 ## Evidence and next task
 

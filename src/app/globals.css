@@ -246,11 +246,13 @@
 
 /* Faint blueprint grid used behind technical illustrations. */
 .blueprint-surface {
-  background-color: color-mix(in oklab, var(--brand-blue) 3%, transparent);
+  background-color: color-mix(in oklab, var(--brand-blue) 3.5%, transparent);
   background-image:
-    linear-gradient(color-mix(in oklab, var(--brand-blue) 5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklab, var(--brand-blue) 5%, transparent) 1px, transparent 1px);
-  background-size: 16px 16px;
+    linear-gradient(color-mix(in oklab, var(--brand-blue) 14%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--brand-blue) 14%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in oklab, var(--brand-blue) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--brand-blue) 8%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
 }
 
 .analysis-scan-line {

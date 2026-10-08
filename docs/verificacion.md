@@ -46,12 +46,12 @@ El verificador independiente informó resultados observados, no supuestos:
 ## Defectos y correcciones acotadas
 
 1. Consola de desarrollo: `instant-unrendered-segment` en rutas. El log `.playwright-cli/console-2026-10-07T21-51-34-861Z.log`, líneas 3–29, muestra un segmento descartado de `/`. Se retiraron `cacheComponents` y `partialPrefetching` de `next.config.ts`, sin suprimir errores ni modificar la hidratación. Los documentos instalados de Next 16.4 confirman que partial prefetching requiere Cache Components y que este último activa PPR y preservación con Activity; ninguna función es necesaria para la persistencia local de esta demo. Son opciones de primer nivel, no opciones bajo `experimental`. Se conservó `reactCompiler`, independiente de ellas.
-2. Las correcciones de H-003, H-006, H-009, H-012 y H-015–H-018 reutilizaban el respaldo de H-001 (P-001 / Tramo 1). Ahora usan una muestra genérica explícitamente no asociada a registros ni firmada. H-001 conserva su respaldo específico. Se revisaron todas las referencias del seed: detección y fichas de proyecto son muestras ficticias genéricas sin atribución a un registro ajeno.
+2. Las correcciones de H-003, H-006, H-009, H-012 y H-015–H-018 reutilizaban el respaldo de H-001 (P-001 / Tramo 1). Ahora usan una muestra genérica explícitamente no asociada a registros ni firmada. H-001 conserva su respaldo específico. Se revisaron todas las referencias del seed: detección y fichas de proyecto son muestras genéricas sin atribución a un registro ajeno.
 
 ## Validación posterior observada
 
 - RED: la nueva prueba de coherencia falló porque nueve hallazgos referenciaban el respaldo específico, en lugar de solo H-001 (7 aprobadas, 1 fallida).
-- GREEN: `pnpm test`, 8/8 aprobadas. La regresión comprueba existencia y carácter ficticio de todos los recursos, correspondencia proyecto/tramo de H-001, exclusividad del respaldo y carácter no-record/no-firmado de las otras correcciones.
+- GREEN: `pnpm test`, 8/8 aprobadas. La regresión comprueba existencia y carácter de muestra de todos los recursos, correspondencia proyecto/tramo de H-001, exclusividad del respaldo y carácter no-record/no-firmado de las otras correcciones.
 - `pnpm typecheck`: aprobado.
 - `pnpm lint`: aprobado.
 - `pnpm build`: aprobado con Next 16.4.0, rutas estáticas y dinámicas generadas.
@@ -75,7 +75,7 @@ Los cambios del seed se ven en un origen nuevo o tras «Restablecer demo» (con 
 
 - `pnpm test`: 13/13; `pnpm typecheck`, `pnpm lint`, `pnpm build`: aprobados.
 - Historial de inspecciones: creación y completamiento registran actor real, timestamp y referencia; actor distinto del inspector asignado comprobado. Recarga conserva eventos; completar visita mantiene hallazgos pendientes.
-- Evidencia inicial: inspector añade referencia ficticia de detección, abre el recurso y queda historial. Responsable/coordinador no tienen esa acción; detección no sustituye respaldo de corrección. Flujo H-001 sigue funcionando.
+- Evidencia inicial: inspector añade referencia de detección de ejemplo, abre el recurso y queda historial. Responsable/coordinador no tienen esa acción; detección no sustituye respaldo de corrección. Flujo H-001 sigue funcionando.
 - Migración v1: lectura sin sobrescribir bytes, registros/historial conservados y sin inventar eventos anteriores; primera modificación guarda schemaVersion 2 manteniendo clave `ito-demo:v1`. Datos corruptos/versión desconocida no se sobrescriben hasta restablecimiento confirmado.
 - Navegador Chromium aislado sobre `pnpm start --hostname 127.0.0.1 --port 4173`: escritorio 1440/móvil390 inspeccionados, sin desbordamiento, foco visible de3px y consola sin mensajes. El intento de servidor dev encontró otro proceso activo; se dejó intacto y no se realizó un nuevo chequeo de consola dev.
 - Evidencia: `/tmp/ito-traceability-verify/report.md`, `desktop.png`, `mobile-stable.png`. Servidor propio detenido; servidor del usuario conservado.
@@ -89,7 +89,7 @@ Los cambios del seed se ven en un origen nuevo o tras «Restablecer demo» (con 
 
 - Escritor final: `pnpm test` 18/18, `pnpm typecheck`, `pnpm lint` y `pnpm build` aprobados. Retest final independiente: 18/18, tipos y lint aprobados; utilizó el build de producción del escritor, sin repetir el build. Persiste el aviso informativo `MODULE_TYPELESS_PACKAGE_JSON`.
 - Navegación, detalles y alcances de las cinco áreas; Select y Calendar personalizados por teclado; Sheet móvil con Escape, Ctrl-B y devolución del foco. La validación obligatoria conserva campos escritos y enfoca el primer error.
-- Creación de I-009 y H-019 con fecha local `2026-10-07`; cambiar fechas reinicia la confirmación de vencimiento. H-019 admite evidencia de detección mediante un recurso real ficticio y registra cronología. Completar I-009 no cierra H-019.
+- Creación de I-009 y H-019 con fecha local `2026-10-07`; cambiar fechas reinicia la confirmación de vencimiento. H-019 admite evidencia de detección mediante un recurso local de ejemplo y registra cronología. Completar I-009 no cierra H-019.
 - H-001: Diego corrige y remite a pendiente; Ana devuelve; nueva remisión y cierre. Se exigen acción, evidencia de corrección, motivo de devolución y comentario de cierre; detección queda excluida de las opciones de corrección. Indicadores: 14 activos/6 vencidos mientras está pendiente, 13/5 al cerrar. Actores, comentarios y evidencia persisten al recargar. Este ciclo completo se ejecutó antes de las correcciones visuales, no se repitió completo en el retest final.
 - Análisis: aviso de desactualización, regeneración, navegación a fuentes e informe. Restablecimiento: cancelación, confirmación y foco; seed de 18 hallazgos, 8 visitas y 0 eventos.
 - Migración y protección ante corrupción: evidencia de pruebas existentes y revisión de código; no se repitió exhaustivamente su ensayo de navegador en esta fase.
@@ -100,7 +100,7 @@ Los tres fallos visuales iniciales quedaron corregidos y se verificaron mediante
 
 - Identidad: ancho de 246 px en escritorio 1440/1024, 350 px en móvil 390 y 280 px en 320; sin solapamiento ni desbordamiento de página.
 - Calendario: ancho de 288 px; en 390, x=40/derecha=328 con 380 px disponibles; en 320, x=27/derecha=315 con 310 px disponibles. Sin desbordamiento observado.
-- Impresión exclusiva del informe: excluye paneles, sesión y estado operativo; conserva informe no vacío, enlaces a fuentes, referencia y aviso ficticio. Tras un cambio real de datos conserva **DESACTUALIZADO**. La pantalla normal mantiene controles y paneles.
+- Impresión exclusiva del informe: excluye paneles, sesión y estado operativo; conserva informe no vacío, enlaces a fuentes, referencia y aviso de demo. Tras un cambio real de datos conserva **DESACTUALIZADO**. La pantalla normal mantiene controles y paneles.
 - También se repitieron cambio de rol/persona por teclado, selección por flechas y foco del Calendar con I-009 persistida en `2026-10-07`, Escape/navegación del Sheet y cancelación del restablecimiento sin pérdida de datos.
 
 Imágenes efectivamente leídas en `/tmp/ito-brand-ui-verify` y `/tmp/ito-brand-ui-retest`: `identity-1440.png`, `identity-1024.png`, `identity-390.png`, `identity-320.png`, `calendar-390.png`, `calendar-320.png`, `print-report.png`, `print-report-stale.png` y `analysis-screen-stale.png`. Son localizadores temporales de evidencia, no capturas duraderas incorporadas al repositorio.
@@ -119,7 +119,7 @@ No se realizaron publicación ni commits; no se incorporaron backend, autenticac
 
 - `/tmp/ito-visual-polish-verify`: FAIL inicial, cinco defectos visuales. `/tmp/ito-visual-polish-retest`: cinco correcciones aprobadas, con P2 pendiente en botones. `/tmp/ito-visual-polish-final`: PASS final del ajuste. Son localizadores temporales, no capturas duraderas del repositorio.
 - Último escritor `muyvg1dq-u-0yk4`: `pnpm test` 38/38, `pnpm typecheck`, `pnpm lint` y `pnpm build` PASS. Verificador previo `muyv339n-t-vjaz`: 38/38, tipos y lint PASS independientemente; reutilizó build.
-- Retest enfocado `muyvidu4-v-5f8u`: reutilizó el build de las 22:43; **no volvió a ejecutar suites ni build**. Dominio, esquema y repositorio preservados; 37→38 por una prueba pura de URL. Comportamiento determinista con RED/GREEN; CSS visual con RED observado en navegador, no con un RED unitario ficticio.
+- Retest enfocado `muyvidu4-v-5f8u`: reutilizó el build de las 22:43; **no volvió a ejecutar suites ni build**. Dominio, esquema y repositorio preservados; 37→38 por una prueba pura de URL. Comportamiento determinista con RED/GREEN; CSS visual con RED observado en navegador, no con un RED unitario artificial.
 
 ### Cobertura acumulativa y retest final
 

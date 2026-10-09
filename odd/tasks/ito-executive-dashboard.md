@@ -25,7 +25,7 @@ dashboard for managers who visit monthly (summary first, drill down on demand), 
       problem projects table; global cross-filter in URL with chips; drill-through links; nav entry.
 - [x] T4 Programa: portfolio Gantt (planned dashed vs actual solid, today line, tooltip) + project milestone line on project detail.
 - [x] T5 AI assistant: visible project picker, simulated chat with suggested prompts, answers with generated charts, pin to dashboard.
-- [ ] T6 Chart builder (metric × dimension × chart type) + saved views on dashboard.
+- [x] T6 Chart builder (metric × dimension × chart type) + saved views on dashboard.
 - [x] T7 Interactive illustrated site diagram (pumping station / gallery / water pipeline) with critical points + side panel.
 - [x] T8 Remove header scope selector (page-level scope), polish, docs (README, guion), full verification.
 
@@ -50,10 +50,16 @@ dashboard for managers who visit monthly (summary first, drill down on demand), 
 
 - T8 done: 4c8675b header selector removed + Sheet 'Cerrar'; 7b1bf30 delay spread (RED: 1–15 d=4, max delays 26,33,26,26,26 → GREEN; late buckets 5/6/4, max delays 26/55/8/24/47); 9d4d9ac README/guion/alcance. Parent: portfolio/assistant/site-map/domain tests 28/28, eslint clean on T8 files, /tmp/t8-tablero.png reviewed. README test count to refresh after T6.
 
-## Remaining backlog (T6, T8) — started same day, 13:00
+- T6 done: fixes (curve cut-off, tree scroll) + feat chart builder/Mis vistas/assistant pins (RED module missing → GREEN). Final verification (gentle-ai-verify): 108/108, typecheck, lint, build PASS, prod CSS ok, 8 routes 200. Pushed to main → Vercel auto-deploy.
+
+## Remaining
+- Native RDD review of commits (deferred, user-owned).
+- Await cousin feedback.
+
+## Backlog history (T6, T8) — started same day, 13:00
 - T6 chart builder + saved views; assistant 'fijar al tablero'.
 - T8: remove header scope selector; tune portfolio delays (values cluster at 26 d, only 1 milestone >30 d); S-curve deviation callout; tree auto-scroll hides root; Sheet sr-only 'Close' → 'Cerrar'; README/guion update; native RDD review of commits c763972..8530d31.
 - Native RDD review deferred until after the internal showing (workspace held parallel in-progress files).
 
 ## Next step
-Internal showing today on :3001; then Monday backlog T6/T8.
+All 8 tasks done. Collect cousin's feedback from https://ito-bureau-veritas.vercel.app; native review if desired.

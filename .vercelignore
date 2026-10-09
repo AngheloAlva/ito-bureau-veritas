@@ -1,0 +1,7 @@
+.codegraph
+.atl
+.playwright-cli
+.next
+node_modules
+*.pdf
+tsconfig.tsbuildinfo

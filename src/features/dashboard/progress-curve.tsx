@@ -3,20 +3,25 @@
 import { useState } from 'react';
 import { REFERENCE_DATE } from '@/domain/types';
 import { linePath, niceMax } from '@/lib/chart-geometry';
-import { progressCurve, type PortfolioView } from '@/lib/portfolio-analytics';
+import { progressCurve, type CurvePoint, type PortfolioView } from '@/lib/portfolio-analytics';
 import { ChartCard } from './card-shell';
 
 const W = 640, H = 270, L = 38, R = 14, T = 16, B = 30;
 
 export function ProgressCurve({ view }: { view: PortfolioView }) {
-  const data = progressCurve(view);
+  const refMonth = REFERENCE_DATE.slice(0, 7);
+  // At the reference month both series are measured at the cut date itself (not month end), so the real line ends without a jump.
+  const data: CurvePoint[] = progressCurve(view).map(d => d.month !== refMonth ? d : {
+    ...d,
+    plannedCompleted: view.milestones.filter(m => m.plannedEnd <= REFERENCE_DATE).length,
+    actualCompleted: view.milestones.filter(m => m.actualEnd && m.actualEnd <= REFERENCE_DATE).length,
+  });
   const [hover, setHover] = useState<number | null>(null);
   const max = niceMax(Math.max(...data.map(d => d.plannedCompleted), 1));
   const x = (i: number) => L + (i / (data.length - 1)) * (W - L - R);
   const y = (v: number) => T + (1 - v / max) * (H - T - B);
   const planned = linePath(data.map((d, i) => [x(i), y(d.plannedCompleted)]));
   const actual = linePath(data.map((d, i) => (d.actualCompleted === null ? null : [x(i), y(d.actualCompleted)])));
-  const refMonth = REFERENCE_DATE.slice(0, 7);
   const ci = data.findIndex(d => d.month === refMonth);
   const cut = data[ci];
   const dev = cut && cut.actualCompleted !== null ? cut.actualCompleted - cut.plannedCompleted : 0;
@@ -33,7 +38,7 @@ export function ProgressCurve({ view }: { view: PortfolioView }) {
         <span className="flex items-center gap-1.5"><svg width="20" height="4" aria-hidden="true"><line x1="0" y1="2" x2="20" y2="2" className="stroke-chart-1" strokeWidth="2" strokeDasharray="4 3" /></svg>Planificado</span>
         <span className="flex items-center gap-1.5"><span className="h-0.5 w-5 rounded bg-copper" aria-hidden="true" />Real</span>
         <span className={`ml-auto rounded-full px-2.5 py-0.5 font-semibold tabular-nums ${dev < 0 ? 'bg-tone-red-bg text-tone-red-fg' : 'bg-tone-green-bg text-tone-green-fg'}`}>
-          Desviación: {dev < 0 ? '−' : '+'}{Math.abs(dev)} hitos
+          Al corte: real {cut?.actualCompleted ?? 0} vs planificado {cut?.plannedCompleted ?? 0} ({dev < 0 ? '−' : '+'}{Math.abs(dev)} hitos)
         </span>
       </div>
       <div className="relative">

@@ -101,7 +101,13 @@ export function DecompositionTree({ view, setFilter }: { view: PortfolioView; se
   const depthKey = chain.length;
   useEffect(() => {
     const el = scroller.current;
-    if (el && depthKey > 2) el.scrollTo({ left: el.scrollWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    if (!el || depthKey < 2) return;
+    // Reveal only the newest column with the least movement, so the root column stays visible whenever the path fits.
+    const col = el.querySelector<HTMLElement>(`[data-col="${depthKey - 1}"]`);
+    const x0 = el.scrollLeft;
+    col?.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'auto' });
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && el.scrollLeft !== x0) { const to = el.scrollLeft; el.scrollLeft = x0; el.scrollTo({ left: to, behavior: 'smooth' }); }
   }, [depthKey]);
   const indexIn = (depth: number) => (depth === 0 ? 0 : (chain[depth - 1].children ?? []).indexOf(chain[depth]));
 
@@ -121,7 +127,7 @@ export function DecompositionTree({ view, setFilter }: { view: PortfolioView; se
               return (
                 <div key={node.id} className="flex items-start">
                   <div className="mt-6"><Connector fromIndex={indexIn(depth)} toCount={kids.length} /></div>
-                  <div className="tree-col-in w-56 shrink-0 sm:w-60">
+                  <div data-col={depth + 1} className="tree-col-in w-56 shrink-0 sm:w-60">
                     <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{COLUMN_TITLES[depth + 1]}</p>
                     <div className="flex flex-col" style={{ gap: GAP }}>
                       {kids.map(k => (
@@ -136,7 +142,7 @@ export function DecompositionTree({ view, setFilter }: { view: PortfolioView; se
             {last.detail && (
               <div className="flex items-start">
                 <div className="mt-6"><Connector fromIndex={indexIn(chain.length - 1)} toCount={1} /></div>
-                <div>
+                <div data-col={chain.length}>
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{COLUMN_TITLES[4]}</p>
                   <DetailCard node={last} onFilter={() => setFilter(last.filter)} />
                 </div>

@@ -66,7 +66,7 @@ export function FindingHero({ finding: f, project: p, inspection: i, evidenceId,
           <p ref={statusRef} tabIndex={-1} className="text-sm text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">{f.state === 'Cerrado' ? 'Hallazgo cerrado: no hay acciones pendientes.' : hint}</p>
         </div>
         {f.state === 'En corrección' && editing ? <div id="finding-correction" className="max-w-2xl border-t pt-4"><Correction key={f.id} finding={f} evidenceId={evidenceId} onEvidenceChange={onEvidenceChange} onSaved={settle} /></div> : null}
-        {f.state === 'Pendiente de verificación' ? <div className="max-w-2xl"><Verification finding={f} onSaved={settle} /></div> : null}
+        {f.state === 'Pendiente de verificación' ? <div className="max-w-2xl"><Verification key={f.id} finding={f} onSaved={settle} /></div> : null}
       </div>
     </div>
   </section>;

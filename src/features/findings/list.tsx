@@ -23,7 +23,7 @@ export function Findings() {
     project: projects.map(p => p.value), state: STATES, severity: SEVERITIES,
     responsible: users.map(u => u.value), due: dues.map(v => v.value),
   }, d.projectId);
-  const { project: p, state, severity, responsible, due, active, query } = f;
+  const { project: p, state, severity, responsible, due, active, query, page } = f;
   function change(key: string, value: string) {
     const href = updateListFilters(window.location.href, { [key]: value });
     if (key === 'query') window.history.replaceState(null, '', href);
@@ -61,6 +61,8 @@ export function Findings() {
       state: { value: state, options: STATES.map(value => ({ value, label: value })), onChange: value => change('state', value) },
       severity: { value: severity, options: SEVERITIES.map(value => ({ value, label: value })), onChange: value => change('severity', value) },
       due: { value: due, options: dues, onChange: value => change('due', value) },
-    }} />
+      project: { value: p, options: projects, onChange: value => change('project', value) },
+      responsible: { value: responsible, options: users, onChange: value => change('responsible', value) },
+    }} control={{ page: Number(page || 1), onPageChange: value => change('page', value > 1 ? String(value) : '') }} />
   </div>;
 }

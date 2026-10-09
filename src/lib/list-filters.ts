@@ -1,6 +1,6 @@
 export const FILTER_KEYS = {
-  findings: ['project', 'query', 'state', 'severity', 'responsible', 'due', 'active'],
-  inspections: ['project', 'from', 'to', 'inspector', 'specialty', 'visitState'],
+  findings: ['project', 'query', 'state', 'severity', 'responsible', 'due', 'active', 'page'],
+  inspections: ['project', 'from', 'to', 'inspector', 'specialty', 'visitState', 'page'],
 } as const;
 export type FilterKind = keyof typeof FILTER_KEYS;
 export type FilterChoices = Partial<Record<string, readonly string[]>>;
@@ -18,7 +18,8 @@ export function parseListFilters(search: string, choices: FilterChoices, globalP
   const result: Record<string, string> = {};
   for (const key of keys) {
     const value = key === 'project' && !params.has(key) ? globalProject : params.get(key) ?? '';
-    result[key] = key === 'active' ? (value === '1' ? '1' : '')
+    result[key] = key === 'page' ? (/^[1-9]\d{0,3}$/.test(value) ? value : '')
+      : key === 'active' ? (value === '1' ? '1' : '')
       : key === 'from' || key === 'to' ? (validDate(value) ? value : '')
       : choices[key] ? (choices[key]!.includes(value) ? value : '') : value;
   }
@@ -28,6 +29,7 @@ export function parseListFilters(search: string, choices: FilterChoices, globalP
 /** Mutate only specified filters; keep unknown keys, duplicate values and fragments. */
 export function updateListFilters(href: string, changes: Record<string, string>): string {
   const url = new URL(href, 'https://list.invalid');
+  if (!('page' in changes)) url.searchParams.delete('page');
   for (const [key, value] of Object.entries(changes)) {
     if (value || key === 'project') url.searchParams.set(key, value);
     else url.searchParams.delete(key);

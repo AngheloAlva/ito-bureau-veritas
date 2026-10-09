@@ -25,7 +25,7 @@ export function Inspections() {
   const f = parseListFilters(params.toString(), {
     project: projects.map(p => p.value), inspector: inspectors.map(u => u.value), specialty: specialties, visitState: visitStates,
   }, d.projectId);
-  const { project: p, from, to, inspector, specialty, visitState } = f;
+  const { project: p, from, to, inspector, specialty, visitState, page } = f;
   const show = params.get('new') === '1';
   function change(key: string, value: string) {
     window.history.pushState(null, '', updateListFilters(window.location.href, { [key]: value }));
@@ -66,6 +66,9 @@ export function Inspections() {
     <InspectionTable inspections={rows} filters={{
       date: { from, to, onChange: change },
       visitState: { value: visitState, options: visitOptions, onChange: value => change('visitState', value) },
-    }} />
+      project: { value: p, options: projects, onChange: value => change('project', value) },
+      inspector: { value: inspector, options: inspectors, onChange: value => change('inspector', value) },
+      specialty: { value: specialty, options: specialties.map(s => ({ value: s, label: s })), onChange: value => change('specialty', value) },
+    }} control={{ page: Number(page || 1), onPageChange: value => change('page', value > 1 ? String(value) : '') }} />
   </div>;
 }

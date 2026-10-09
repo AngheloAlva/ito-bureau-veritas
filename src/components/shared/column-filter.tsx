@@ -15,7 +15,7 @@ export function ColumnFilter({ label, active, children }: { label: string; activ
     </PopoverTrigger>
     <PopoverContent align="start" className="max-w-(--available-width) max-h-(--available-height) overflow-y-auto">
       <PopoverTitle>Filtrar {label}</PopoverTitle>
-      <PopoverDescription>Comparte filtros con la barra superior.</PopoverDescription>
+      <PopoverDescription>También disponible en «Filtros».</PopoverDescription>
       {children}
     </PopoverContent>
   </Popover>;

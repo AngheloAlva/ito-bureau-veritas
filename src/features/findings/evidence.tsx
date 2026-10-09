@@ -1,19 +1,10 @@
 'use client';
 
 import { useDemo } from '@/components/demo-provider';
-import { Assets, time } from '@/components/records';
+import { Assets } from '@/components/records';
 import { Panel } from '@/components/records/presentation';
 import { isActive } from '@/domain/core';
-import type { Finding } from '@/domain/types';
 import { EvidenceDialog } from './evidence-dialog';
-
-export function Detection({ finding: f }: { finding: Finding }) {
-  return <Panel rule title="Descripción del hallazgo" description={`${f.location} · ${f.specialty}`}>
-    <p className="leading-relaxed">{f.description}</p>
-    <p className="text-xs text-muted-foreground">Detectado el {time(f.createdAt)}</p>
-    {f.correctiveAction ? <div className="flex flex-col gap-1"><h3 className="text-sm font-medium">Acción correctiva registrada</h3><p className="text-sm leading-relaxed">{f.correctiveAction}</p></div> : null}
-  </Panel>;
-}
 
 export function FindingEvidence({ findingId, projectId, inspectionId, onCorrectionAdded }: {
   findingId: string; projectId: string; inspectionId: string; onCorrectionAdded: (id: string) => void;

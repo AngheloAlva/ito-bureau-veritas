@@ -5,9 +5,8 @@ import Link from 'next/link';
 import { useDemo } from '@/components/demo-provider';
 import { Empty } from '@/components/records';
 import { FindingHero } from './hero';
-import { Workflow } from './workflow';
 import { Assignment } from './assignment';
-import { Detection, FindingEvidence } from './evidence';
+import { FindingEvidence } from './evidence';
 import { FindingHistory } from './history';
 import { useRecordPreview } from '@/components/shared/record-preview';
 
@@ -21,15 +20,13 @@ export function FindingDetail({ id }: { id: string }) {
   const p = d.data.projects.find(p => p.id === i.projectId)!;
   const evidenceId = selected?.findingId === f.id ? selected.evidenceId : '';
   const selectEvidence = (evidenceId: string) => setSelected({ findingId: f.id, evidenceId });
-  return <div className="flex flex-col gap-6">
-    <FindingHero finding={f} project={p} inspection={i} />
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-      <div className="flex min-w-0 flex-col gap-6">
-        <Detection finding={f} />
-        <Workflow key={f.id} finding={f} evidenceId={evidenceId} onEvidenceChange={selectEvidence} />
+  return <div className="flex flex-col gap-4">
+    <FindingHero finding={f} project={p} inspection={i} evidenceId={evidenceId} onEvidenceChange={selectEvidence} />
+    <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <div className="flex min-w-0 flex-col gap-4">
         <FindingEvidence findingId={f.id} projectId={p.id} inspectionId={i.id} onCorrectionAdded={selectEvidence} />
       </div>
-      <aside className="flex min-w-0 flex-col gap-6" aria-label="Contexto y cronología del hallazgo">
+      <aside className="flex min-w-0 flex-col gap-4" aria-label="Contexto y cronología del hallazgo">
         <Assignment finding={f} />
         <FindingHistory findingId={f.id} />
       </aside>

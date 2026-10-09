@@ -1,28 +1,18 @@
 'use client';
 
-import { useState, type FormEvent, type RefObject } from 'react';
+import { useState, type FormEvent } from 'react';
 import { CheckCircleIcon, ArrowUUpLeftIcon } from '@phosphor-icons/react';
 import { useDemo } from '@/components/demo-provider';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { FormError } from '@/components/shared/validated-form';
-import { FormDialog } from '@/components/shared/form-dialog';
 import { LiveValidatedForm } from './live-validated-form';
 import { date } from '@/components/records/presentation';
 import { TextField } from '@/components/shared/text-field';
 import { transitionFinding } from '@/domain/core';
 import type { Finding, State } from '@/domain/types';
 
-export function Verification({ finding, focusReturnRef }: { finding: Finding; focusReturnRef?: RefObject<HTMLElement | null> }) {
-  const [open, setOpen] = useState(false);
-  return <FormDialog title="Revisión del inspector" description={`${finding.code} · Revise la acción y sus evidencias antes de cerrar o devolver.`}
-    open={open} onOpenChange={setOpen} focusReturnRef={focusReturnRef}
-    trigger={<Button type="button" size="sm" data-workflow-action><CheckCircleIcon data-icon="inline-start" />Revisar corrección</Button>}>
-    {open ? <VerificationForm finding={finding} onSaved={() => setOpen(false)} /> : null}
-  </FormDialog>;
-}
-
-function VerificationForm({ finding: f, onSaved }: { finding: Finding; onSaved: () => void }) {
+export function Verification({ finding: f, onSaved }: { finding: Finding; onSaved?: () => void }) {
   const d = useDemo();
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
@@ -34,7 +24,7 @@ function VerificationForm({ finding: f, onSaved }: { finding: Finding; onSaved: 
       d.apply(data => transitionFinding(data, f.id, d.user.id, target, { action: f.correctiveAction, evidenceId: '', comment }));
       setError('');
       d.run(() => {}, target === 'Cerrado' ? 'Hallazgo verificado y cerrado. Indicadores actualizados.' : `Estado actualizado: ${target}.`);
-      onSaved();
+      onSaved?.();
     } catch (err) { setError(err instanceof Error ? err.message : 'No se pudo verificar.'); }
   }
   const submitted = d.data.events.filter(e => e.findingId === f.id && e.changes.evidenceId).sort((a, b) => Date.parse(b.at) - Date.parse(a.at))[0];

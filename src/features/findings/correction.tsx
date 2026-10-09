@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, type FormEvent, type RefObject } from 'react';
-import { ArrowRightIcon, WrenchIcon } from '@phosphor-icons/react';
+import { useState, type FormEvent } from 'react';
+import { ArrowRightIcon } from '@phosphor-icons/react';
 import { useDemo } from '@/components/demo-provider';
 import { Button } from '@/components/ui/button';
 import { FieldGroup, FieldDescription } from '@/components/ui/field';
-import { FormDialog } from '@/components/shared/form-dialog';
 import { FormError } from '@/components/shared/validated-form';
 import { SelectField } from '@/components/shared/select-field';
 import { TextField } from '@/components/shared/text-field';
@@ -15,18 +14,9 @@ import { LiveValidatedForm } from './live-validated-form';
 import { date } from '@/components/records/presentation';
 import { EvidenceDialog } from './evidence-dialog';
 
-type Props = { finding: Finding; evidenceId: string; onEvidenceChange: (id: string) => void; focusReturnRef?: RefObject<HTMLElement | null> };
+type Props = { finding: Finding; evidenceId: string; onEvidenceChange: (id: string) => void; onSaved?: () => void };
 
-export function Correction(props: Props) {
-  const [open, setOpen] = useState(false);
-  return <FormDialog title="Corrección del responsable" description={`${props.finding.code} · Registre la acción y seleccione su respaldo para remitir.`}
-    open={open} onOpenChange={setOpen} focusReturnRef={props.focusReturnRef}
-    trigger={<Button type="button" size="sm" data-workflow-action><WrenchIcon data-icon="inline-start" />Preparar corrección</Button>}>
-    {open ? <CorrectionForm {...props} onSaved={() => setOpen(false)} /> : null}
-  </FormDialog>;
-}
-
-function CorrectionForm({ finding: f, evidenceId, onEvidenceChange, onSaved }: Props & { onSaved: () => void }) {
+export function CorrectionForm({ finding: f, evidenceId, onEvidenceChange, onSaved }: Props) {
   const d = useDemo();
   const [action, setAction] = useState(f.correctiveAction);
   const [error, setError] = useState('');
@@ -38,7 +28,7 @@ function CorrectionForm({ finding: f, evidenceId, onEvidenceChange, onSaved }: P
       d.apply(data => transitionFinding(data, f.id, d.user.id, 'Pendiente de verificación', { action, evidenceId, comment: '' }));
       setError('');
       d.run(() => {}, 'Estado actualizado: Pendiente de verificación.');
-      onSaved();
+      onSaved?.();
     } catch (err) { setError(err instanceof Error ? err.message : 'No se pudo remitir.'); }
   }
   const formId = `correction-${f.id}`;

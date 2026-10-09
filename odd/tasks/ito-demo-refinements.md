@@ -12,7 +12,7 @@ Branch: `feat/visual-redesign` (baseline `5d6ce1c`). Goal: remove friction found
 ## Tasks
 
 - [x] 1. Single demo identity: domain permissions, demo provider/controls, hero action without role switching, tests updated.
-- [ ] 2. Finding detail consolidation: description in hero, workflow actions/forms in hero, remove "Siguiente paso" card.
+- [x] 2. Finding detail consolidation: description in hero, workflow actions/forms in hero, remove "Siguiente paso" card.
 - [ ] 3. Tables: compact rows, origin column, horizontal scroll, extra header filters, pagination.
 - [ ] 4. Browser verification of the H-001 script and docs update (docs/guion-demo.md).
 
@@ -21,3 +21,4 @@ Branch: `feat/visual-redesign` (baseline `5d6ce1c`). Goal: remove friction found
 (commit ids recorded per task)
 
 - Task 1: role gates removed in domain/UI, `asRole` attribution (correction → assigned responsible, verification/assignment/creation → Inspector); 63/63 tests, typecheck clean; lint has 1 pre-existing error in `src/components/layout/status.tsx` (untouched). RED not observed separately (old role assertions failed before rewrite). Commit `76a2b60`; native review `review-62435d33aff52f48` approved and acknowledged. Follow-up: docs/guion-demo.md lines 5/19/25 still describe role switching (task 4).
+- Task 2: description in hero, inline correction (on demand) and verification forms in hero, Detection/Workflow cards removed, 2-column grid; 63/63 tests, typecheck clean; screenshots open/correction at 1440/390 checked. Commit `2c6a4e8`; native review `review-8c47ea7d9ed138ba` approved and acknowledged. Advisory R3-verification-state-leak (hero.tsx Verification without key) fixed in task 3 commit.

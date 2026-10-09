@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, type CSSProperties } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { ClipboardTextIcon, SparkleIcon } from '@phosphor-icons/react';
+import { ChatsCircleIcon, ClipboardTextIcon, SparkleIcon } from '@phosphor-icons/react';
 import { useDemo } from '@/components/demo-provider';
 import { Heading, Panel, time } from '@/components/records/presentation';
 import { Badge } from '@/components/ui/badge';
@@ -17,14 +18,27 @@ import { AnalysisPriorities } from './analysis/priorities';
 import { AnalysisReport } from './analysis/report';
 import { AnalysisEmpty, AnalysisProgress, type ScopeCounts } from './analysis/experience';
 import { useAnalysisRun } from './analysis/use-analysis-run';
+import { ScopePicker } from './assistant/scope-picker';
 
 export { AnalysisStore } from './analysis/store';
 
 export function AnalysisView() {
   const demo = useDemo();
   const params = useSearchParams();
-  const projectId = params.get('project') ?? demo.projectId;
-  return <AnalysisWorkspace key={projectId || 'cartera'} projectId={projectId} />;
+  const raw = params.get('project');
+  // `project=all` makes the full portfolio explicit; no param falls back to the header scope.
+  const projectId = raw === 'all' ? '' : raw ?? demo.projectId;
+  function changeScope(id: string) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('project', id || 'all');
+    window.history.pushState(null, '', url);
+    demo.setProjectId(id);
+  }
+  return <div className="flex flex-col gap-6">
+    <section className="no-print flex flex-col gap-3" aria-label="Alcance del análisis"><h2 className="text-sm font-semibold">Alcance del análisis</h2><ScopePicker compact value={projectId} onChange={changeScope} /></section>
+    <Link href="/asistente" className="no-print flex items-center gap-3 rounded-lg border border-copper/30 bg-copper-surface p-4 text-sm outline-none transition-colors hover:border-copper focus-visible:ring-2 focus-visible:ring-ring/40"><ChatsCircleIcon size={24} className="shrink-0 text-copper" aria-hidden="true" /><span><strong className="font-semibold">¿Prefiere preguntar?</strong> Abra el asistente de análisis para obtener respuestas y gráficos.</span></Link>
+    <AnalysisWorkspace key={projectId || 'cartera'} projectId={projectId} />
+  </div>;
 }
 
 function AnalysisWorkspace({ projectId }: { projectId: string }) {

@@ -5,7 +5,7 @@
 - Rutas Next App Router en español; controles HTML nativos, foco visible, formularios adaptables y tablas desplazables en móvil.
 - Un solo estado compartido validado: proyectos, inspecciones, hallazgos, usuarios de ejemplo, documentos, evidencias e historial.
 - Creación de visitas/hallazgos; completar una visita independientemente de sus hallazgos.
-- Transiciones por rol/persona: solo responsable asignado corrige, inspector verifica/cierra o devuelve con motivo. No se puede cerrar directamente desde Abierto.
+- Transiciones con una sola identidad demo con todos los permisos; se mantienen las reglas de negocio: remitir exige acción correctiva y evidencia de corrección; cerrar o devolver exige comentario. No se puede cerrar directamente desde Abierto.
 - Acción obligatoria y respaldo seleccionado para remitir; comentario y actor inspector para cierre. Cambios de asignación/plazo dejan eventos. Fecha vencida nueva requiere confirmación.
 - Filtros combinables de hallazgos, búsqueda de código/título, filtros de visitas y enlaces de tarjetas/gráficos con alcance.
 - Indicadores y alertas calculados con fecha fija 08/10/2026; cerrados excluidos de activos y vencidos.
@@ -20,7 +20,7 @@
 | --- | --- |
 | Proyectos, usuarios y observaciones | No son contratos, personas ni inspecciones reales. |
 | Avance físico | Dato ilustrativo registrado, no calculado desde cierre de hallazgos. |
-| Rol/persona | Selector de experiencia demo, no autenticación ni seguridad real. |
+| Identidad demo | Identidad única con todos los permisos, no autenticación ni seguridad real. |
 | Análisis asistido | Reglas: críticos activos, altos vencidos, otros vencidos; sin modelo generativo/predictivo. |
 | Documentos/evidencias | Archivos de texto incluidos, no actas oficiales, firmas reales ni fotos de terreno. |
 | Agregar evidencia | Añade referencia a un ejemplo local; no carga un archivo del dispositivo. |

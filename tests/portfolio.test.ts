@@ -166,3 +166,18 @@ test('problem projects, curve, gantt', () => {
   assert.equal(g.length, 42);
   for (let i = 1; i < g.length; i++) assert.ok(g[i - 1].plannedStart <= g[i].plannedStart);
 });
+
+test('situation counts for late buckets', () => {
+  const n = (s: string) => P.milestones.filter(m => milestoneSituation(m, ref) === s).length;
+  assert.ok(n('Atraso 1–15 d') >= 5, `1–15: ${n('Atraso 1–15 d')}`);
+  assert.ok(n('Atraso 16–30 d') >= 5, `16–30: ${n('Atraso 16–30 d')}`);
+  assert.ok(n('Atraso > 30 d') >= 4, `>30: ${n('Atraso > 30 d')}`);
+  const delays = P.milestones.filter(m => !m.actualEnd && m.plannedEnd < ref).map(m => milestoneDelay(m, ref));
+  const share = Math.max(...[...new Set(delays)].map(d => delays.filter(x => x === d).length)) / delays.length;
+  assert.ok(share <= 0.2, `delay clustering ${share}`);
+});
+
+test('distinct max delays among Atrasado projects', () => {
+  const maxes = P.projects.filter(p => p.health === 'Atrasado').map(p => Math.max(...P.milestones.filter(m => m.projectId === p.id && !m.actualEnd && m.plannedEnd < ref).map(m => milestoneDelay(m, ref))));
+  assert.ok(new Set(maxes).size >= 4, maxes.join(','));
+});

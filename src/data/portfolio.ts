@@ -76,7 +76,8 @@ const PHASES = ['Ingeniería de detalle', 'Adquisiciones', 'Movilización de con
 const DURS = [2, 3, 4, 6, 7, 8, 10, 9, 12, 15, 14, 18, 21, 28, 30, 35, 42, 45];
 const CLOSE_DURS = [2, 3, 4, 5, 7, 8];
 const SLACKS = [0, 1, 2, 3, 4, 5, 5, 2, 7, 10, 14, 20, 3, 1];
-const DELAYS = [48, 33, 62, 26, 40];
+// Pivot delay (days past planned end) per Atrasado project, in generation order: distinct values give varied buckets.
+const DELAYS = [26, 55, 8, 24, 47, 9];
 const NOTE_DONE = ['Cierre conforme; registros entregados.', 'Recibido sin observaciones.', 'Verificación realizada según programa.', 'Entregado con respaldo documental.'];
 const NOTE_LATE = ['Espera de repuesto importado.', 'Permiso de intervención pendiente.', 'Reprogramación por detención de planta.', 'Retraso en entrega de materiales por el proveedor.', 'Falta de disponibilidad de cuadrilla especializada.', 'Observaciones de ingeniería por resolver.'];
 const NOTE_OPEN = ['Avance según programa.', 'Trabajos en curso con cuadrilla completa.', 'En ejecución; sin restricciones informadas.', 'A la espera de liberación del área.'];
@@ -85,7 +86,7 @@ const NOTE_PENDING = ['Sin iniciar; depende del hito anterior.', 'Programado a c
 type Category = ProjectHealth;
 type Draw = { jit: number; late: boolean; lateDays: number; early: number; prog: number };
 
-function buildProject(rng: () => number, index: number, cat: Category, def: Def): { project: PortfolioProject; milestones: Milestone[] } {
+function buildProject(rng: () => number, index: number, cat: Category, def: Def, lateOrdinal: number): { project: PortfolioProject; milestones: Milestone[] } {
   const ref = REFERENCE_DATE;
   const pick = <T,>(a: readonly T[]) => a[Math.floor(rng() * a.length)];
   const id = `p${index + 1}`;
@@ -119,7 +120,7 @@ function buildProject(rng: () => number, index: number, cat: Category, def: Def)
     shiftDate = addDays(ref, slack - rel[k].pe);
   } else {
     k = Math.floor(rng() * 2);
-    const delay = DELAYS[(index * 3) % DELAYS.length];
+    const delay = DELAYS[lateOrdinal % DELAYS.length];
     shiftDate = addDays(ref, -delay - rel[k].pe);
   }
 
@@ -179,7 +180,8 @@ export function createPortfolio(): Portfolio {
   const cats: Category[] = ['En curso', 'Atrasado', 'En curso', ...rest];
   const projects: PortfolioProject[] = [];
   const milestones: Milestone[] = [];
-  cats.forEach((cat, i) => { const r = buildProject(rng, i, cat, DEFS[i]); projects.push(r.project); milestones.push(...r.milestones); });
+  let lateCount = 0;
+  cats.forEach((cat, i) => { const r = buildProject(rng, i, cat, DEFS[i], cat === 'Atrasado' ? lateCount++ : 0); projects.push(r.project); milestones.push(...r.milestones); });
   return { clients: CLIENTS.map(c => ({ ...c })), projects, milestones };
 }
 

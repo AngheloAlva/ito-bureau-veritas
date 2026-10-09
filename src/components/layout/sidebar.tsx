@@ -9,13 +9,19 @@ import { ClipboardTextIcon } from '@phosphor-icons/react/dist/csr/ClipboardText'
 import { WarningCircleIcon } from '@phosphor-icons/react/dist/csr/WarningCircle';
 import { ListChecksIcon } from '@phosphor-icons/react/dist/csr/ListChecks';
 import { PresentationChartIcon } from '@phosphor-icons/react/dist/csr/PresentationChart';
+import { CalendarDotsIcon } from '@phosphor-icons/react/dist/csr/CalendarDots';
+import { SparkleIcon } from '@phosphor-icons/react/dist/csr/Sparkle';
 import { XIcon } from '@phosphor-icons/react/dist/csr/X';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
-const portfolioRoutes = [{ href: '/tablero', label: 'Tablero ejecutivo', icon: PresentationChartIcon }];
+const portfolioRoutes = [
+  { href: '/tablero', label: 'Tablero ejecutivo', icon: PresentationChartIcon },
+  { href: '/programa', label: 'Programa de trabajo', icon: CalendarDotsIcon },
+  { href: '/asistente', label: 'Asistente IA', icon: SparkleIcon },
+];
 
 const routes = [
   { href: '/', label: 'Resumen', icon: ChartBarIcon },

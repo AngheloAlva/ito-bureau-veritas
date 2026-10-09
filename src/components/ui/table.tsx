@@ -5,18 +5,20 @@ import { cn } from "cn"
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
-    <div
-      data-slot="table-container"
-      tabIndex={0}
-      role="region"
-      aria-label="Tabla de registros; desplácese horizontalmente para ver todas las columnas"
-      className="scroll-shadow relative min-w-0 w-full max-w-full overflow-x-auto border border-border focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
-    >
-      <table
-        data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
-        {...props}
-      />
+    <div data-slot="table-wrapper" className="min-w-0 w-full max-w-full overflow-hidden rounded-xl border border-border bg-card">
+      <div
+        data-slot="table-container"
+        tabIndex={0}
+        role="region"
+        aria-label="Tabla de registros; desplácese horizontalmente para ver todas las columnas"
+        className="scroll-shadow relative min-w-0 w-full max-w-full overflow-x-auto focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+      >
+        <table
+          data-slot="table"
+          className={cn("w-full caption-bottom text-sm", className)}
+          {...props}
+        />
+      </div>
     </div>
   )
 }
@@ -25,7 +27,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("bg-muted/50 [&_tr]:border-b", className)}
+      className={cn("bg-muted [&_tr]:border-b [&_th]:bg-muted", className)}
       {...props}
     />
   )

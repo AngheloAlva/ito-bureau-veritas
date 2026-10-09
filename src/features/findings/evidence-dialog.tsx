@@ -6,7 +6,7 @@ import { useDemo } from '@/components/demo-provider';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Badge } from '@/components/ui/badge';
-import { FormDialog } from '@/components/shared/form-dialog';
+import { FormDialog, FormActions } from '@/components/shared/form-dialog';
 import { ValidatedForm, FormError } from '@/components/shared/validated-form';
 import { TextField } from '@/components/shared/text-field';
 import type { Evidence, Finding } from '@/domain/types';
@@ -53,7 +53,7 @@ function EvidenceForm({ finding, phase, onSaved }: {
       </FieldGroup>
       <TextField name="reference" label="Referencia local" value="/demo/evidencia.txt" readOnly />
       <p className="text-sm text-muted-foreground">Registrado por <strong className="text-foreground">{d.user.name}</strong> · {finding.code}</p>
-      <Button type="submit" className="w-fit"><PaperclipIcon data-icon="inline-start" />Adjuntar referencia</Button>
+      <FormActions><Button type="submit" className="min-h-11"><PaperclipIcon data-icon="inline-start" />Adjuntar referencia</Button></FormActions>
     </FieldGroup>
   </ValidatedForm>;
 }

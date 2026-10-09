@@ -4,7 +4,8 @@ import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDemo } from '@/components/demo-provider';
 import { Button } from '@/components/ui/button';
-import { FieldGroup, FieldDescription } from '@/components/ui/field';
+import { FieldGroup } from '@/components/ui/field';
+import { FormActions } from '@/components/shared/form-dialog';
 import { ValidatedForm, FormError } from '@/components/shared/validated-form';
 import { SelectField } from '@/components/shared/select-field';
 import { TextField } from '@/components/shared/text-field';
@@ -45,10 +46,9 @@ export function InspectionForm({ projectId }: { projectId: string }) {
         <TextField name="activity" label="Actividad inspeccionada" required />
       </FieldGroup>
       <TextField name="result" label="Resultado general" required multiline />
-      <div className="flex flex-wrap items-center gap-3">
-        <Button type="submit">Guardar inspección</Button>
-        <FieldDescription>Se crea como visita programada; los hallazgos se registran en su detalle.</FieldDescription>
-      </div>
+      <FormActions helper="Se crea como visita programada; los hallazgos se registran en su detalle.">
+        <Button type="submit" className="min-h-11">Guardar inspección</Button>
+      </FormActions>
     </FieldGroup>
   </ValidatedForm>;
 }

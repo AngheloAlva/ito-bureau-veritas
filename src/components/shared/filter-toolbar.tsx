@@ -15,21 +15,23 @@ export function FilterToolbar({ title, count, chips, onRemove, onClear, search, 
     <div className="flex min-w-0 flex-wrap items-end gap-2">
       {search ? <div className="min-w-0 flex-1 basis-44 sm:max-w-sm">{search}</div> : null}
       <Popover>
-        <PopoverTrigger render={<Button variant="outline" size="sm" className="min-h-10" />} aria-label={`${title}: ${chips.length} filtros activos`}>
+        <PopoverTrigger render={<Button variant="outline" size="sm" className="h-10 min-h-10 bg-card px-3" />} aria-label={`${title}: ${chips.length} filtros activos`}>
           <FunnelIcon aria-hidden="true" data-icon="inline-start" />Filtros
           {chips.length ? <Badge variant="secondary" className="tabular-nums">{chips.length}</Badge> : null}
         </PopoverTrigger>
-        <PopoverContent align="start" className="w-96 max-w-(--available-width) max-h-(--available-height) overflow-y-auto">
+        <PopoverContent align="start" className="w-80 max-w-(--available-width) max-h-(--available-height) gap-3 overflow-y-auto p-4 [&_[data-slot=field-label]]:text-xs [&_[data-slot=field-label]]:font-medium [&_[data-slot=field-group]]:gap-3 [&_[data-slot=field]]:gap-1.5 [&_[data-slot=select-trigger]]:h-9">
           <PopoverTitle>{title}</PopoverTitle>
-          <PopoverDescription>Combine filtros. Los resultados se actualizan al instante.</PopoverDescription>
+          <PopoverDescription className="text-xs leading-snug">Combine filtros. Los resultados se actualizan al instante.</PopoverDescription>
           {children}
-          <p role="status" className="text-sm text-muted-foreground tabular-nums">{count}</p>
-          <Button variant="ghost" onClick={onClear} disabled={!chips.length}>
-            <ArrowCounterClockwiseIcon aria-hidden="true" data-icon="inline-start" />Limpiar todos
-          </Button>
+          <div className="flex items-center justify-between gap-2 border-t pt-3">
+            <p role="status" className="text-xs text-muted-foreground tabular-nums">{count}</p>
+            <Button variant="ghost" size="sm" onClick={onClear} disabled={!chips.length}>
+              <ArrowCounterClockwiseIcon aria-hidden="true" data-icon="inline-start" />Limpiar todos
+            </Button>
+          </div>
         </PopoverContent>
       </Popover>
-      {chips.length ? <Button variant="ghost" className="min-h-10" onClick={onClear}>
+      {chips.length ? <Button variant="ghost" className="h-10 min-h-10" onClick={onClear}>
         <ArrowCounterClockwiseIcon aria-hidden="true" data-icon="inline-start" />Limpiar
       </Button> : null}
     </div>

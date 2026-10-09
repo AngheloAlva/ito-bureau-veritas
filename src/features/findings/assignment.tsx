@@ -7,7 +7,7 @@ import { date } from '@/components/records';
 import { Panel } from '@/components/records/presentation';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
-import { FormDialog } from '@/components/shared/form-dialog';
+import { FormDialog, FormActions } from '@/components/shared/form-dialog';
 import { ValidatedForm, FormError } from '@/components/shared/validated-form';
 import { SelectField } from '@/components/shared/select-field';
 import { DateField } from '@/components/shared/date-field';
@@ -63,7 +63,7 @@ function AssignmentForm({ finding: f, onSaved }: { finding: Finding; onSaved: ()
         options={d.data.users.filter(u => u.role === 'Responsable de corrección').map(u => ({ value: u.id, label: u.name }))} />
       <DateField name="due" label="Fecha compromiso" value={due} required onValueChange={next => { setDue(next); setConfirmed(false); }} />
       {due && due < REFERENCE_DATE && due !== f.dueDate ? <CheckField name="confirmed" required checked={confirmed} onCheckedChange={setConfirmed} label="Confirmo el plazo vencido al 08/10/2026." /> : null}
-      <Button type="submit" className="h-auto min-h-11 w-fit max-w-full min-w-0 py-2 whitespace-normal [overflow-wrap:anywhere]">Guardar asignación y plazo</Button>
+      <FormActions><Button type="submit" className="h-auto min-h-11 max-w-full min-w-0 py-2 whitespace-normal [overflow-wrap:anywhere]">Guardar asignación y plazo</Button></FormActions>
     </FieldGroup>
   </ValidatedForm>;
 }

@@ -4,7 +4,7 @@ import { useId, useRef, type ReactElement, type ReactNode, type RefObject } from
 import { Button } from '@/components/ui/button';
 import { cn } from 'cn';
 import {
-  Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter,
+  Dialog, DialogClose, DialogContent, DialogDescription,
   DialogHeader, DialogTitle, DialogTrigger,
 } from '@/components/ui/dialog';
 
@@ -33,12 +33,20 @@ export function FormDialog({ title, description, trigger, children, open, onOpen
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
-      <div className="w-full min-h-0 min-w-0 overflow-y-auto overscroll-contain px-4 pb-5 sm:px-6">
+      <div className="w-full min-h-0 min-w-0 overflow-y-auto overscroll-contain px-4 pb-4 sm:px-6 sm:pb-6">
         {children}
       </div>
-      <DialogFooter className="shrink-0 px-4 pb-4 sm:px-6 sm:pb-6">
-        <DialogClose render={<Button type="button" variant="outline" />}>Cancelar</DialogClose>
-      </DialogFooter>
     </DialogContent>
   </Dialog>;
+}
+
+/** Dialog form footer: muted helper above one right-aligned row, Cancelar left of the primary action. */
+export function FormActions({ helper, children }: { helper?: ReactNode; children: ReactNode }) {
+  return <div className="mt-1 flex min-w-0 flex-col gap-3 border-t pt-4">
+    {helper ? <p className="text-xs text-muted-foreground">{helper}</p> : null}
+    <div className="flex flex-wrap items-center justify-end gap-2">
+      <DialogClose render={<Button type="button" variant="outline" className="min-h-11" />}>Cancelar</DialogClose>
+      {children}
+    </div>
+  </div>;
 }

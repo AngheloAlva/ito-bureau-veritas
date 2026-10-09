@@ -13,7 +13,7 @@ export function ColumnFilter({ label, active, children }: { label: string; activ
       aria-label={`Filtrar ${label}${active ? ': filtro activo' : ''}`}>
       {label}<FunnelIcon aria-hidden="true" data-icon="inline-end" />{active ? <span aria-hidden="true">·</span> : null}
     </PopoverTrigger>
-    <PopoverContent align="start" className="max-w-(--available-width) max-h-(--available-height) overflow-y-auto">
+    <PopoverContent align="start" className="w-80 max-w-(--available-width) max-h-(--available-height) gap-3 overflow-y-auto p-4 [&_[data-slot=field-label]]:text-xs [&_[data-slot=field-label]]:font-medium [&_[data-slot=field-group]]:gap-3 [&_[data-slot=field]]:gap-1.5 [&_[data-slot=select-trigger]]:h-9">
       <PopoverTitle>Filtrar {label}</PopoverTitle>
       <PopoverDescription>También disponible en «Filtros».</PopoverDescription>
       {children}

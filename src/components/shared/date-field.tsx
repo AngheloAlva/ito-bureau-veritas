@@ -25,7 +25,7 @@ export function DateField({ name, label, value, defaultValue = '', onValueChange
   return <Field data-invalid={Boolean(error)}>
     <FieldLabel htmlFor={id}>{label}{required ? ' *' : ''}</FieldLabel>
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger render={<Button type="button" variant="outline" className="w-full justify-start" />}
+      <PopoverTrigger render={<Button type="button" variant="outline" className="h-10 w-full justify-start rounded-lg bg-card px-3 text-sm font-normal shadow-xs focus-visible:ring-2 focus-visible:ring-ring/30 aria-invalid:border-destructive" />}
         id={id} aria-required={required} aria-invalid={Boolean(error)} aria-describedby={describedBy}
         {...validationAttributes(name, label, required)} data-date="true" data-value={selected}>
         <CalendarIcon aria-hidden="true" data-icon="inline-start" />{calendarLabel(selected)}

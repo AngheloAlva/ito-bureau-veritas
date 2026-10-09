@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useDemo } from '@/components/demo-provider';
 import { Button } from '@/components/ui/button';
 import { FieldGroup, FieldDescription } from '@/components/ui/field';
+import { FormActions } from '@/components/shared/form-dialog';
 import { ValidatedForm, FormError } from '@/components/shared/validated-form';
 import { SelectField } from '@/components/shared/select-field';
 import { TextField } from '@/components/shared/text-field';
@@ -58,10 +59,9 @@ export function FindingForm({ inspectionId }: { inspectionId: string }) {
       </FieldGroup>
       {due && due < REFERENCE_DATE ? <CheckField name="confirmed" required checked={confirmed} onCheckedChange={setConfirmed}
         label="Confirmo que esta fecha dejará el hallazgo vencido al 08/10/2026." /> : null}
-      <div className="flex flex-wrap items-center gap-3">
-        <Button type="submit">Registrar hallazgo</Button>
-        <FieldDescription>Estado inicial: Abierto. Sin cierre automático.</FieldDescription>
-      </div>
+      <FormActions helper="Estado inicial: Abierto. Sin cierre automático.">
+        <Button type="submit" className="min-h-11">Registrar hallazgo</Button>
+      </FormActions>
     </FieldGroup>
   </ValidatedForm>;
 }

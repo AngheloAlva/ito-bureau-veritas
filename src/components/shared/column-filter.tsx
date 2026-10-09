@@ -9,7 +9,7 @@ import { SelectField, type SelectOption } from './select-field';
 /** Presentation only: values and changes belong to the list URL. */
 export function ColumnFilter({ label, active, children }: { label: string; active: boolean; children: ReactNode }) {
   return <Popover>
-    <PopoverTrigger render={<Button variant={active ? 'secondary' : 'ghost'} size="sm" className="min-h-10" />}
+    <PopoverTrigger render={<Button variant={active ? 'secondary' : 'ghost'} size="sm" className="-ml-2 min-h-10 gap-1 px-2 text-xs font-medium tracking-wide text-muted-foreground uppercase hover:text-foreground data-[popup-open]:text-foreground" />}
       aria-label={`Filtrar ${label}${active ? ': filtro activo' : ''}`}>
       {label}<FunnelIcon aria-hidden="true" data-icon="inline-end" />{active ? <span aria-hidden="true">·</span> : null}
     </PopoverTrigger>

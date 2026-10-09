@@ -22,7 +22,7 @@ export function Assignment({ finding: f }: { finding: Finding }) {
       <div><dt className="flex items-center gap-2 text-xs text-muted-foreground"><UserCircleIcon aria-hidden="true" />Responsable de corrección</dt><dd className="mt-1 font-medium">{d.data.users.find(u => u.id === f.responsibleId)?.name}</dd></div>
       <div><dt className="flex items-center gap-2 text-xs text-muted-foreground"><CalendarBlankIcon aria-hidden="true" />Fecha compromiso</dt><dd className="mt-1 font-medium"><span className="font-mono tabular-nums">{date(f.dueDate)}</span>{isOverdue(f) ? <span className="text-destructive"> · Vencido</span> : null}</dd></div>
     </dl>
-    {d.user.role === 'Inspector' && f.state !== 'Cerrado' ? <AssignmentDialog key={`${f.id}-${d.user.id}`} finding={f} /> : null}
+    {f.state !== 'Cerrado' ? <AssignmentDialog key={f.id} finding={f} /> : null}
   </Panel>;
 }
 

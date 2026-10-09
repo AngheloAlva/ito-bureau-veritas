@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRightIcon, CheckIcon, UserSwitchIcon } from '@phosphor-icons/react';
+import { ArrowRightIcon, CheckIcon } from '@phosphor-icons/react';
 import { useDemo } from '@/components/demo-provider';
 import { Badge, date } from '@/components/records/presentation';
 import { Button } from '@/components/ui/button';
@@ -18,8 +18,7 @@ export function FindingHero({ finding: f, project: p, inspection: i }: { finding
   const d = useDemo();
   const responsible = d.data.users.find(u => u.id === f.responsibleId)?.name;
   const current = STATES.indexOf(f.state);
-  const action = primaryActionFor(d.data, f, d.user.id);
-  const actor = action ? d.data.users.find(u => u.id === action.actorId) : null;
+  const action = primaryActionFor(f);
   const overdue = isOverdue(f);
 
   function run() {
@@ -55,11 +54,7 @@ export function FindingHero({ finding: f, project: p, inspection: i }: { finding
         })}
       </ol>
       <div className="flex shrink-0 flex-col gap-2 xl:items-end">
-        {action?.canAct ? <Button type="button" className="min-h-11 bg-[var(--brand-blue)] text-white hover:bg-[var(--brand-blue)]/90" onClick={run}><ArrowRightIcon data-icon="inline-start" />{action.label}</Button>
-          : action && actor ? <div className="flex flex-col gap-2 text-sm xl:items-end">
-            <p className="text-muted-foreground">Acción disponible para: <span className="font-medium text-foreground">{action.requiredRole} ({actor.name})</span></p>
-            <Button type="button" variant="outline" className="min-h-11" onClick={() => d.selectUser(actor.id)}><UserSwitchIcon data-icon="inline-start" />Cambiar a {action.requiredRole}</Button>
-          </div>
+        {action ? <Button type="button" className="min-h-11 bg-[var(--brand-blue)] text-white hover:bg-[var(--brand-blue)]/90" onClick={run}><ArrowRightIcon data-icon="inline-start" />{action.label}</Button>
           : <p className="text-sm text-muted-foreground">Hallazgo cerrado: no hay acciones pendientes.</p>}
       </div>
     </div>

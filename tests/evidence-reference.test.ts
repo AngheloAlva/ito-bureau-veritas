@@ -38,14 +38,11 @@ test('empty reference name is rejected without mutation', () => {
   assert.deepEqual(seed, snapshot);
 });
 
-test('named reference retains core actor, phase and closed permission gates', () => {
+test('named reference accepts any demo user, retains actor validity and closed gate', () => {
   const seed = createSeed();
   for (const user of seed.users) {
     for (const phase of ['detección', 'corrección'] as const) {
-      const allowed = user.role === 'Inspector' || (user.role === 'Responsable de corrección' && user.id === 'u2' && phase === 'corrección');
-      const add = () => addEvidenceReference(seed, 'H-001', user.id, phase, 'Respaldo', at);
-      if (allowed) assert.doesNotThrow(add);
-      else assert.throws(add, /No puede agregar/);
+      assert.doesNotThrow(() => addEvidenceReference(seed, 'H-001', user.id, phase, 'Respaldo', at));
     }
   }
   assert.throws(() => addEvidenceReference(seed, 'H-001', 'missing', 'detección', 'Respaldo', at), /Persona no válida/);

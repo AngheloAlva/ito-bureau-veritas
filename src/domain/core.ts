@@ -4,41 +4,41 @@ export class DomainError extends Error {}
 const requireValue = (ok:unknown,message:string) => { if(!ok) throw new DomainError(message); };
 export function validDate(value:string):boolean { return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value)) && new Date(value+'T12:00:00Z').toISOString().slice(0,10)===value; }
 function actor(data:Data,id:string){ const user=data.users.find(u=>u.id===id); requireValue(user,'Persona no válida.'); return user!; }
+/** Single demo identity: anyone may act, but each step is attributed to the role it represents. */
+function asRole(data:Data,id:string,role:'Inspector'|'Responsable de corrección'){ const user=actor(data,id); if(user.role===role) return user.id; const match=data.users.find(u=>u.role===role); requireValue(match,'Persona no válida.'); return match!.id; }
 function finding(data:Data,id:string){ const f=data.findings.find(f=>f.id===id); requireValue(f,'Hallazgo no encontrado.'); return f!; }
 function timestamp(at:string){ requireValue(!Number.isNaN(Date.parse(at)),'Fecha de evento no válida.'); return at; }
 function event(data:Data,f:Finding,actorId:string,type:Event['type'],comment:string,changes:Event['changes'],newState=f.state,at=new Date().toISOString()):Event {return {id:`ev-${data.version+1}-${data.events.length+1}`,findingId:f.id,type,actorId,at:timestamp(at),previousState:f.state,newState,comment,changes};}
 function update(data:Data,f:Finding,patch:Partial<Finding>,e:Event):Data{return {...data,version:data.version+1,findings:data.findings.map(item=>item.id===f.id?{...item,...patch}:item),events:[...data.events,e]};}
 export function transitionFinding(data:Data,id:string,actorId:string,target:State,options:{comment?:string;action?:string;evidenceId?:string;at?:string}={}):Data {
- const f=finding(data,id), user=actor(data,actorId); const comment=options.comment?.trim()??'';
- const correction=user.role==='Responsable de corrección'&&f.responsibleId===actorId;
- const inspector=user.role==='Inspector';
+ const f=finding(data,id); actor(data,actorId); const comment=options.comment?.trim()??'';
  let patch:Partial<Finding>={state:target};
- if(f.state==='Abierto'&&target==='En corrección') requireValue(correction,'Solo el responsable asignado puede iniciar la corrección.');
+ let attributed=f.responsibleId;
+ if(f.state==='Abierto'&&target==='En corrección'){/* allowed */}
  else if(f.state==='En corrección'&&target==='Pendiente de verificación') {
- requireValue(correction,'Solo el responsable asignado puede remitir la corrección.');
  requireValue(options.action?.trim(),'Indique la acción correctiva.');
  requireValue(data.evidence.some(e=>e.id===options.evidenceId&&e.findingId===id&&e.phase==='corrección'),'Seleccione evidencia de corrección del hallazgo.');
  patch={...patch,correctiveAction:options.action!.trim()};
- } else if(f.state==='Pendiente de verificación'&&(target==='Cerrado'||target==='En corrección')) { requireValue(inspector,'Solo un inspector puede verificar.'); requireValue(comment,target==='Cerrado'?'Indique el comentario de verificación.':'Indique el motivo de devolución.'); }
+ } else if(f.state==='Pendiente de verificación'&&(target==='Cerrado'||target==='En corrección')) { attributed=asRole(data,actorId,'Inspector'); requireValue(comment,target==='Cerrado'?'Indique el comentario de verificación.':'Indique el motivo de devolución.'); }
  else throw new DomainError('Transición no permitida.');
- return update(data,f,patch,event(data,f,actorId,'transición',comment,{state:{before:f.state,after:target},...(target==='Pendiente de verificación'?{evidenceId:{before:'',after:options.evidenceId!}}:{}),...(patch.correctiveAction?{correctiveAction:{before:f.correctiveAction,after:patch.correctiveAction}}:{})},target,options.at));
+ return update(data,f,patch,event(data,f,attributed,'transición',comment,{state:{before:f.state,after:target},...(target==='Pendiente de verificación'?{evidenceId:{before:'',after:options.evidenceId!}}:{}),...(patch.correctiveAction?{correctiveAction:{before:f.correctiveAction,after:patch.correctiveAction}}:{})},target,options.at));
 }
 export function assignFinding(data:Data,id:string,actorId:string,responsibleId:string,at?:string):Data {
- const f=finding(data,id); requireValue(actor(data,actorId).role==='Inspector','Solo un inspector puede asignar.'); requireValue(actor(data,responsibleId).role==='Responsable de corrección','Seleccione un responsable de corrección.'); requireValue(f.state!=='Cerrado','El hallazgo está cerrado.');
- return update(data,f,{responsibleId},event(data,f,actorId,'asignación','Responsable actualizado.',{responsibleId:{before:f.responsibleId,after:responsibleId}},f.state,at));
+ const f=finding(data,id); actor(data,actorId); requireValue(actor(data,responsibleId).role==='Responsable de corrección','Seleccione un responsable de corrección.'); requireValue(f.state!=='Cerrado','El hallazgo está cerrado.');
+ return update(data,f,{responsibleId},event(data,f,asRole(data,actorId,'Inspector'),'asignación','Responsable actualizado.',{responsibleId:{before:f.responsibleId,after:responsibleId}},f.state,at));
 }
 export function changeDueDate(data:Data,id:string,actorId:string,dueDate:string,confirmOverdue=false,at?:string):Data {
- const f=finding(data,id); requireValue(actor(data,actorId).role==='Inspector','Solo un inspector puede cambiar el plazo.'); requireValue(f.state!=='Cerrado','El hallazgo está cerrado.'); checkDue(dueDate,confirmOverdue);
- return update(data,f,{dueDate},event(data,f,actorId,'plazo','Plazo actualizado.',{dueDate:{before:f.dueDate,after:dueDate}},f.state,at));
+ const f=finding(data,id); actor(data,actorId); requireValue(f.state!=='Cerrado','El hallazgo está cerrado.'); checkDue(dueDate,confirmOverdue);
+ return update(data,f,{dueDate},event(data,f,asRole(data,actorId,'Inspector'),'plazo','Plazo actualizado.',{dueDate:{before:f.dueDate,after:dueDate}},f.state,at));
 }
 function checkDue(date:string,confirm:boolean){requireValue(validDate(date),'Fecha compromiso no válida.');requireValue(date>=REFERENCE_DATE||confirm,'La fecha dejará el hallazgo vencido. Confirme explícitamente.');}
 function requiredFields(values:string[]){requireValue(values.every(v=>typeof v==='string'&&v.trim()),'Complete todos los campos obligatorios.');}
 export function createInspection(data:Data,actorId:string,input:Omit<Inspection,'id'|'code'>,at=new Date().toISOString()):Data {
- requireValue(actor(data,actorId).role==='Inspector','Solo un inspector puede registrar inspecciones.'); requiredFields([input.sector,input.specialty,input.activity,input.result]);requireValue(data.projects.some(p=>p.id===input.projectId),'Proyecto no válido.');requireValue(actor(data,input.inspectorId).role==='Inspector','Inspector no válido.');requireValue(validDate(input.date),'Fecha de inspección no válida.');requireValue(['Programada','Completada'].includes(input.visitState),'Estado de visita no válido.');
+ actorId=asRole(data,actorId,'Inspector'); requiredFields([input.sector,input.specialty,input.activity,input.result]);requireValue(data.projects.some(p=>p.id===input.projectId),'Proyecto no válido.');requireValue(actor(data,input.inspectorId).role==='Inspector','Inspector no válido.');requireValue(validDate(input.date),'Fecha de inspección no válida.');requireValue(['Programada','Completada'].includes(input.visitState),'Estado de visita no válido.');
  const n=data.inspections.length+1;return {...data,version:data.version+1,inspections:[...data.inspections,{...input,id:`i${n}`,code:`I-${String(n).padStart(3,'0')}`}],inspectionEvents:[...data.inspectionEvents,{id:`iv-${data.version+1}-${data.inspectionEvents.length+1}`,inspectionId:`i${n}`,actorId,at:timestamp(at),type:'creación',previousState:null,newState:input.visitState}]};
 }
 export function completeInspection(data:Data,id:string,actorId:string,at=new Date().toISOString()):Data {
- requireValue(actor(data,actorId).role==='Inspector','Solo un inspector puede completar la visita.');
+ actorId=asRole(data,actorId,'Inspector');
  const inspection=data.inspections.find(i=>i.id===id);
  requireValue(inspection,'Inspección no encontrada.');
  requireValue(inspection!.visitState==='Programada','La visita ya está completada.');
@@ -46,12 +46,12 @@ export function completeInspection(data:Data,id:string,actorId:string,at=new Dat
 }
 export type NewFinding = Omit<Finding,'id'|'code'|'state'|'createdAt'|'correctiveAction'>;
 export function createFinding(data:Data,actorId:string,input:NewFinding,confirmOverdue=false,at=new Date().toISOString()):Data {
- requireValue(actor(data,actorId).role==='Inspector','Solo un inspector puede registrar hallazgos.');requiredFields([input.title,input.description,input.specialty,input.location]);requireValue(data.inspections.some(i=>i.id===input.inspectionId),'Inspección no válida.');requireValue(actor(data,input.responsibleId).role==='Responsable de corrección','Responsable no válido.');requireValue(['Baja','Media','Alta','Crítica'].includes(input.severity),'Severidad no válida.');checkDue(input.dueDate,confirmOverdue);
+ actorId=asRole(data,actorId,'Inspector');requiredFields([input.title,input.description,input.specialty,input.location]);requireValue(data.inspections.some(i=>i.id===input.inspectionId),'Inspección no válida.');requireValue(actor(data,input.responsibleId).role==='Responsable de corrección','Responsable no válido.');requireValue(['Baja','Media','Alta','Crítica'].includes(input.severity),'Severidad no válida.');checkDue(input.dueDate,confirmOverdue);
  const code=`H-${String(Math.max(0,...data.findings.map(f=>Number(f.code.slice(2))))+1).padStart(3,'0')}`;
  const f:Finding={...input,id:code,code,state:'Abierto',createdAt:timestamp(at),correctiveAction:''};return {...data,version:data.version+1,findings:[...data.findings,f],events:[...data.events,event(data,f,actorId,'creación','Hallazgo registrado.',{},f.state,at)]};
 }
 export function addExampleEvidence(data:Data,id:string,actorId:string,phase:'detección'|'corrección',at=new Date().toISOString()):Data {
- const f=finding(data,id),u=actor(data,actorId);requireValue(f.state!=='Cerrado'&&(u.role==='Inspector'||(u.role==='Responsable de corrección'&&f.responsibleId===actorId&&phase==='corrección')),'No puede agregar esta evidencia.');
+ const f=finding(data,id);actor(data,actorId);requireValue(f.state!=='Cerrado','No puede agregar esta evidencia.');actorId=phase==='corrección'?f.responsibleId:asRole(data,actorId,'Inspector');
  const evidence={id:`e-${data.version+1}`,findingId:id,name:`Respaldo de ${phase} de ejemplo`,type:'Texto',phase,reference:'/demo/evidencia.txt',addedBy:actorId,addedAt:timestamp(at),isExample:true};
  return {...update(data,f,{},event(data,f,actorId,'evidencia',`Evidencia de ${phase} de ejemplo agregada.`,{},f.state,at)),evidence:[...data.evidence,evidence]};
 }

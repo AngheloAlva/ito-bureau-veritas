@@ -20,12 +20,11 @@ export function FindingEvidence({ findingId, projectId, inspectionId, onCorrecti
 }) {
   const d = useDemo();
   const f = d.data.findings.find(f => f.id === findingId)!;
-  const inspector = d.user.role === 'Inspector';
-  const own = d.user.role === 'Responsable de corrección' && d.user.id === f.responsibleId;
+  const correcting = f.state === 'En corrección';
   return <Panel rule title="Evidencias y documentos">
-    {isActive(f) && (inspector || own) ? <div className="flex flex-wrap items-center justify-between gap-3">
+    {isActive(f) ? <div className="flex flex-wrap items-center justify-between gap-3">
       <p className="text-xs text-muted-foreground">Respaldos asociados a {f.code}</p>
-      <EvidenceDialog key={`${f.id}-${d.user.id}`} finding={f} phase={inspector ? 'detección' : 'corrección'} onAdded={own ? onCorrectionAdded : undefined} />
+      <EvidenceDialog key={`${f.id}-${f.state}`} finding={f} phase={correcting ? 'corrección' : 'detección'} onAdded={correcting ? onCorrectionAdded : undefined} />
     </div> : null}
     <Assets evidence={d.data.evidence.filter(e => e.findingId === findingId)} documents={d.data.documents.filter(doc => doc.projectId === projectId && (!doc.inspectionId || doc.inspectionId === inspectionId))} />
   </Panel>;

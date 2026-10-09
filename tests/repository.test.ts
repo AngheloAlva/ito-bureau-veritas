@@ -37,7 +37,7 @@ test('validación defensiva y persistencia con historial',()=>{
 test('almacenamiento falla sin perder sesión; análisis queda desactualizado',()=>{
  const repo=createRepository({getItem:()=>null,setItem:()=>{throw new Error('quota');}});repo.hydrate();const previous=analyze(repo.getSnapshot().data);
  repo.apply(d=>changeDueDate(d,'H-001','u1','2026-10-09'));assert.ok(repo.getSnapshot().error);assert.equal(repo.getSnapshot().data.findings[0].dueDate,'2026-10-09');assert.ok(isAnalysisStale(previous,repo.getSnapshot().data));
- assert.throws(()=>assignFinding(createSeed(),'H-001','u3','u2'));
+ assert.equal(assignFinding(createSeed(),'H-001','u3','u2').events.at(-1)?.actorId,'u1');
  const changed=assignFinding(createSeed(),'H-001','u1','u2');assert.equal(changed.events.at(-1)?.type,'asignación');
 });
 test('orden determinista: críticos, altos vencidos, otros; empate por plazo',()=>{

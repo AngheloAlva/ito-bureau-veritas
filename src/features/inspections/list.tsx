@@ -1,7 +1,6 @@
 'use client';
 
 import { pluralize } from '@/lib/format';
-import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useDemo } from '@/components/demo-provider';
 import { Heading, InspectionTable } from '@/components/records';
@@ -28,12 +27,6 @@ export function Inspections() {
   }, d.projectId);
   const { project: p, from, to, inspector, specialty, visitState } = f;
   const show = params.get('new') === '1';
-  const canCreate = d.user.role === 'Inspector';
-  useEffect(() => {
-    if (!canCreate && show) {
-      window.history.replaceState(null, '', updateListFilters(window.location.href, { new: '' }));
-    }
-  }, [canCreate, show]);
   function change(key: string, value: string) {
     window.history.pushState(null, '', updateListFilters(window.location.href, { [key]: value }));
   }
@@ -50,12 +43,12 @@ export function Inspections() {
   const count = `${pluralize(rows.length, 'inspección', 'inspecciones')} ${rows.length === 1 ? 'encontrada' : 'encontradas'}`;
   return <div className="flex min-w-0 flex-col gap-6">
     <Heading eyebrow="Registro de visitas" title="Inspecciones">
-      {canCreate ? <FormDialog title="Nueva inspección"
+      <FormDialog title="Nueva inspección"
         description="Registre una visita programada en el proyecto seleccionado."
         trigger={<Button>Crear inspección</Button>} open={show}
         onOpenChange={open => change('new', open ? '1' : '')}>
         <InspectionForm projectId={p} />
-      </FormDialog> : null}
+      </FormDialog>
     </Heading>
     <p className="text-sm text-muted-foreground">{p ? d.data.projects.find(item => item.id === p)?.name : 'Cartera completa'} · Visita y cierre de hallazgos son independientes.</p>
     <FilterToolbar title="Filtros de visita" count={count} chips={chips} onRemove={key => change(key, '')}

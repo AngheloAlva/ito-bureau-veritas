@@ -7,48 +7,37 @@ import { primaryActionFor } from '../src/lib/finding-actions.ts';
 const seed = createSeed();
 const h = (data = seed, id = 'H-001') => data.findings.find(f => f.id === id)!;
 
-test('Abierto: el responsable asignado puede iniciar; otros roles ven quién debe actuar', () => {
-  const f = h();
-  const own = primaryActionFor(seed, f, f.responsibleId)!;
-  assert.deepEqual([own.id, own.label, own.requiredRole, own.canAct], ['start', 'Iniciar corrección', 'Responsable de corrección', true]);
-  const insp = primaryActionFor(seed, f, 'u1')!;
-  assert.equal(insp.canAct, false);
-  assert.equal(insp.actorId, f.responsibleId);
+test('Abierto: acción primaria disponible y cualquier usuario demo puede iniciar la corrección', () => {
+  const a = primaryActionFor(h())!;
+  assert.deepEqual([a.id, a.label], ['start', 'Iniciar corrección']);
+  // former Inspector (u1) can start correction; step is attributed to the assigned responsible
+  const next = transitionFinding(seed, 'H-001', 'u1', 'En corrección', {});
+  assert.equal(h(next).state, 'En corrección');
+  assert.equal(next.events.at(-1)!.actorId, h().responsibleId);
 });
 
-test('En corrección: remitir a verificación para el responsable', () => {
-  const data = transitionFinding(seed, 'H-001', 'u2', 'En corrección', {});
-  const a = primaryActionFor(data, h(data), 'u2')!;
-  assert.deepEqual([a.id, a.label, a.canAct], ['submit', 'Remitir a verificación', true]);
-  assert.equal(primaryActionFor(data, h(data), 'u1')!.canAct, false);
+test('En corrección: remitir exige acción y evidencia, no un rol', () => {
+  const data = transitionFinding(seed, 'H-001', 'u1', 'En corrección', {});
+  assert.deepEqual([primaryActionFor(h(data))!.id, primaryActionFor(h(data))!.label], ['submit', 'Remitir a verificación']);
+  assert.throws(() => transitionFinding(data, 'H-001', 'u1', 'Pendiente de verificación', { action: '', evidenceId: 'e-correction' }), /acción correctiva/);
+  assert.throws(() => transitionFinding(data, 'H-001', 'u1', 'Pendiente de verificación', { action: 'x', evidenceId: 'nope' }), /evidencia/);
+  const sent = transitionFinding(data, 'H-001', 'u1', 'Pendiente de verificación', { action: 'x', evidenceId: 'e-correction' });
+  assert.equal(sent.events.at(-1)!.actorId, h().responsibleId);
 });
 
-test('Pendiente de verificación: inspector verifica y cierra; responsable no', () => {
+test('Pendiente de verificación: cualquier usuario cierra o devuelve con comentario; se atribuye al inspector', () => {
   let data = transitionFinding(seed, 'H-001', 'u2', 'En corrección', {});
   data = transitionFinding(data, 'H-001', 'u2', 'Pendiente de verificación', { action: 'x', evidenceId: 'e-correction' });
-  const a = primaryActionFor(data, h(data), 'u1')!;
-  assert.deepEqual([a.id, a.label, a.requiredRole, a.canAct], ['verify', 'Verificar y cerrar', 'Inspector', true]);
-  assert.equal(primaryActionFor(data, h(data), 'u2')!.canAct, false);
+  assert.deepEqual([primaryActionFor(h(data))!.id, primaryActionFor(h(data))!.label], ['verify', 'Verificar y cerrar']);
+  assert.throws(() => transitionFinding(data, 'H-001', 'u2', 'Cerrado', { comment: '  ' }), /comentario/);
+  assert.throws(() => transitionFinding(data, 'H-001', 'u2', 'En corrección', {}), /motivo/);
+  const closed = transitionFinding(data, 'H-001', 'u2', 'Cerrado', { comment: 'ok' });
+  const actor = closed.users.find(u => u.id === closed.events.at(-1)!.actorId)!;
+  assert.equal(actor.role, 'Inspector');
+  assert.equal(h(transitionFinding(data, 'H-001', 'u2', 'En corrección', { comment: 'falta' })).state, 'En corrección');
 });
 
-test('Cerrado y Coordinador: sin acción primaria', () => {
-  assert.equal(primaryActionFor(seed, { ...h(), state: 'Cerrado' }, 'u1'), null);
-  const coord = seed.users.find(u => u.role === 'Coordinador')!;
-  assert.equal(primaryActionFor(seed, h(), coord.id)!.canAct, false);
-});
-
-test('estado × rol: quién puede actuar en cada etapa del ciclo de H-001', () => {
-  const stages = [
-    ['Abierto', 'start', { u1: false, u2: true, u3: false }],
-    ['En corrección', 'submit', { u1: false, u2: true, u3: false }],
-    ['Pendiente de verificación', 'verify', { u1: true, u2: false, u3: false }],
-  ] as const;
-  let data = seed;
-  for (const [state, id, can] of stages) {
-    if (state !== 'Abierto') data = transitionFinding(data, 'H-001', 'u2', state, state === 'En corrección' ? {} : { action: 'x', evidenceId: 'e-correction', comment: 'ok' });
-    for (const [user, ok] of Object.entries(can)) {
-      const a = primaryActionFor(data, h(data), user)!;
-      assert.equal(a.id, id); assert.equal(a.canAct, ok, `${state} ${user}`);
-    }
-  }
+test('Cerrado: sin acción primaria y sin más transiciones', () => {
+  assert.equal(primaryActionFor({ ...h(), state: 'Cerrado' }), null);
+  assert.throws(() => transitionFinding(seed, 'H-001', 'u1', 'Cerrado', { comment: 'x' }), /Transición no permitida/);
 });

@@ -7,7 +7,7 @@ test('historial de visitas registra actor real, hora y estado sin alterar el ori
  const seed=createSeed();seed.users.push({id:'other',name:'Otra inspectora',role:'Inspector'});
  const input={...seed.inspections[0],inspectorId:'other',visitState:'Programada' as const};
  const at='2026-10-08T15:00:00Z';
- assert.throws(()=>createInspection(seed,'u2',input,at));
+ assert.equal(createInspection(seed,'u2',input,at).inspectionEvents[0].actorId,'u1');
  const created=createInspection(seed,'u1',input,at);
  assert.deepEqual(seed.inspectionEvents,[]);
  assert.deepEqual(created.inspectionEvents[0],{id:'iv-2-1',inspectionId:'i9',actorId:'u1',at,type:'creación',previousState:null,newState:'Programada'});
@@ -21,7 +21,7 @@ test('historial de visitas registra actor real, hora y estado sin alterar el ori
 test('completar visita es independiente de hallazgos y exige inspector',()=>{
  const seed=createSeed();
  const planned=createInspection(seed,'u1',{projectId:'p1',date:'2026-10-08',sector:'Norte',specialty:'Mecánica',inspectorId:'u1',activity:'Revisión',result:'Pendientes documentales',visitState:'Programada'});
- assert.throws(()=>completeInspection(planned,'i9','u2'));
+ assert.equal(completeInspection(planned,'i9','u2').inspections.find(i=>i.id==='i9')?.visitState,'Completada');
  assert.throws(()=>completeInspection(planned,'no-existe','u1'));
  const done=completeInspection(planned,'i9','u1');
  assert.equal(done.inspections.find(i=>i.id==='i9')?.visitState,'Completada');

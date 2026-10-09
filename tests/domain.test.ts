@@ -12,7 +12,7 @@ test('H-001 exige corrección y verificación; cierre recalcula y conserva histo
  const reviewing = transitionFinding(correcting,'H-001','u2','Pendiente de verificación',{action:'Solicitar respaldo firmado',evidenceId:'e-correction'});
  assert.equal(indicators(reviewing).active,indicators(seed).active);
  assert.equal(reviewing.events.at(-1)?.changes.evidenceId.after,'e-correction');
- assert.throws(()=>transitionFinding(reviewing,'H-001','u2','Cerrado',{comment:'Revisado'}));
+ assert.throws(()=>transitionFinding(reviewing,'H-001','u2','Cerrado',{comment:' '}));
  const closed = transitionFinding(reviewing,'H-001','u1','Cerrado',{comment:'Registro corresponde al tramo'});
  assert.equal(indicators(closed).active,indicators(seed).active-1);
  assert.equal(indicators(closed).overdue,indicators(seed).overdue-1);
@@ -23,7 +23,7 @@ test('asignación alternativa, plazo vencido, evidencia y devolución conservan 
  const seed=createSeed();
  const analysis=analyze(seed,'p1');
  let data=assignFinding(seed,'H-001','u1','u4');
- assert.throws(()=>transitionFinding(data,'H-001','u2','En corrección'));
+ assert.equal(transitionFinding(data,'H-001','u2','En corrección').events.at(-1)?.actorId,'u4');
  data=transitionFinding(data,'H-001','u4','En corrección');
  assert.throws(()=>changeDueDate(data,'H-001','u1','2026-10-05'));
  data=changeDueDate(data,'H-001','u1','2026-10-05',true);

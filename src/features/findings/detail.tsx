@@ -26,7 +26,7 @@ export function FindingDetail({ id }: { id: string }) {
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
       <div className="flex min-w-0 flex-col gap-6">
         <Detection finding={f} />
-        <Workflow key={`${f.id}-${d.user.role}`} finding={f} evidenceId={evidenceId} onEvidenceChange={selectEvidence} />
+        <Workflow key={f.id} finding={f} evidenceId={evidenceId} onEvidenceChange={selectEvidence} />
         <FindingEvidence findingId={f.id} projectId={p.id} inspectionId={i.id} onCorrectionAdded={selectEvidence} />
       </div>
       <aside className="flex min-w-0 flex-col gap-6" aria-label="Contexto y cronología del hallazgo">

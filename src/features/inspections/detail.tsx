@@ -26,14 +26,14 @@ export function InspectionDetail({ id }: { id: string }) {
         <div><dt className="text-xs text-muted-foreground">Resultado general</dt><dd>{i.result}</dd></div>
         <div><dt className="text-xs text-muted-foreground">Estado de visita</dt><dd>{i.visitState}</dd></div>
       </dl>
-      {d.user.role === 'Inspector' ? <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3">
         {i.visitState === 'Programada' ? <Button onClick={() => d.run(() => d.apply(data => completeInspection(data, id, d.user.id)), 'Visita completada. Los hallazgos asociados conservan su estado.')}>Completar visita</Button> : null}
         <FormDialog title={`Registrar hallazgo en ${i.code}`}
           description={`${p.code} · ${p.name}. El hallazgo quedará vinculado a esta inspección.`}
           trigger={<Button variant="outline">Registrar hallazgo</Button>}>
           <FindingForm inspectionId={id} />
         </FormDialog>
-      </div> : <p className="text-sm text-muted-foreground">Cambie al rol Inspector para registrar hallazgos o completar visitas.</p>}
+      </div>
       <p className="text-sm text-muted-foreground">Completar la visita no cierra los pendientes asociados.</p>
     </Panel>
     <InspectionHistory inspectionId={id} />

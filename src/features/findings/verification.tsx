@@ -9,7 +9,6 @@ import { FormError } from '@/components/shared/validated-form';
 import { FormDialog } from '@/components/shared/form-dialog';
 import { LiveValidatedForm } from './live-validated-form';
 import { date } from '@/components/records/presentation';
-import { SelectField } from '@/components/shared/select-field';
 import { TextField } from '@/components/shared/text-field';
 import { transitionFinding } from '@/domain/core';
 import type { Finding, State } from '@/domain/types';
@@ -47,8 +46,6 @@ function VerificationForm({ finding: f, onSaved }: { finding: Finding; onSaved: 
         <div><h3 className="text-xs font-medium text-muted-foreground">Acción correctiva registrada</h3><p className="mt-1 whitespace-pre-wrap [overflow-wrap:anywhere]">{f.correctiveAction || 'Sin registro.'}</p></div>
         <div><h3 className="text-xs font-medium text-muted-foreground">Evidencia de corrección</h3><p className="mt-1 [overflow-wrap:anywhere]">{evidence ? <a className="record-link" href={evidence.reference} target="_blank" rel="noreferrer">{evidence.name} ↗</a> : 'Sin evidencia seleccionada.'}{evidence ? <span className="block text-xs text-muted-foreground">{evidence.phase} · {date(evidence.addedAt)}</span> : null}</p></div>
       </section>
-      <SelectField name="verifier" label="Persona verificadora" value={d.user.id} onValueChange={d.selectUser}
-        options={d.data.users.filter(u => u.role === 'Inspector').map(u => ({ value: u.id, label: u.name }))} />
       <TextField name="comment" label="Comentario de verificación / motivo de devolución" required multiline value={comment} onChange={e => setComment(e.target.value)}
         placeholder="Describa la revisión; para devolver indique el motivo obligatorio." />
       <div className="flex flex-wrap gap-3">

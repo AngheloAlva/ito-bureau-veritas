@@ -26,14 +26,14 @@ export function Projects() {
 }
 
 export function ProjectDetail({ id }: { id: string }) {
-  const { data, user } = useDemo();
+  const { data } = useDemo();
   const project = data.projects.find(item => item.id === id);
   if (!project) return <Empty>Proyecto no encontrado. <Link className="record-link" href="/proyectos">Volver a proyectos</Link></Empty>;
   return (
     <>
       <nav aria-label="Ruta del proyecto" className="text-xs text-muted-foreground"><Link className="record-link" href="/proyectos">Proyectos</Link> / <span aria-current="page">{project.code}</span></nav>
       <Heading eyebrow={`${project.code} · contexto del proyecto`} title={project.name}>
-        {user.role === 'Inspector' ? <FormDialog title={`Crear inspección · ${project.code}`} description="Registre la visita en esta obra. Al guardar se abre su acta completa." trigger={<Button><CalendarPlusIcon aria-hidden="true" data-icon="inline-start" />Crear inspección</Button>}><InspectionForm projectId={id} /></FormDialog> : null}
+        <FormDialog title={`Crear inspección · ${project.code}`} description="Registre la visita en esta obra. Al guardar se abre su acta completa." trigger={<Button><CalendarPlusIcon aria-hidden="true" data-icon="inline-start" />Crear inspección</Button>}><InspectionForm projectId={id} /></FormDialog>
       </Heading>
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div className="flex min-w-0 flex-col gap-6"><ProjectContext project={project} data={data} /><Panel title="Visitas e inspecciones" description="Seleccione una visita para consultar su acta y los hallazgos asociados."><InspectionTable showProject={false} inspections={data.inspections.filter(inspection => inspection.projectId === id)} /></Panel><Panel title="Documentos de referencia"><Assets documents={data.documents.filter(document => document.projectId === id)} /></Panel></div>

@@ -9,7 +9,7 @@ import { REFERENCE_DATE } from '@/domain/types';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { useSidebar } from '@/components/ui/sidebar';
-import { ContextSelect, DemoControls, RoleSwitcher } from './demo-controls';
+import { ContextSelect, DemoControls } from './demo-controls';
 
 export function WorkspaceHeader() {
   const demo = useDemo();
@@ -37,7 +37,6 @@ export function WorkspaceHeader() {
         <span>Referencia · Santiago</span>
         <time dateTime={REFERENCE_DATE} className="font-semibold text-foreground tabular-nums">{formatDate(REFERENCE_DATE)}</time>
       </div>
-      <RoleSwitcher />
       <DemoControls />
     </header>
   );

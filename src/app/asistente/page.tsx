@@ -1,8 +1,12 @@
-import { Suspense } from 'react';
-import { AssistantView } from '@/features/assistant/assistant-view';
+import { redirect } from 'next/navigation';
 
-export const metadata = { title: 'Asistente de análisis' };
+type Params = Promise<Record<string, string | string[] | undefined>>;
 
-export default function Page() {
-  return <Suspense fallback={<p>Cargando asistente…</p>}><AssistantView /></Suspense>;
+// Legacy route: the assistant now lives in /analisis. Preserve the scope param.
+export default async function Page({ searchParams }: { searchParams: Params }) {
+  const params = await searchParams;
+  const raw = params.alcance ?? params.project;
+  const scope = Array.isArray(raw) ? raw[0] : raw;
+  if (scope === undefined) redirect('/analisis');
+  redirect(`/analisis?project=${encodeURIComponent(scope || 'all')}`);
 }

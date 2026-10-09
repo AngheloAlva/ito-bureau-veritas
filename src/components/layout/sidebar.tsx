@@ -7,7 +7,6 @@ import { ChartBarIcon } from '@phosphor-icons/react/dist/csr/ChartBar';
 import { BuildingsIcon } from '@phosphor-icons/react/dist/csr/Buildings';
 import { ClipboardTextIcon } from '@phosphor-icons/react/dist/csr/ClipboardText';
 import { WarningCircleIcon } from '@phosphor-icons/react/dist/csr/WarningCircle';
-import { ListChecksIcon } from '@phosphor-icons/react/dist/csr/ListChecks';
 import { PresentationChartIcon } from '@phosphor-icons/react/dist/csr/PresentationChart';
 import { CalendarDotsIcon } from '@phosphor-icons/react/dist/csr/CalendarDots';
 import { SparkleIcon } from '@phosphor-icons/react/dist/csr/Sparkle';
@@ -21,7 +20,7 @@ import { Separator } from '@/components/ui/separator';
 const portfolioRoutes = [
   { href: '/tablero', label: 'Tablero ejecutivo', icon: PresentationChartIcon },
   { href: '/programa', label: 'Programa de trabajo', icon: CalendarDotsIcon },
-  { href: '/asistente', label: 'Asistente IA', icon: SparkleIcon },
+  { href: '/analisis', label: 'Análisis IA', icon: SparkleIcon },
 ];
 
 const routes = [
@@ -30,7 +29,6 @@ const routes = [
   { href: '/proyectos', label: 'Proyectos', icon: BuildingsIcon },
   { href: '/inspecciones', label: 'Inspecciones', icon: ClipboardTextIcon },
   { href: '/hallazgos', label: 'Hallazgos', icon: WarningCircleIcon },
-  { href: '/analisis', label: 'Análisis asistido', icon: ListChecksIcon },
 ];
 
 function NavigationContent() {

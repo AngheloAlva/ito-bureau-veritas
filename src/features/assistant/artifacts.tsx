@@ -37,7 +37,7 @@ function PinButton({ artifact }: { artifact: SnapshotArtifact }) {
 function Frame({ title, href, copy, pin, children }: { title: string; href?: string; copy?: string; pin?: SnapshotArtifact; children: ReactNode }) {
   return <Card size="sm" className="animate-in fade-in slide-in-from-bottom-1 duration-500 motion-reduce:animate-none">
     <div className="flex flex-col gap-4 px-(--card-spacing)">
-      <div className="flex flex-col gap-0.5"><h3 className="text-sm font-semibold">{title}</h3><p className="text-xs text-muted-foreground">Generado por el asistente · simulado</p></div>
+      <div className="flex flex-col gap-0.5"><h3 className="text-sm font-semibold">{title}</h3><p className="text-xs text-muted-foreground">Generado por el asistente</p></div>
       {children}
       {href || copy || pin ? <div className="flex flex-wrap gap-2">
         {href ? <Link href={href} className={buttonVariants({ variant: 'outline', size: 'sm' })}><ArrowSquareOutIcon data-icon="inline-start" />Abrir en el tablero</Link> : null}

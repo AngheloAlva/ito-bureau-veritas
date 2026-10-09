@@ -17,6 +17,16 @@ test('matchIntent recognises every suggested prompt', () => {
   for (const [intent, label] of Object.entries(INTENT_PROMPTS)) assert.equal(matchIntent(label), intent);
 });
 
+test('matchIntent maps analysis and prioritization phrasing to analysis', () => {
+  assert.equal(matchIntent('Analizar registros y priorizar'), 'analysis');
+  assert.equal(matchIntent('¿Qué debo priorizar?'), 'analysis');
+  assert.equal(matchIntent('muéstreme las prioridades'), 'analysis');
+  assert.equal(matchIntent('analizar registros'), 'analysis');
+  assert.equal(INTENT_PROMPTS.analysis, 'Analizar registros y priorizar');
+  assert.equal(Object.values(INTENT_PROMPTS)[0], INTENT_PROMPTS.analysis);
+  assert.equal(matchIntent('proyectos en riesgo'), 'risk');
+});
+
 test('matchIntent is accent and case insensitive and falls back to unknown', () => {
   assert.equal(matchIntent('RESUMEN EJECUTIVO'), 'summary');
   assert.equal(matchIntent('proyectos en riesgo'), 'risk');

@@ -8,10 +8,11 @@ import {
 import type { PortfolioFilter } from './portfolio-analytics.ts';
 import type { Tone } from './tones.ts';
 
-export type Intent = 'summary' | 'risk' | 'severity' | 'milestones' | 'clients' | 'upcoming' | 'reminder';
+export type Intent = 'analysis' | 'summary' | 'risk' | 'severity' | 'milestones' | 'clients' | 'upcoming' | 'reminder';
 export type MatchedIntent = Intent | 'unknown';
 
 export const INTENT_PROMPTS: Record<Intent, string> = {
+  analysis: 'Analizar registros y priorizar',
   summary: 'Resumen ejecutivo del mes',
   risk: '¿Qué proyectos están en riesgo?',
   severity: 'Hallazgos activos por severidad',
@@ -39,6 +40,7 @@ const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').t
 export function matchIntent(text: string): MatchedIntent {
   const t = norm(text);
   if (!t) return 'unknown';
+  if (/priori|analizar registros|analisis de registros/.test(t)) return 'analysis';
   if (/recordatorio|redact|correo|mensaje a los responsables/.test(t)) return 'reminder';
   if (/proxim|vencen|vencer|15 dias/.test(t)) return 'upcoming';
   if (/severidad|gravedad|criticos/.test(t)) return 'severity';
@@ -66,6 +68,7 @@ function scopeName(ctx: AssistantContext): string {
 const delayTone = (d: number): Tone => (d > 30 ? 'red' : d > 15 ? 'orange' : 'amber');
 
 const FOLLOW: Record<Intent, Intent[]> = {
+  analysis: ['reminder', 'risk', 'summary'],
   summary: ['risk', 'severity', 'milestones'],
   risk: ['upcoming', 'clients', 'reminder'],
   severity: ['reminder', 'risk', 'summary'],
@@ -83,6 +86,9 @@ export function buildAnswer(intent: MatchedIntent, ctx: AssistantContext): Answe
   const baseFilter = scopeFilter(ctx.scope);
 
   switch (intent) {
+    case 'analysis':
+      // The deterministic run is executed by the chat view; this is the fallback text.
+      return { text: `Analicé los registros de ${name} y prioricé lo que requiere atención.`, followUps: followUps('analysis') };
     case 'summary': {
       const k = portfolioKpis(view);
       const ind = indicators(ctx.data, ctx.scope || undefined);

@@ -46,7 +46,9 @@ dashboard for managers who visit monthly (summary first, drill down on demand), 
 - T7 done: commit 8530d31 (/mapa: SVG site diagram, PUNTO CRÍTICO hotspots, layers Hallazgos/Hitos/Flujo, Sheet detail panel). RED (module missing) → GREEN 98/98 per writer; typecheck/lint clean per writer; parent prod rebuild PASS, 6 routes 200, /mapa + /tablero prod screenshots reviewed, 0 console errors. Known: Sheet close sr-only label English; modal sheet blocks clicking other equipment.
 - Prod server running on :3001 (rebuilt 12:48) for internal showing.
 
-## Monday backlog (T6, T8)
+- Published (user-authorized): public GitHub repo https://github.com/AngheloAlva/ito-bureau-veritas, main fast-forwarded to feature branch; Vercel project ingenieria-simple/ito-bureau-veritas connected to GitHub, production https://ito-bureau-veritas.vercel.app (6 routes 200, CSS verified, 0 console errors). .vercelignore added (codegraph socket broke upload).
+
+## Remaining backlog (T6, T8) — started same day, 13:00
 - T6 chart builder + saved views; assistant 'fijar al tablero'.
 - T8: remove header scope selector; tune portfolio delays (values cluster at 26 d, only 1 milestone >30 d); S-curve deviation callout; tree auto-scroll hides root; Sheet sr-only 'Close' → 'Cerrar'; README/guion update; native RDD review of commits c763972..8530d31.
 - Native RDD review deferred until after the internal showing (workspace held parallel in-progress files).

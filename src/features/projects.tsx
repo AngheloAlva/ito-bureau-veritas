@@ -12,6 +12,7 @@ import { FormDialog } from '@/components/shared/form-dialog';
 import { InspectionForm } from './forms/inspection-form';
 import { ProjectCard } from './projects/project-card';
 import { ProjectContext } from './projects/project-context';
+import { ProjectMilestones } from './projects/milestones';
 
 export function Projects() {
   const { data, projectId } = useDemo();
@@ -36,7 +37,7 @@ export function ProjectDetail({ id }: { id: string }) {
         <FormDialog title={`Crear inspección · ${project.code}`} description="Registre la visita en esta obra. Al guardar se abre su acta completa." trigger={<Button><CalendarPlusIcon aria-hidden="true" data-icon="inline-start" />Crear inspección</Button>}><InspectionForm projectId={id} /></FormDialog>
       </Heading>
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <div className="flex min-w-0 flex-col gap-6"><ProjectContext project={project} data={data} /><Panel title="Visitas e inspecciones" description="Seleccione una visita para consultar su acta y los hallazgos asociados."><InspectionTable showProject={false} inspections={data.inspections.filter(inspection => inspection.projectId === id)} /></Panel><Panel title="Documentos de referencia"><Assets documents={data.documents.filter(document => document.projectId === id)} /></Panel></div>
+        <div className="flex min-w-0 flex-col gap-6"><ProjectContext project={project} data={data} /><ProjectMilestones projectId={id} /><Panel title="Visitas e inspecciones" description="Seleccione una visita para consultar su acta y los hallazgos asociados."><InspectionTable showProject={false} inspections={data.inspections.filter(inspection => inspection.projectId === id)} /></Panel><Panel title="Documentos de referencia"><Assets documents={data.documents.filter(document => document.projectId === id)} /></Panel></div>
         <ProjectChronology projectId={id} />
       </div>
     </>

@@ -8,7 +8,7 @@ import { Badge, date, Empty, Panel, time } from './presentation';
 
 export function ChronologyEvent({ at, actor, title, children }: { at: string; actor?: string; title: string; children?: ReactNode }) {
   return (
-    <li className="relative flex flex-col gap-2 border-l-2 border-border pb-6 pl-5 last:pb-0 before:absolute before:-left-1 before:top-1 before:size-1.5 before:bg-muted-foreground">
+    <li className="flex flex-col gap-2 border-b pb-4 mb-4 last:mb-0 last:border-b-0 last:pb-0">
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground"><time dateTime={at} className="font-mono tabular-nums">{time(at)}</time>{actor ? <span>{actor}</span> : null}</div>
       <h3 className="text-sm font-semibold">{title}</h3>
       {children}
@@ -55,7 +55,7 @@ export function ProjectChronology({ projectId }: { projectId: string }) {
                 </div>
                 <details className="operational-disclosure">
                   <summary>Corrección y verificación · {finding.code}</summary>
-                  <dl className="grid gap-3 border-l pl-3 pb-2 text-xs">
+                  <dl className="grid gap-3 rounded-sm bg-muted/50 p-3 text-xs">
                   <div><dt className="font-medium">Corrección registrada</dt><dd className="mt-1 whitespace-pre-wrap text-muted-foreground">{finding.correctiveAction || 'Sin registro.'}</dd></div>
                   <div><dt className="font-medium">Última verificación registrada</dt><dd className="mt-1 text-muted-foreground">{verification ? <><span className="block">{verification.newState} · {time(verification.at)}</span><span className="block">{data.users.find(user => user.id === verification.actorId)?.name}</span><span className="block whitespace-pre-wrap">{verification.comment}</span></> : 'Sin registro.'}</dd></div>
                   </dl>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowRightIcon } from '@phosphor-icons/react/dist/csr/ArrowRight';
 import { useDemo } from '@/components/demo-provider';
 import { Heading } from '@/components/records/presentation';
-import { Badge } from '@/components/ui/badge';
+import { healthBadgeProps, StatusBadge, statusBadgeProps } from '@/components/shared/status-badge';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { PORTFOLIO } from '@/data/portfolio';
 import { isOverdue } from '@/domain/core';
@@ -14,7 +14,7 @@ import type { Milestone, ProjectHealth } from '@/domain/portfolio';
 import { formatDate } from '@/lib/format';
 import { milestoneDelay } from '@/lib/portfolio-analytics';
 import { SITE_COMPONENTS, componentFindings, componentStatus, type ComponentStatus, type SiteComponent } from '@/lib/site-map';
-import { findingStateTone, milestoneStatusTone, projectHealthTone, severityTone, toneClasses, type Tone } from '@/lib/tones';
+import { findingStateTone, milestoneStatusTone, projectHealthTone, toneClasses, type Tone } from '@/lib/tones';
 import { cn } from '@/lib/utils';
 import { BasinArt, GalleryArt, GaugeArt, INK, PlantArt, Plate, PumpArt, SiteDefs, TankArt, ValveArt } from './art';
 
@@ -106,25 +106,26 @@ function Hotspot({ component, status, count, selectedId, onSelect, hitbox, layer
 function ZoneCard({ zone, data, dim, layers }: { zone: (typeof ZONES)[number]; data: Data; dim: boolean; layers: Layers }) {
   const { live, port, milestone, active, health } = projectInfo(data, zone.projectId);
   const t = projectHealthTone[health];
-  const chipW = health.length * 5.4 + 18;
+  const { icon: HealthIcon } = healthBadgeProps(health);
+  const chipW = health.length * 6.2 + 40;
   const { x, w } = zone;
   return (
     <g className={cn('sm-zone', dim && 'sm-dim')}>
       <rect x={x} y={ZONE_TOP} width={w} height={ZONE_H} rx="22" fill="#ffffff" fillOpacity="0.55" stroke="#c4d1e2" strokeWidth="1.4" strokeDasharray="7 6" />
       <g filter="url(#sm-card-shadow)">
-        <rect x={x} y="34" width={w} height="96" rx="14" fill="#fff" stroke="#d5deea" />
+        <rect x={x} y="12" width={w} height="118" rx="14" fill="#fff" stroke="#d5deea" />
       </g>
-      <rect x={x} y="34" width="5" height="96" rx="2.5" fill="#1d3b6e" />
-      <text x={x + 18} y="58" fontSize="14" fontWeight="700" letterSpacing="1.6" fill={INK}>{live?.code ?? zone.projectId.toUpperCase()}</text>
-      <g transform={`translate(${x + w - chipW - 14} 44)`}>
-        <rect width={chipW} height="20" rx="10" style={{ fill: `var(--tone-${t}-bg)` }} />
-        <text x={chipW / 2} y="13.5" textAnchor="middle" fontSize="9.5" fontWeight="700" letterSpacing="0.6" style={{ fill: `var(--tone-${t}-fg)` }}>{health.toUpperCase()}</text>
+      <text x={x + 16} y="36" fontSize="14" fontWeight="700" letterSpacing="1.6" fill={INK}>{live?.code ?? zone.projectId.toUpperCase()}</text>
+      <g transform={`translate(${x + 16} 44)`}>
+        <rect width={chipW} height="22" rx="11" style={{ fill: `var(--tone-${t}-bg)` }} />
+        <g transform="translate(10 5)" style={{ color: `var(--tone-${t}-fg)` }}><HealthIcon size={12} aria-hidden="true" /></g>
+        <text x="27" y="15" fontSize="11.5" fontWeight="600" style={{ fill: `var(--tone-${t}-fg)` }}>{health}</text>
       </g>
-      <text x={x + 18} y="76" fontSize="11" fill="#566782">{zone.short}</text>
-      <text x={x + 18} y="98" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">AVANCE FÍSICO</text>
-      <text x={x + w - 16} y="99" textAnchor="end" fontSize="14" fontWeight="700" fill={INK}>{live?.physicalProgress ?? port?.progress ?? 0} %</text>
-      <text x={x + 18} y="119" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">HALLAZGOS ACTIVOS</text>
-      <text x={x + w - 16} y="120" textAnchor="end" fontSize="14" fontWeight="700" fill={active > 0 ? '#b0301f' : INK}>{active}</text>
+      <text x={x + 16} y="84" fontSize="11" fill="#566782">{zone.short}</text>
+      <text x={x + 16} y="103" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">AVANCE FÍSICO</text>
+      <text x={x + w - 16} y="104" textAnchor="end" fontSize="14" fontWeight="700" fill={INK}>{live?.physicalProgress ?? port?.progress ?? 0} %</text>
+      <text x={x + 16} y="122" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">HALLAZGOS ACTIVOS</text>
+      <text x={x + w - 16} y="123" textAnchor="end" fontSize="14" fontWeight="700" fill={active > 0 ? '#b0301f' : INK}>{active}</text>
       {layers.milestones && milestone && (() => {
         const d = milestoneDelay(milestone);
         const late = d > 0 && milestone.status !== 'Completado';
@@ -134,7 +135,6 @@ function ZoneCard({ zone, data, dim, layers }: { zone: (typeof ZONES)[number]; d
           <g transform={`translate(${x} 458)`}>
             <line x1="22" x2="22" y1="-18" y2="0" stroke={INK} strokeWidth="2" />
             <g filter="url(#sm-card-shadow)"><rect width={w} height="52" rx="12" fill="#fff" stroke="#d5deea" /></g>
-            <rect width="5" height="52" rx="2.5" style={{ fill: `var(--tone-${col}-solid)` }} />
             <text x="18" y="21" fontSize="8.5" fontWeight="700" letterSpacing="1.2" fill="#6b7b93">HITO EN CURSO</text>
             <g transform={`translate(${w - pw - 12} 9)`}>
               <rect width={pw} height="18" rx="9" style={{ fill: `var(--tone-${col}-bg)` }} />
@@ -212,9 +212,8 @@ function Diagram({ data, selectedId, onSelect, layers }: { data: Data; selectedI
   );
 }
 
-function Chip({ tone, children }: { tone: Tone; children: ReactNode }) {
-  const c = toneClasses(tone);
-  return <span className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-[0.6875rem] font-semibold whitespace-nowrap', c.bg, c.fg)}>{children}</span>;
+function Chip({ tone, children, icon }: { tone: Tone; children: ReactNode; icon?: Parameters<typeof StatusBadge>[0]['icon'] }) {
+  return <StatusBadge tone={tone} icon={icon} size="sm">{children}</StatusBadge>;
 }
 const Section = ({ title, children }: { title: string; children: ReactNode }) => (
   <section className="flex flex-col gap-3 border-t px-6 py-5">
@@ -242,7 +241,7 @@ function DetailPanel({ data, component, onClose }: { data: Data; component: Site
           <SheetTitle className="bv-title text-2xl tracking-tight">{c.name}</SheetTitle>
           <SheetDescription className="sr-only">Detalle del equipo seleccionado en el mapa de faena.</SheetDescription>
           <div className="mt-1 flex flex-wrap gap-2">
-            <Chip tone={projectHealthTone[health]}>Proyecto · {health}</Chip>
+            <Chip tone={projectHealthTone[health]} icon={healthBadgeProps(health).icon}>Proyecto · {health}</Chip>
             <Chip tone={STATUS_TONE[status]}>{status === 'critical' ? 'Punto crítico' : status === 'warning' ? 'Atención' : 'Sin observaciones'}</Chip>
           </div>
         </SheetHeader>
@@ -254,7 +253,7 @@ function DetailPanel({ data, component, onClose }: { data: Data; component: Site
                   <Link href={`/hallazgos/${f.id}`} className="block rounded-xl border bg-card p-3 transition-colors hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-ring">
                     <div className="flex items-center justify-between gap-2 text-xs"><span className="font-semibold tracking-wide">{f.code}</span><span className={cn('tabular-nums', isOverdue(f) ? 'font-semibold text-tone-red-fg' : 'text-muted-foreground')}>{isOverdue(f) ? 'Vencido · ' : 'Plazo '}{formatDate(f.dueDate)}</span></div>
                     <p className="mt-1 text-sm leading-snug font-medium">{f.title}</p>
-                    <div className="mt-2 flex flex-wrap gap-1.5"><Chip tone={severityTone[f.severity]}>{f.severity}</Chip><Chip tone={findingStateTone[f.state]}>{f.state}</Chip></div>
+                    <div className="mt-2 flex flex-wrap gap-1.5"><Chip tone={statusBadgeProps(f.severity).tone} icon={statusBadgeProps(f.severity).icon}>{f.severity}</Chip><Chip tone={findingStateTone[f.state]} icon={statusBadgeProps(f.state).icon}>{f.state}</Chip></div>
                   </Link>
                 </li>
               ))}
@@ -322,7 +321,6 @@ export function SiteMap() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0 flex-1"><Heading eyebrow="Control operacional · corte 08 oct 2026" title="Mapa de faena" /></div>
-        <Badge variant="secondary">Ilustrativo · datos ficticios</Badge>
       </div>
       <p className="max-w-2xl text-sm text-muted-foreground">Vista esquemática de los proyectos en terreno. Seleccione un equipo para ver hallazgos, hitos y avance.</p>
       <LayerToggle layers={layers} setLayers={setLayers} />

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowRightIcon, CheckIcon } from '@phosphor-icons/react';
+import { StatusBadge, milestoneBadgeProps } from '@/components/shared/status-badge';
 import { Panel } from '@/components/records/presentation';
 import { PORTFOLIO } from '@/data/portfolio';
 import { REFERENCE_DATE } from '@/domain/types';
@@ -41,9 +42,7 @@ export function ProjectMilestones({ projectId }: { projectId: string }) {
                 </span>
                 <span className="line-clamp-2 text-xs leading-tight font-medium" title={m.name}>{m.name}</span>
                 <span className="text-[11px] text-muted-foreground tabular-nums">{fmtDate(m.actualEnd ?? m.plannedEnd)}</span>
-                <span className={cn('text-[11px] font-medium', isCurrent ? (late ? 'text-tone-red-fg' : 'text-tone-blue-fg') : 'text-muted-foreground')}>
-                  {isCurrent ? sublabel(m) : isDone ? 'Completado' : 'Pendiente'}
-                </span>
+                {(() => { const label = isCurrent ? sublabel(m) : isDone ? 'Completado' : 'Pendiente'; const b = milestoneBadgeProps(isCurrent ? m.status : label); return <StatusBadge tone={b.tone} icon={b.icon} size="sm" className="text-[11px]">{label}</StatusBadge>; })()}
               </li>
             );
           })}

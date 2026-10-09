@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNod
 import { CaretRightIcon } from '@phosphor-icons/react';
 import { REFERENCE_DATE } from '@/domain/types';
 import { daysBetween, addDays, HEALTH_TONE, type GanttRow, type GanttMilestone } from '@/lib/portfolio-analytics';
+import { StatusBadge, healthBadgeProps } from '@/components/shared/status-badge';
 import { milestoneStatusTone, toneClasses, type Tone } from '@/lib/tones';
 import { monthTicks, weekTicks, xForDate, spanWidth } from '@/lib/gantt-scale';
 import { cn } from '@/lib/utils';
@@ -26,8 +27,8 @@ type Tip = {
 };
 
 function Chip({ tone, children }: { tone: Tone; children: ReactNode }) {
-  const t = toneClasses(tone);
-  return <span className={cn('inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium', t.bg, t.fg)}><span aria-hidden="true" className={cn('size-1.5 rounded-full', t.solid)} />{children}</span>;
+  const icon = typeof children === 'string' ? healthBadgeProps(children).icon : undefined;
+  return <StatusBadge tone={tone} icon={icon} size="sm">{children}</StatusBadge>;
 }
 
 function TipCard({ tip, pos }: { tip: Tip; pos: { x: number; y: number } }) {

@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Heading } from '@/components/records/presentation';
-import { Badge } from '@/components/ui/badge';
 import { PORTFOLIO } from '@/data/portfolio';
 import { PROJECT_HEALTHS } from '@/domain/portfolio';
 import { applyPortfolioFilter, ganttRows, parsePortfolioFilter, serializePortfolioFilter, HEALTH_TONE, type PortfolioFilter } from '@/lib/portfolio-analytics';
@@ -42,7 +41,6 @@ export function Program() {
     <>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0 flex-1"><Heading eyebrow="Cartera de proyectos · corte 08 oct 2026" title="Programa de trabajo" /></div>
-        <Badge variant="secondary">Simulado · datos ficticios</Badge>
       </div>
       <p className="text-sm text-muted-foreground">Planificado frente a real por proyecto e hito. Haga clic en un proyecto para ver sus hitos.</p>
       <div className="flex flex-wrap items-center gap-3">

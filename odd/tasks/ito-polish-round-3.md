@@ -8,12 +8,15 @@ Final visual details from the user's review: dashboard canvas feel and chart gri
 and friendlier form controls (white fields with full borders, compact filter popover, rounded tables, aligned dialog actions).
 
 ## Tasks
-- [ ] P1 Dashboard (writer A): dotted canvas background in decomposition tree; grid lines (horizontal/vertical as fits)
+- [x] P1 Dashboard (writer A): dotted canvas background in decomposition tree; grid lines (horizontal/vertical as fits)
       on all dashboard charts like the S-curve; charts animate when filters change (not only on reload).
-- [ ] P2 Controls (writer B): inputs/selects/textarea/date trigger with full rounded border + white background (no
+- [x] P2 Controls (writer B): inputs/selects/textarea/date trigger with full rounded border + white background (no
       underline-only); search input + Filtros button white; compact filter popovers (smaller selects, tighter gaps);
       tables with proper rounded corners (header corner cell); form dialog actions on one row (Cancelar + primary).
-- [ ] P3 Integrate, verify, merge to main, confirm Vercel.
+- [x] P3 Integrate, verify, merge to main, confirm Vercel.
 
 ## Progress / evidence
-- (pending)
+- P1 done: root cause = vendored EvilCharts bar/area hard-coded isAnimationActive={false} with mount-only intro; now Recharts tween (450ms) after intro, reduced-motion off. Grid via chart-kit CategoryBars + client bars; dotted tree canvas. Writer: 109/109, typecheck, lint; parent reviewed /tmp/p1-tree.png, /tmp/p1-anim-800.png. No unit RED (presentation-only).
+
+- P2 done: 97a4715 (bordered white controls, compact popovers, rounded tables, FormActions one-row footer) + header alignment fix. Verify (gentle-ai-verify): 109/109, typecheck, lint, build PASS; dialogs/table/H-001/tablero visual checks OK, 0 console errors. Minor follow-ups: uneven dialog row gaps; 'Evidencia de corrección' placeholder selectable.
+- P3: merged to main and pushed (Vercel auto-deploy).

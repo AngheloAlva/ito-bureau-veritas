@@ -14,6 +14,13 @@
 - Borrador de informe y diálogo de impresión nativo; no generación de PDF en servidor.
 - Pruebas de dominio/repositorio; validación TypeScript, ESLint y build. No confundirlas con revisión visual, ensayo de navegador o certificación WCAG.
 
+## Módulos del tablero ejecutivo
+
+- **Real**: filtro cruzado en la URL, árbol de descomposición, Gantt plan vs real, mapa de faena ilustrado y asistente, todos calculados en el navegador sobre la cartera.
+- **Simulado**: la cartera (42 proyectos, hitos y clientes) es un conjunto estático, determinista y ficticio; el asistente usa reglas, sin IA generativa ni servicios externos.
+- Las vistas del constructor de gráficos se almacenan solo en este navegador.
+- Power BI sigue siendo el requisito de las bases; el tablero web es una propuesta complementaria, no un sustituto.
+
 ## Simulado
 
 | Elemento | Qué significa |

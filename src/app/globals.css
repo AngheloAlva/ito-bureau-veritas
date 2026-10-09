@@ -350,3 +350,13 @@
     linear-gradient(to left, rgb(0 0 0 / 0.16), transparent) right center / 14px 100% scroll no-repeat;
   background-color: var(--card);
 }
+
+/* Executive dashboard: decomposition tree columns slide/fade in as the path expands. */
+@keyframes tree-col-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.tree-col-in { animation: tree-col-in 180ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .tree-col-in { animation: none; }
+}

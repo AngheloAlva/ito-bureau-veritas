@@ -8,11 +8,14 @@ import { BuildingsIcon } from '@phosphor-icons/react/dist/csr/Buildings';
 import { ClipboardTextIcon } from '@phosphor-icons/react/dist/csr/ClipboardText';
 import { WarningCircleIcon } from '@phosphor-icons/react/dist/csr/WarningCircle';
 import { ListChecksIcon } from '@phosphor-icons/react/dist/csr/ListChecks';
+import { PresentationChartIcon } from '@phosphor-icons/react/dist/csr/PresentationChart';
 import { XIcon } from '@phosphor-icons/react/dist/csr/X';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+
+const portfolioRoutes = [{ href: '/tablero', label: 'Tablero ejecutivo', icon: PresentationChartIcon }];
 
 const routes = [
   { href: '/', label: 'Resumen', icon: ChartBarIcon },
@@ -35,6 +38,26 @@ function NavigationContent() {
       </SidebarHeader>
       <div className="px-5"><Separator /></div>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Gestión de cartera</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <nav aria-label="Gestión de cartera">
+              <SidebarMenu>
+                {portfolioRoutes.map(({ href, label, icon: Icon }) => {
+                  const active = href === '/' ? path === '/' : path.startsWith(href);
+                  return (
+                    <SidebarMenuItem key={href}>
+                      <SidebarMenuButton className="min-h-11 rounded-full px-4 text-sidebar-foreground/80 data-active:bg-copper-surface data-active:font-semibold data-active:text-sidebar-foreground" isActive={active} aria-current={active ? 'page' : undefined} render={<Link href={href} onClick={() => setOpenMobile(false)} />}>
+                        <Icon aria-hidden="true" />
+                        <span>{label}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </nav>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Control operacional</SidebarGroupLabel>
           <SidebarGroupContent>

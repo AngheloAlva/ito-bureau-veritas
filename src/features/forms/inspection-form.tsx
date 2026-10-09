@@ -35,7 +35,7 @@ export function InspectionForm({ projectId }: { projectId: string }) {
   return <ValidatedForm onSubmit={submit}>
     <FieldGroup>
       <FormError message={error} />
-      <FieldGroup className="grid md:grid-cols-2">
+      <FieldGroup className="grid items-start md:grid-cols-2">
         <SelectField name="project" label="Proyecto" required defaultValue={projectId} placeholder="Seleccione proyecto"
           options={d.data.projects.map(p => ({ value: p.id, label: `${p.code} · ${p.name}` }))} />
         <TextField name="sector" label="Sector" required />

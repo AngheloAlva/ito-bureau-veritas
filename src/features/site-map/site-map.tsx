@@ -107,25 +107,26 @@ function ZoneCard({ zone, data, dim, layers }: { zone: (typeof ZONES)[number]; d
   const { live, port, milestone, active, health } = projectInfo(data, zone.projectId);
   const t = projectHealthTone[health];
   const { icon: HealthIcon } = healthBadgeProps(health);
-  const chipW = health.length * 6.2 + 40;
+  const chipW = health.length * 5.4 + 34;
   const { x, w } = zone;
+  const inset = w < 200 ? 12 : 16;
   return (
     <g className={cn('sm-zone', dim && 'sm-dim')}>
       <rect x={x} y={ZONE_TOP} width={w} height={ZONE_H} rx="22" fill="#ffffff" fillOpacity="0.55" stroke="#c4d1e2" strokeWidth="1.4" strokeDasharray="7 6" />
       <g filter="url(#sm-card-shadow)">
-        <rect x={x} y="12" width={w} height="118" rx="14" fill="#fff" stroke="#d5deea" />
+        <rect x={x} y="12" width={w} height="122" rx="14" fill="#fff" stroke="#d5deea" />
       </g>
-      <text x={x + 16} y="36" fontSize="14" fontWeight="700" letterSpacing="1.6" fill={INK}>{live?.code ?? zone.projectId.toUpperCase()}</text>
-      <g transform={`translate(${x + 16} 44)`}>
+      <text x={x + inset} y="36" fontSize={w < 200 ? 12 : 14} fontWeight="700" letterSpacing={w < 200 ? 0.6 : 1.6} fill={INK}>{live?.code ?? zone.projectId.toUpperCase()}</text>
+      <g transform={`translate(${x + w - inset - chipW} 20)`}>
         <rect width={chipW} height="22" rx="11" style={{ fill: `var(--tone-${t}-bg)` }} />
         <g transform="translate(10 5)" style={{ color: `var(--tone-${t}-fg)` }}><HealthIcon size={12} aria-hidden="true" /></g>
-        <text x="27" y="15" fontSize="11.5" fontWeight="600" style={{ fill: `var(--tone-${t}-fg)` }}>{health}</text>
+        <text x="27" y="15" fontSize="10" fontWeight="600" style={{ fill: `var(--tone-${t}-fg)` }}>{health}</text>
       </g>
-      <text x={x + 16} y="84" fontSize="11" fill="#566782">{zone.short}</text>
-      <text x={x + 16} y="103" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">AVANCE FÍSICO</text>
-      <text x={x + w - 16} y="104" textAnchor="end" fontSize="14" fontWeight="700" fill={INK}>{live?.physicalProgress ?? port?.progress ?? 0} %</text>
-      <text x={x + 16} y="122" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">HALLAZGOS ACTIVOS</text>
-      <text x={x + w - 16} y="123" textAnchor="end" fontSize="14" fontWeight="700" fill={active > 0 ? '#b0301f' : INK}>{active}</text>
+      <text x={x + 16} y="62" fontSize="11" fill="#566782">{zone.short}</text>
+      <text x={x + 16} y="88" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">AVANCE FÍSICO</text>
+      <text x={x + w - 16} y="89" textAnchor="end" fontSize="14" fontWeight="700" fill={INK}>{live?.physicalProgress ?? port?.progress ?? 0} %</text>
+      <text x={x + 16} y="113" fontSize="8.5" fontWeight="600" letterSpacing="1.2" fill="#6b7b93">HALLAZGOS ACTIVOS</text>
+      <text x={x + w - 16} y="114" textAnchor="end" fontSize="14" fontWeight="700" fill={active > 0 ? '#b0301f' : INK}>{active}</text>
       {layers.milestones && milestone && (() => {
         const d = milestoneDelay(milestone);
         const late = d > 0 && milestone.status !== 'Completado';

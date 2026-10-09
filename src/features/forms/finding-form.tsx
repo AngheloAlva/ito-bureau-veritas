@@ -45,7 +45,7 @@ export function FindingForm({ inspectionId }: { inspectionId: string }) {
       <FieldDescription>Inspección de origen: {inspection?.code}. Código automático.</FieldDescription>
       <TextField name="title" label="Título" required />
       <TextField name="description" label="Descripción" required multiline />
-      <FieldGroup className="grid md:grid-cols-2">
+      <FieldGroup className="grid items-start md:grid-cols-2">
         <TextField name="specialty" label="Especialidad" defaultValue={inspection?.specialty} required />
         <TextField name="location" label="Ubicación / tramo" required />
         <SelectField name="severity" label="Severidad" defaultValue="Media"

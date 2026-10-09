@@ -1,55 +1,73 @@
 'use client';
 
-import { applyPortfolioFilter, clientBreakdown, omitKey } from '@/lib/portfolio-analytics';
+import { LabelList } from 'recharts';
+import { EvilBarChart } from '@/components/evilcharts/charts/recharts-bar-chart';
+import { ChartTooltip } from '@/components/evilcharts/ui/recharts-tooltip';
+import type { ChartConfig } from '@/components/evilcharts/ui/recharts-chart';
+import { applyPortfolioFilter, clientBreakdown, omitKey, HEALTH_TONE } from '@/lib/portfolio-analytics';
 import { PROJECT_HEALTHS } from '@/domain/portfolio';
-import { HEALTH_TONE } from '@/lib/portfolio-analytics';
-import { toneClasses } from '@/lib/tones';
 import { PORTFOLIO } from '@/data/portfolio';
-import { ChartCard, dim } from './card-shell';
-import { TipBody, pctOf, useChartTooltip } from './chart-tooltip';
+import { ChartCard } from './card-shell';
+import { KeyboardLayer, pct, toneVar, type Cat } from './chart-kit';
 import type { ChartProps } from './types';
 
+const SERIES = { Completado: 'done', 'En curso': 'active', Atrasado: 'late' } as const;
+const config: ChartConfig = Object.fromEntries(PROJECT_HEALTHS.map(h => [SERIES[h], { label: h, colors: { light: [toneVar(HEALTH_TONE[h])], dark: [toneVar(HEALTH_TONE[h])] } }]));
+
+type Row = { key: string; label: string; total: number; grand: number; delay: number; done: number; active: number; late: number; __dim: boolean };
+
+function ClientTooltip({ active, payload }: { active?: boolean; payload?: { payload?: Row }[] }) {
+  const r = payload?.[0]?.payload;
+  if (!active || !r) return <span className="p-4" />;
+  return (
+    <div className="grid min-w-40 gap-1 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl tabular-nums">
+      <span className="font-semibold">{r.label}</span>
+      {PROJECT_HEALTHS.map(h => (
+        <span key={h} className="flex items-center justify-between gap-4 text-muted-foreground">
+          <span className="flex items-center gap-1.5"><span className="size-2 rounded-full" style={{ background: toneVar(HEALTH_TONE[h]) }} aria-hidden="true" />{h}</span>
+          <span className="font-semibold text-foreground">{r[SERIES[h]]}</span>
+        </span>
+      ))}
+      <span className="border-t pt-1 text-muted-foreground">{r.total} proyectos · {pct(r.total, r.grand)}% de la vista{r.delay ? ` · atraso prom. ${r.delay} d` : ' · sin atraso'}</span>
+    </div>
+  );
+}
+
 export function ClientBars({ filter, toggle }: ChartProps) {
-  const rows = clientBreakdown(applyPortfolioFilter(PORTFOLIO, omitKey(filter, 'clientId')), PORTFOLIO.clients).filter(r => r.total > 0);
-  const grand = rows.reduce((a, r) => a + r.total, 0);
-  const max = Math.max(...rows.map(r => r.total), 1);
-  const { ref, bind, node } = useChartTooltip();
+  const found = clientBreakdown(applyPortfolioFilter(PORTFOLIO, omitKey(filter, 'clientId')), PORTFOLIO.clients).filter(r => r.total > 0);
+  const grand = found.reduce((a, r) => a + r.total, 0);
   const any = !!filter.clientId;
+  const rows: Row[] = found.map(r => ({
+    key: r.clientId, label: r.short, total: r.total, grand, delay: r.avgDelayDays,
+    done: r.byHealth.Completado, active: r.byHealth['En curso'], late: r.byHealth.Atrasado, __dim: any && filter.clientId !== r.clientId,
+  }));
+  const cats: Cat[] = found.map(r => ({ key: r.clientId, label: `${r.name}, ${r.avgDelayDays ? `atraso promedio ${r.avgDelayDays} días` : 'sin atraso'}`, value: r.total, color: '', selected: filter.clientId === r.clientId, onPick: () => toggle('clientId', r.clientId) }));
   const hint = filter.clientId ? PORTFOLIO.clients.find(c => c.id === filter.clientId)?.name : null;
+  const h = Math.max(150, rows.length * 38);
   return (
     <ChartCard title="Proyectos por cliente" subtitle="Estado de los proyectos de cada mandante." hint={hint}>
-      <div ref={ref} className="relative">
-        <ul className="space-y-1" aria-label="Proyectos por cliente">
-          {rows.map(r => {
-            const sel = filter.clientId === r.clientId;
-            return (
-              <li key={r.clientId}>
-                <button
-                  type="button" aria-pressed={sel} aria-label={`${r.name}: ${r.total} proyectos, atraso promedio ${r.avgDelayDays} días`}
-                  onClick={() => toggle('clientId', r.clientId)}
-                  className={`grid w-full grid-cols-[5.5rem_1fr_auto] items-center gap-3 rounded-lg px-2 py-2 text-left outline-none transition hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none ${dim(sel, any)} ${sel ? 'bg-copper-surface' : ''}`}
-                  {...bind(<TipBody label={r.name} value={PROJECT_HEALTHS.map(h => `${h}: ${r.byHealth[h]}`).join(' · ')} pct={pctOf(r.total, grand)} extra={r.avgDelayDays ? `Atraso prom. ${r.avgDelayDays} d` : 'Sin hitos atrasados'} />)}
-                >
-                  <span className="truncate text-sm font-medium">{r.short}</span>
-                  <span className="flex h-5 overflow-hidden rounded-full bg-muted" style={{ width: `${(r.total / max) * 100}%`, minWidth: 24 }}>
-                    {PROJECT_HEALTHS.map(h => r.byHealth[h] > 0 && (
-                      <span key={h} className={`flex items-center justify-center text-[10px] font-semibold text-white transition-[flex-grow] duration-300 ${toneClasses(HEALTH_TONE[h]).solid}`} style={{ flexGrow: r.byHealth[h] }}>{r.byHealth[h]}</span>
-                    ))}
-                  </span>
-                  <span className="text-right text-xs tabular-nums">
-                    <span className="block text-sm font-semibold">{r.total}</span>
-                    <span className={r.avgDelayDays ? 'text-tone-red-fg' : 'text-muted-foreground'}>{r.avgDelayDays ? `prom. ${r.avgDelayDays} d de atraso` : 'sin atraso'}</span>
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <ul className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground" aria-label="Leyenda">
-          {PROJECT_HEALTHS.map(h => <li key={h} className="flex items-center gap-1.5"><span className={`size-2.5 rounded-full ${toneClasses(HEALTH_TONE[h]).solid}`} aria-hidden="true" />{h}</li>)}
-        </ul>
-        {node}
+      <div className="relative" role="group" aria-label="Proyectos por cliente" style={{ height: h }}>
+        <div aria-hidden="true" className="size-full">
+          <EvilBarChart
+            data={rows} config={config} layout="horizontal" stackType="stacked" barRadius={4} className="size-full aspect-auto" barCategoryGap="16%"
+            chartProps={{ accessibilityLayer: false, margin: { top: 0, right: 8, bottom: 0, left: 0 }, style: { cursor: 'pointer' },
+              onClick: (s: { activeTooltipIndex?: string | number | null }) => { const i = Number(s?.activeTooltipIndex); if (Number.isInteger(i)) cats[i]?.onPick?.(); } }}
+          >
+            <EvilBarChart.YAxis dataKey="label" width={96} interval={0} tick={{ fontSize: 12 }} tickMargin={6} />
+            <EvilBarChart.XAxis hide />
+            <ChartTooltip cursor={false} content={<ClientTooltip />} />
+            {PROJECT_HEALTHS.map(hh => (
+              <EvilBarChart.Bar key={hh} dataKey={SERIES[hh]} barProps={{
+                children: <LabelList dataKey={SERIES[hh]} position="center" formatter={(v: unknown) => (Number(v) > 0 ? String(v) : '')} className="fill-white text-[11px] font-semibold tabular-nums" />,
+              }} />
+            ))}
+          </EvilBarChart>
+        </div>
+        <KeyboardLayer data={cats} unit="proyectos" axis="rows" />
       </div>
+      <ul className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground" aria-label="Leyenda">
+        {PROJECT_HEALTHS.map(hh => <li key={hh} className="flex items-center gap-1.5"><span className="size-2.5 rounded-full" style={{ background: toneVar(HEALTH_TONE[hh]) }} aria-hidden="true" />{hh}</li>)}
+      </ul>
     </ChartCard>
   );
 }

@@ -7,6 +7,7 @@ import { decompositionTree, type DecompositionDetail, type DecompositionNode, ty
 import { toneClasses } from '@/lib/tones';
 import { PORTFOLIO } from '@/data/portfolio';
 import { ChartCard } from './card-shell';
+import { STATUS_ICON, StatusChip } from './status-chip';
 
 const NODE_H = 56, GAP = 8, STRIDE = NODE_H + GAP, GUTTER = 36;
 const COLUMN_TITLES = ['Proyectos', 'Estado', 'Situación del hito', 'Hito', 'Detalle'];
@@ -23,16 +24,18 @@ function NodeButton({ node, parentCount, selected, onSelect, onFilter }: {
       <button
         type="button" aria-pressed={selected} aria-expanded={node.children ? selected : undefined}
         onClick={onSelect}
-        className={`group relative flex size-full flex-col justify-center overflow-hidden rounded-xl border bg-card py-1.5 pl-3 pr-10 text-left outline-none transition-[box-shadow,border-color,background-color] duration-150 hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none ${selected ? 'border-copper bg-copper-surface/60 ring-2 ring-copper/40' : 'border-border'}`}
+        className={`group relative flex size-full flex-col justify-center overflow-hidden rounded-xl border bg-card py-1.5 pl-3.5 pr-10 text-left outline-none transition-[box-shadow,border-color,background-color] duration-150 hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none ${selected ? 'border-copper/50 bg-copper-surface/70 ring-1 ring-copper/30' : 'border-border'}`}
       >
         <span className="flex items-baseline justify-between gap-2">
-          <span className={`truncate text-sm font-medium ${selected ? 'text-copper' : ''}`}>{node.label}</span>
+          <span className={`flex min-w-0 items-center gap-2 text-sm font-medium ${selected ? 'text-copper' : ''}`}>
+            {node.level !== 'root' && <span className={`size-2 shrink-0 rounded-full ${t.solid}`} aria-hidden="true" />}
+            <span className="truncate">{node.label}</span>
+          </span>
           {!isMs && <span className="shrink-0 text-sm font-semibold tabular-nums">{node.count}</span>}
         </span>
         {isMs
           ? <span className="truncate text-xs text-muted-foreground">{node.sublabel}</span>
           : <span className="mt-1.5 h-1.5 w-full rounded-full bg-muted"><span className={`block h-full rounded-full ${t.solid}`} style={{ width: `${pct}%` }} /></span>}
-        {isMs && <span className={`absolute inset-y-0 left-0 w-1 ${t.solid}`} aria-hidden="true" />}
       </button>
       {node.level !== 'root' && (
         <button
@@ -65,9 +68,9 @@ function DetailCard({ node, onFilter }: { node: DecompositionNode; onFilter: () 
     <div className="tree-col-in w-72 shrink-0 space-y-3 rounded-xl border border-copper/40 bg-card p-4 shadow-card">
       <div>
         <p className="text-sm font-semibold leading-snug">{node.label}</p>
-        <span className={`mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums ${late ? 'bg-tone-red-bg text-tone-red-fg' : 'bg-tone-green-bg text-tone-green-fg'}`}>
+        <StatusChip tone={late ? 'red' : 'green'} icon={late ? (d.delay > 30 ? STATUS_ICON['Más de 30 días'] : STATUS_ICON.Atrasado) : STATUS_ICON.Completado} className="mt-2">
           {late ? `${d.delay} d de atraso` : `${-d.delay} d de holgura`}
-        </span>
+        </StatusChip>
       </div>
       <dl className="grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm">
         <div><dt className="text-xs text-muted-foreground">Fecha planificada</dt><dd className="font-medium tabular-nums">{fmtDate(d.plannedEnd)}</dd></div>

@@ -3,15 +3,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { problemProjects, HEALTH_TONE, type PortfolioView } from '@/lib/portfolio-analytics';
-import { toneClasses, type Tone } from '@/lib/tones';
+import type { Tone } from '@/lib/tones';
+import { STATUS_ICON, StatusChip } from './status-chip';
 import { ChartCard } from './card-shell';
 
 const MAX = 8;
-function daysPill(d: number): { tone: Tone; text: string } {
-  if (d > 30) return { tone: 'red', text: `${d} d` };
-  if (d > 15) return { tone: 'orange', text: `${d} d` };
-  if (d > 0) return { tone: 'amber', text: `${d} d` };
-  return { tone: 'sky', text: 'En riesgo' };
+function daysPill(d: number): { tone: Tone; text: string; icon: typeof STATUS_ICON[string] } {
+  if (d > 30) return { tone: 'red', text: `${d} d`, icon: STATUS_ICON['Más de 30 días'] };
+  if (d > 15) return { tone: 'orange', text: `${d} d`, icon: STATUS_ICON.Atrasado };
+  if (d > 0) return { tone: 'amber', text: `${d} d`, icon: STATUS_ICON.Atrasado };
+  return { tone: 'sky', text: 'En riesgo', icon: STATUS_ICON['En riesgo'] };
 }
 
 export function ProblemTable({ view, projectId, onPick }: { view: PortfolioView; projectId?: string; onPick: (id: string) => void }) {
@@ -41,9 +42,9 @@ export function ProblemTable({ view, projectId, onPick }: { view: PortfolioView;
                     </td>
                     <td className="px-2 py-2.5">{r.clientShort}</td>
                     <td className="max-w-72 px-2 py-2.5 text-muted-foreground">{r.problem}</td>
-                    <td className="px-2 py-2.5"><span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums ${toneClasses(pill.tone).bg} ${toneClasses(pill.tone).fg}`}>{pill.text}</span></td>
+                    <td className="px-2 py-2.5"><StatusChip tone={pill.tone} icon={pill.icon}>{pill.text}</StatusChip></td>
                     <td className="px-2 py-2.5">{r.responsible}</td>
-                    <td className="px-2 py-2.5"><span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${toneClasses(HEALTH_TONE[r.health]).bg} ${toneClasses(HEALTH_TONE[r.health]).fg}`}>{r.health}</span></td>
+                    <td className="px-2 py-2.5"><StatusChip tone={HEALTH_TONE[r.health]} icon={STATUS_ICON[r.health]}>{r.health}</StatusChip></td>
                     <td className="px-2 py-2.5 text-right">{r.operational && <Link href={`/proyectos/${r.projectId}`} className="whitespace-nowrap text-xs font-semibold text-copper underline-offset-4 hover:underline">Ver ficha</Link>}</td>
                   </tr>
                 );

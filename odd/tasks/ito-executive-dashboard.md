@@ -21,10 +21,10 @@ dashboard for managers who visit monthly (summary first, drill down on demand), 
       soft shadows, rich status color system for finding states, severities, project and milestone states).
 - [x] T2 Portfolio data: clients (mandantes), ~42 projects (incl. p1–p3), milestones with planned/actual dates,
       status, responsible; pure analytics selectors (KPIs, decomposition tree, buckets, clients, problem projects, cross-filter) + tests.
-- [ ] T3 Executive dashboard `/tablero`: KPIs, interactive horizontal decomposition tree, donut, histogram, client bars,
+- [x] T3 Executive dashboard `/tablero`: KPIs, interactive horizontal decomposition tree, donut, histogram, client bars,
       problem projects table; global cross-filter in URL with chips; drill-through links; nav entry.
-- [ ] T4 Programa: portfolio Gantt (planned dashed vs actual solid, today line, tooltip) + project milestone line on project detail.
-- [ ] T5 AI assistant: visible project picker, simulated chat with suggested prompts, answers with generated charts, pin to dashboard.
+- [x] T4 Programa: portfolio Gantt (planned dashed vs actual solid, today line, tooltip) + project milestone line on project detail.
+- [x] T5 AI assistant: visible project picker, simulated chat with suggested prompts, answers with generated charts, pin to dashboard.
 - [ ] T6 Chart builder (metric × dimension × chart type) + saved views on dashboard.
 - [ ] T7 Interactive illustrated site diagram (pumping station / gallery / water pipeline) with critical points + side panel.
 - [ ] T8 Remove header scope selector (page-level scope), polish, docs (README, guion), full verification.
@@ -37,6 +37,13 @@ dashboard for managers who visit monthly (summary first, drill down on demand), 
 - T1 done: commit c763972. Tokens: --tone-<name>-fg|bg|solid, --chart-1..8, --copper, shadow-card; src/lib/tones.ts maps. Checks: typecheck/lint clean in T1 files; pre-existing lint error src/components/layout/status.tsx:18 (set-state-in-effect) → fix in T8. Screenshot /tmp/p-home.png reviewed.
 - T2 done: commit db9310b. RED (module not found) → GREEN 77/77, typecheck clean. 42 projects 24/13/5, 274 milestones; late situations thin (Atraso>30 d = 1) → consider tuning in T8.
 - T3 (/tablero) and T4 (/programa + project milestone line) running in parallel on disjoint surfaces; parent adds /programa nav entry after T3.
+- T4 done: commit 82b56dc (/programa Gantt, project 'Hitos del proyecto' stepper + mini-Gantt). Tests 85/85 incl. 4 gantt-scale (no RED captured — writer implemented first; disclosed). Screenshots /tmp/t4-programa.png, /tmp/t4-p2.png reviewed. Pending: /programa nav entry (after T3 frees sidebar), Trimestre scale not screenshotted.
+- T3 done: commit b8f517b (/tablero: KPIs, decomposition tree, donut, histogram, situation bars, client bars, S-curve, problem table; URL cross-filter + chips + copy link). RED (chart-geometry module missing) → GREEN. Browser: legend + tree path cross-filter verified by writer; parent reviewed /tmp/p-tab.png. Follow-ups (T8): delay values cluster at 26 d (data tuning), S-curve deviation callout semantics, tree auto-scroll hides root.
+- Nav: /programa + /asistente entries added (separate commit).
+- T5 done: commit f23484f (/asistente chat: 7 intents, thinking steps, streaming, KPI/bar/donut/line/table/draft artifacts with 'Abrir en el tablero'; /analisis visible scope picker + callout). RED (module missing) → GREEN 94/94. Pin-to-dashboard deferred (T6). Screenshots /tmp/t5-chat.png, /tmp/t5-analisis.png reviewed.
+- Verification (gentle-ai-verify, 12:28–12:30): test 94/94, typecheck, lint, build PASS; 11 routes smoke OK (no overlays/console errors); /tablero client cross-filter PASS. status.tsx lint fix committed 32e5d2f. Parent finished /asistente donut + S-curve checks on prod build (:3001).
+- Incident: user's ito dev server on :3000 stopped; BIMAKERS dev server took :3000 at 12:30 (untouched). Prod build served stale CSS from .next/cache/turbopack → cache moved to /tmp, rebuilt, CSS verified (copper tokens present). Prod server left running on :3001 for the showing.
+- T7 (/mapa illustrated diagram) launched 12:40.
 - Native RDD review deferred until after the internal showing (workspace held parallel in-progress files).
 
 ## Next step

@@ -11,6 +11,7 @@ import { ListChecksIcon } from '@phosphor-icons/react/dist/csr/ListChecks';
 import { PresentationChartIcon } from '@phosphor-icons/react/dist/csr/PresentationChart';
 import { CalendarDotsIcon } from '@phosphor-icons/react/dist/csr/CalendarDots';
 import { SparkleIcon } from '@phosphor-icons/react/dist/csr/Sparkle';
+import { MapTrifoldIcon } from '@phosphor-icons/react/dist/csr/MapTrifold';
 import { XIcon } from '@phosphor-icons/react/dist/csr/X';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -24,6 +25,7 @@ const portfolioRoutes = [
 ];
 
 const routes = [
+  { href: '/mapa', label: 'Mapa de faena', icon: MapTrifoldIcon },
   { href: '/', label: 'Resumen', icon: ChartBarIcon },
   { href: '/proyectos', label: 'Proyectos', icon: BuildingsIcon },
   { href: '/inspecciones', label: 'Inspecciones', icon: ClipboardTextIcon },

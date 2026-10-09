@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { CalendarCheckIcon, CheckCircleIcon, ClockIcon, CircleIcon, WrenchIcon, WarningIcon, BuildingsIcon, FilesIcon } from '@phosphor-icons/react';
 import { cn } from 'cn';
+import { findingStateTone, severityTone, toneClasses, type Tone } from '@/lib/tones';
 import { Badge as PrimitiveBadge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Empty as EmptyRoot, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty';
@@ -19,24 +20,18 @@ export function Heading({ eyebrow, title, children }: { eyebrow: string; title: 
   );
 }
 
-const danger = new Set(['Crítica', 'Vencido']);
-const warning = new Set(['Alta', 'Vence hoy']);
-const success = new Set(['Cerrado', 'Completada', 'Finalizado']);
-const information = new Set(['En corrección']);
+const textTone: Record<string, Tone> = {
+  ...findingStateTone, ...severityTone,
+  Vencido: 'red', 'Vence hoy': 'amber', Completada: 'green', Finalizado: 'green', Programada: 'blue', 'En ejecución': 'teal',
+};
 
 export function Badge({ children }: { children: ReactNode }) {
   const text = typeof children === 'string' ? children.replace(/^Severidad /, '') : '';
-  const tone = danger.has(text) ? 'danger' : warning.has(text) ? 'warning' : success.has(text) ? 'success' : information.has(text) ? 'information' : 'neutral';
-  const tones = {
-    danger: 'bg-destructive/10 text-destructive',
-    warning: 'bg-warning-surface text-warning',
-    success: 'bg-success-surface text-success',
-    information: 'bg-correction-surface text-correction',
-    neutral: 'bg-muted text-muted-foreground',
-  };
-  const Icon = danger.has(text) || text === 'Alta' ? WarningIcon : text === 'Vence hoy' || text === 'Pendiente de verificación' ? ClockIcon : text === 'En corrección' ? WrenchIcon : text === 'Programada' || text === 'Completada' ? CalendarCheckIcon : success.has(text) ? CheckCircleIcon : CircleIcon;
+  const tone: Tone = textTone[text] ?? 'slate';
+  const c = toneClasses(tone);
+  const Icon = text === 'Crítica' || text === 'Alta' || text === 'Vencido' ? WarningIcon : text === 'Vence hoy' || text === 'Pendiente de verificación' ? ClockIcon : text === 'En corrección' ? WrenchIcon : text === 'Programada' || text === 'Completada' ? CalendarCheckIcon : text === 'Cerrado' || text === 'Finalizado' ? CheckCircleIcon : CircleIcon;
   const label = ['Crítica', 'Alta', 'Media', 'Baja'].includes(text) ? `Severidad ${text}` : text;
-  return <PrimitiveBadge aria-label={label || undefined} variant={tone === 'danger' ? 'destructive' : 'secondary'} data-tone={tone} className={cn('px-2 py-1 text-xs tracking-normal normal-case', tones[tone])}><Icon aria-hidden="true" />{children}</PrimitiveBadge>;
+  return <PrimitiveBadge aria-label={label || undefined} variant="secondary" data-tone={tone} className={cn('rounded-full px-2.5 py-1 text-xs tracking-normal normal-case', c.bg, c.fg)}><Icon aria-hidden="true" />{children}</PrimitiveBadge>;
 }
 
 export function Empty({ children = 'No hay registros para estos filtros.' }: { children?: ReactNode }) {

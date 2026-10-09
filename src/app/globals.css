@@ -5,56 +5,130 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --brand-blue: #00049e;
-  --brand-graphite: #333333;
-  --brand-sky: #00a8e8;
-  --brand-lavender: #a9a6f5;
-  --background: oklch(0.98 0.005 250);
+  --brand-blue: #1d3b6e;
+  --brand-graphite: #1b2b44;
+  --brand-sky: #2ba3dc;
+  --brand-lavender: #c2652f;
+  --copper: #c2652f;
+  --copper-surface: #fbeadf;
+  --teal: #0e8c7e;
+  --background: oklch(0.985 0.005 85);
   --surface: #ffffff;
-  --foreground: var(--brand-graphite);
+  --foreground: #1b2b44;
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
-  --primary: var(--brand-blue);
+  --primary: #1d3b6e;
   --primary-foreground: #ffffff;
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.965 0.008 85);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.48 0 0);
-  --accent: oklch(0.95 0 0);
-  --accent-foreground: var(--foreground);
-  --destructive: #a4212c;
-  --border: oklch(0.9 0 0);
-  --input: oklch(0.82 0 0);
-  --ring: var(--brand-blue);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.25rem;
-  --sidebar: var(--brand-graphite);
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: var(--brand-blue);
+  --muted: oklch(0.965 0.008 85);
+  --muted-foreground: oklch(0.47 0.02 70);
+  --accent: var(--copper-surface);
+  --accent-foreground: #7a3a14;
+  --destructive: #a9242f;
+  --border: oklch(0.915 0.01 80);
+  --input: oklch(0.84 0.012 80);
+  --ring: #1d3b6e;
+  --chart-1: #1d3b6e;
+  --chart-2: #0e8c7e;
+  --chart-3: #c2652f;
+  --chart-4: #7c5cd6;
+  --chart-5: #2ba3dc;
+  --chart-6: #e0a21b;
+  --chart-7: #d9507a;
+  --chart-8: #8592a6;
+  --radius: 0.875rem;
+  --shadow-card: 0 1px 2px rgb(27 43 68 / 0.04), 0 4px 16px rgb(27 43 68 / 0.05);
+  --sidebar: #fffdfa;
+  --sidebar-foreground: #1b2b44;
+  --sidebar-primary: #1d3b6e;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #444444;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #555555;
-  --sidebar-ring: #ffffff;
-  --sidebar-active-bar: #8a93ff;
-  --sidebar-active-fg: #c7cbff;
-  --warning: #805209;
-  --warning-surface: #fff5df;
-  --success: #226044;
-  --success-surface: #eef8f2;
-  --danger-surface: #fff0f1;
-  --information-surface: #eeefff;
-  --correction: #286660;
-  --correction-surface: #edf6f4;
+  --sidebar-accent: oklch(0.96 0.01 80);
+  --sidebar-accent-foreground: #1b2b44;
+  --sidebar-border: oklch(0.915 0.01 80);
+  --sidebar-ring: #1d3b6e;
+  --sidebar-active-bar: #c2652f;
+  --sidebar-active-fg: #c2652f;
+  --warning: var(--tone-amber-fg);
+  --warning-surface: var(--tone-amber-bg);
+  --success: var(--tone-green-fg);
+  --success-surface: var(--tone-green-bg);
+  --danger-surface: var(--tone-red-bg);
+  --information-surface: var(--tone-blue-bg);
+  --correction: var(--tone-violet-fg);
+  --correction-surface: var(--tone-violet-bg);
+  --tone-green-fg: #1E6B47;
+  --tone-green-bg: #E8F5EE;
+  --tone-green-solid: #2E9E6B;
+  --tone-blue-fg: #1F4E9E;
+  --tone-blue-bg: #E8F0FC;
+  --tone-blue-solid: #3B7DD8;
+  --tone-red-fg: #A9242F;
+  --tone-red-bg: #FDECEE;
+  --tone-red-solid: #D9434F;
+  --tone-amber-fg: #7A4F06;
+  --tone-amber-bg: #FFF3D6;
+  --tone-amber-solid: #E0A21B;
+  --tone-orange-fg: #9A4510;
+  --tone-orange-bg: #FFEBDD;
+  --tone-orange-solid: #E8772E;
+  --tone-violet-fg: #5B3FA6;
+  --tone-violet-bg: #F0EBFC;
+  --tone-violet-solid: #7C5CD6;
+  --tone-sky-fg: #0B5F8A;
+  --tone-sky-bg: #E3F3FB;
+  --tone-sky-solid: #2BA3DC;
+  --tone-slate-fg: #475467;
+  --tone-slate-bg: #EEF0F3;
+  --tone-slate-solid: #8592A6;
+  --tone-teal-fg: #0B6B60;
+  --tone-teal-bg: #E1F4F1;
+  --tone-teal-solid: #0E8C7E;
+  --tone-copper-fg: #9A4A1C;
+  --tone-copper-bg: #FBEADF;
+  --tone-copper-solid: #C2652F;
 }
 
 @theme inline {
+  --color-tone-green-fg: var(--tone-green-fg);
+  --color-tone-green-bg: var(--tone-green-bg);
+  --color-tone-green-solid: var(--tone-green-solid);
+  --color-tone-blue-fg: var(--tone-blue-fg);
+  --color-tone-blue-bg: var(--tone-blue-bg);
+  --color-tone-blue-solid: var(--tone-blue-solid);
+  --color-tone-red-fg: var(--tone-red-fg);
+  --color-tone-red-bg: var(--tone-red-bg);
+  --color-tone-red-solid: var(--tone-red-solid);
+  --color-tone-amber-fg: var(--tone-amber-fg);
+  --color-tone-amber-bg: var(--tone-amber-bg);
+  --color-tone-amber-solid: var(--tone-amber-solid);
+  --color-tone-orange-fg: var(--tone-orange-fg);
+  --color-tone-orange-bg: var(--tone-orange-bg);
+  --color-tone-orange-solid: var(--tone-orange-solid);
+  --color-tone-violet-fg: var(--tone-violet-fg);
+  --color-tone-violet-bg: var(--tone-violet-bg);
+  --color-tone-violet-solid: var(--tone-violet-solid);
+  --color-tone-sky-fg: var(--tone-sky-fg);
+  --color-tone-sky-bg: var(--tone-sky-bg);
+  --color-tone-sky-solid: var(--tone-sky-solid);
+  --color-tone-slate-fg: var(--tone-slate-fg);
+  --color-tone-slate-bg: var(--tone-slate-bg);
+  --color-tone-slate-solid: var(--tone-slate-solid);
+  --color-tone-teal-fg: var(--tone-teal-fg);
+  --color-tone-teal-bg: var(--tone-teal-bg);
+  --color-tone-teal-solid: var(--tone-teal-solid);
+  --color-tone-copper-fg: var(--tone-copper-fg);
+  --color-tone-copper-bg: var(--tone-copper-bg);
+  --color-tone-copper-solid: var(--tone-copper-solid);
+  --color-copper: var(--copper);
+  --color-copper-surface: var(--copper-surface);
+  --color-teal: var(--teal);
+  --color-chart-8: var(--chart-8);
+  --color-chart-7: var(--chart-7);
+  --color-chart-6: var(--chart-6);
+  --shadow-card: var(--shadow-card);
   --font-heading: var(--font-geist-sans);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -169,19 +243,20 @@
   }
   .overview-attention { @apply min-w-0; }
   .overview-trace { @apply grid list-none gap-6 p-0 sm:grid-cols-2 xl:grid-cols-4; }
-  .overview-trace > li { @apply flex min-w-0 flex-col gap-3 rounded-sm border bg-card p-4; overflow-wrap: anywhere; }
+  .overview-trace > li { @apply flex min-w-0 flex-col gap-3 rounded-xl border bg-card p-4 shadow-card; overflow-wrap: anywhere; }
   .overview-trace > li:last-child { @apply border-success/40 bg-success-surface; }
 }
 
-/* Bureau Veritas signature: lavender-to-sky rule spanning the heading text width. Use sparingly. */
+/* Bureau Veritas signature: short rounded copper-to-amber rule under the heading. Use sparingly. */
 .bv-title {
   width: fit-content;
   max-width: 100%;
   padding-bottom: 0.5rem;
-  background-image: linear-gradient(90deg, var(--brand-lavender), var(--brand-sky));
+  background-image: linear-gradient(90deg, var(--copper), var(--tone-amber-solid));
+  background-size: 2.5rem 3px;
   background-repeat: no-repeat;
   background-position: left bottom;
-  background-size: 100% 3px;
+  border-radius: 2px;
 }
 
 /* Immutable finding history uses a semantic drawing helper. */
@@ -246,7 +321,7 @@
 
 /* Faint blueprint grid used behind technical illustrations. */
 .blueprint-surface {
-  background-color: color-mix(in oklab, var(--brand-blue) 3.5%, transparent);
+  background-color: color-mix(in oklab, var(--brand-blue) 3%, var(--background));
   background-image:
     linear-gradient(color-mix(in oklab, var(--brand-blue) 14%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in oklab, var(--brand-blue) 14%, transparent) 1px, transparent 1px),

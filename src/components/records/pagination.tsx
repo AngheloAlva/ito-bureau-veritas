@@ -15,7 +15,7 @@ export function Pagination({ page, onPageChange, label = 'registros' }: { page: 
       <li><button type="button" className={btn} disabled={page.page <= 1} onClick={() => onPageChange(page.page - 1)} aria-label="Página anterior"><CaretLeftIcon aria-hidden="true" /></button></li>
       {pageWindow(page.page, page.pageCount).map((n, i) => <li key={`${n}-${i}`}>{n === '…'
         ? <span aria-hidden="true" className="px-1 text-xs text-muted-foreground">…</span>
-        : <button type="button" className={cn(btn, n === page.page && 'bg-(--brand-blue) text-white hover:bg-(--brand-blue)')} aria-current={n === page.page ? 'page' : undefined} aria-label={`Página ${n}`} onClick={() => onPageChange(n)}>{n}</button>}</li>)}
+        : <button type="button" className={cn(btn, n === page.page && 'bg-primary text-white hover:bg-primary')} aria-current={n === page.page ? 'page' : undefined} aria-label={`Página ${n}`} onClick={() => onPageChange(n)}>{n}</button>}</li>)}
       <li><button type="button" className={btn} disabled={page.page >= page.pageCount} onClick={() => onPageChange(page.page + 1)} aria-label="Página siguiente"><CaretRightIcon aria-hidden="true" /></button></li>
     </ul></nav>
   </div>;

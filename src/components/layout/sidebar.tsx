@@ -29,7 +29,7 @@ function NavigationContent() {
     <>
       <SidebarHeader className="px-5 py-4">
         <Link href="/" aria-label="ITO · volver al resumen" onClick={() => setOpenMobile(false)} className="flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-sidebar-ring">
-          <Image src="/brand/bureau-veritas-chile.svg" alt="Bureau Veritas Chile" width={111} height={138} className="h-auto w-10 shrink-0" priority />
+          <span className="flex shrink-0 rounded-xl bg-primary p-2"><Image src="/brand/bureau-veritas-chile.svg" alt="Bureau Veritas Chile" width={111} height={138} className="h-auto w-9 shrink-0" priority /></span>
           <span className="text-lg font-semibold tracking-tight">ITO <span className="block text-xs font-normal tracking-normal">Gestión de inspecciones</span></span>
         </Link>
       </SidebarHeader>
@@ -44,7 +44,7 @@ function NavigationContent() {
                   const active = href === '/' ? path === '/' : path.startsWith(href);
                   return (
                     <SidebarMenuItem key={href}>
-                      <SidebarMenuButton className="min-h-11" isActive={active} aria-current={active ? 'page' : undefined} render={<Link href={href} onClick={() => setOpenMobile(false)} />}>
+                      <SidebarMenuButton className="min-h-11 rounded-full px-4 text-sidebar-foreground/80 data-active:bg-copper-surface data-active:font-semibold data-active:text-sidebar-foreground" isActive={active} aria-current={active ? 'page' : undefined} render={<Link href={href} onClick={() => setOpenMobile(false)} />}>
                         <Icon aria-hidden="true" />
                         <span>{label}</span>
                       </SidebarMenuButton>
@@ -57,7 +57,7 @@ function NavigationContent() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="px-5 py-4">
-        <p className="text-xs text-sidebar-foreground/70">Demo con datos ficticios · sin conexión a sistemas BV</p>
+        <p className="text-xs text-muted-foreground">Demo con datos ficticios · sin conexión a sistemas BV</p>
       </SidebarFooter>
     </>
   );
@@ -81,5 +81,5 @@ export function AppSidebar() {
       </Sheet>
     );
   }
-  return <Sidebar collapsible="offcanvas"><NavigationContent /></Sidebar>;
+  return <Sidebar collapsible="offcanvas" className="[&_[data-slot=sidebar-inner]]:border-r [&_[data-slot=sidebar-inner]]:border-sidebar-border"><NavigationContent /></Sidebar>;
 }

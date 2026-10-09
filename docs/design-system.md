@@ -4,13 +4,16 @@
 
 Toda la demo usa datos ilustrativos (aviso en UI: «Demo con datos ficticios · sin conexión a sistemas BV»); no se repite por registro.
 
-- **Tokens de marca:** `--brand-blue` #00049e (acciones, CTA sólidos), `--brand-sky` #00a8e8, `--brand-lavender` #a9a6f5.
-- **`.bv-title`:** subrayado degradado lavanda→cielo bajo títulos de sección.
-- **`.blueprint-surface`:** cuadrícula técnica de 16 px con línea mayor cada 64 px, azul de marca a 8 %/14 % sobre tinte 3,5 %; solo detrás de ilustraciones.
-- **Formas:** `rounded-sm`. Sin franjas de acento de color en tarjetas.
+- **Identidad «ingeniería amable»:** tinta azul marino (`--primary` #1D3B6E, texto #1B2B44) con acento cobre (`--copper` #C2652F, `--copper-surface`) y verde azulado (`--teal`); neutros cálidos (fondo off-white cálido, bordes gris cálido).
+- **Formas y sombras:** `--radius` 0,875 rem; tarjetas `rounded-xl` con `shadow-card` suave; botones/campos `rounded-lg`; chips y barras `rounded-full`.
+- **Barra lateral clara:** fondo cálido con borde derecho; ítem activo en píldora tinte cobre, sin barra lateral de acento.
+- **Tonos de estado:** `--tone-<nombre>-fg|bg|solid` (green, blue, red, amber, orange, violet, sky, slate, teal, copper), expuestos como `text-tone-*-fg`, `bg-tone-*-bg`, `bg-tone-*-solid`. Mapas y clases en `src/lib/tones.ts` (estado de hallazgo, severidad, salud de proyecto, hitos). Los chips llevan siempre texto + punto/ícono, nunca solo color.
+- **Gráficos:** paleta categórica `--chart-1..8` (marino, verde azulado, cobre, violeta, cielo, ámbar, rosa, pizarra).
+- **`.bv-title`:** regla corta redondeada de 3 px cobre→ámbar bajo títulos de sección.
+- **`.blueprint-surface`:** cuadrícula técnica de 16 px con línea mayor cada 64 px, azul marino de baja opacidad sobre tinte cálido; solo detrás de ilustraciones.
 - **Tipografía:** Geist; Geist Mono para códigos y fechas, con números tabulares.
 - **Gráficos:** valores sobre los segmentos y leyendas solo con color; segmentos que ocupan menos del 8 % omiten la etiqueta (queda en `title` y en la leyenda). Las barras usan `flex-grow` por valor con `min-width: 0`, sin desbordar.
-- **Ciclo de vida del hallazgo:** pasos `<ol>` con `aria-current` y conectores horizontales finos (azul de marca completado, `border` pendiente); verticales en móvil.
+- **Ciclo de vida del hallazgo:** pasos `<ol>` con `aria-current` y conectores horizontales finos (azul marino completado, `border` pendiente); verticales en móvil.
 - **Ilustraciones:** `src/components/illustrations`.
 
 Control operativo T1–T4 verificado tras corregir densidad; revisión humana del usuario pendiente. Evidencia y límites: [cierre operativo T4](verificacion.md#cierre-operativo-t4). Se conserva debajo la historia previa.

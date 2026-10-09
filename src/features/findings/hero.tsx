@@ -53,16 +53,16 @@ export function FindingHero({ finding: f, project: p, inspection: i, evidenceId,
           const done = index < current || f.state === 'Cerrado';
           const here = index === current && f.state !== 'Cerrado';
           return <li key={state} aria-current={here ? 'step' : undefined} className={`flex min-w-0 flex-col items-center gap-1.5 text-center text-xs xl:flex-row xl:text-left ${index < STATES.length - 1 ? 'xl:flex-1' : ''}`}>
-            <span aria-hidden="true" className={`flex size-6 shrink-0 items-center justify-center rounded-full font-mono tabular-nums ${here ? 'bg-[var(--brand-blue)] text-white' : done ? 'bg-success-surface text-success' : 'bg-muted text-muted-foreground'}`}>{done ? <CheckIcon weight="bold" /> : index + 1}</span>
+            <span aria-hidden="true" className={`flex size-6 shrink-0 items-center justify-center rounded-full font-mono tabular-nums ${here ? 'bg-primary text-white' : done ? 'bg-success-surface text-success' : 'bg-muted text-muted-foreground'}`}>{done ? <CheckIcon weight="bold" /> : index + 1}</span>
             <span className={here ? 'font-semibold text-foreground' : done ? 'text-foreground' : 'text-muted-foreground'}>{state}<span className="sr-only">{done ? ' (completado)' : here ? ' (etapa actual)' : ' (pendiente)'}</span></span>
-            {index < STATES.length - 1 ? <span aria-hidden="true" className={`hidden h-px min-w-4 flex-1 xl:mx-3 xl:block ${done ? 'bg-[var(--brand-blue)]' : 'bg-border'}`} /> : null}
+            {index < STATES.length - 1 ? <span aria-hidden="true" className={`hidden h-px min-w-4 flex-1 xl:mx-3 xl:block ${done ? 'bg-primary' : 'bg-border'}`} /> : null}
           </li>;
         })}
       </ol>
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {f.state === 'Abierto' ? <Button type="button" className="min-h-11 bg-[var(--brand-blue)] text-white hover:bg-[var(--brand-blue)]/90" onClick={start}><ArrowRightIcon data-icon="inline-start" />Iniciar corrección</Button> : null}
-          {f.state === 'En corrección' && !editing ? <Button type="button" className="min-h-11 bg-[var(--brand-blue)] text-white hover:bg-[var(--brand-blue)]/90" aria-expanded={false} aria-controls="finding-correction" onClick={() => setEditing(true)}><WrenchIcon data-icon="inline-start" />Preparar corrección</Button> : null}
+          {f.state === 'Abierto' ? <Button type="button" className="min-h-11 bg-primary text-white hover:bg-primary/90" onClick={start}><ArrowRightIcon data-icon="inline-start" />Iniciar corrección</Button> : null}
+          {f.state === 'En corrección' && !editing ? <Button type="button" className="min-h-11 bg-primary text-white hover:bg-primary/90" aria-expanded={false} aria-controls="finding-correction" onClick={() => setEditing(true)}><WrenchIcon data-icon="inline-start" />Preparar corrección</Button> : null}
           <p ref={statusRef} tabIndex={-1} className="text-sm text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">{f.state === 'Cerrado' ? 'Hallazgo cerrado: no hay acciones pendientes.' : hint}</p>
         </div>
         {f.state === 'En corrección' && editing ? <div id="finding-correction" className="max-w-2xl border-t pt-4"><Correction key={f.id} finding={f} evidenceId={evidenceId} onEvidenceChange={onEvidenceChange} onSaved={settle} /></div> : null}

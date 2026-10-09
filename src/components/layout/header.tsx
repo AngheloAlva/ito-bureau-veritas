@@ -28,8 +28,8 @@ export function WorkspaceHeader() {
   }
 
   return (
-    <header className="no-print flex flex-wrap items-center gap-2 border-b bg-background px-5 py-2 lg:gap-4 lg:px-8">
-      <Button variant="outline" size="icon" className="size-11 shrink-0" onClick={sidebar.toggleSidebar} aria-label={sidebar.isMobile ? 'Abrir navegación' : 'Mostrar u ocultar navegación'} aria-expanded={sidebar.isMobile ? sidebar.openMobile : sidebar.open} title="Navegación · Ctrl/⌘ B"><SidebarSimpleIcon aria-hidden="true" /></Button>
+    <header className="no-print flex flex-wrap items-center gap-2 border-b bg-background/80 px-5 py-2 lg:gap-4 lg:px-8">
+      <Button variant="outline" size="icon" className="size-11 shrink-0 rounded-xl" onClick={sidebar.toggleSidebar} aria-label={sidebar.isMobile ? 'Abrir navegación' : 'Mostrar u ocultar navegación'} aria-expanded={sidebar.isMobile ? sidebar.openMobile : sidebar.open} title="Navegación · Ctrl/⌘ B"><SidebarSimpleIcon aria-hidden="true" /></Button>
       <FieldGroup className="order-last w-full min-w-0 basis-full sm:order-none sm:w-auto sm:max-w-xs sm:flex-1 sm:basis-0">
         <ContextSelect id="work-scope" label="Alcance de trabajo" value={scope} items={[{ value: '', label: 'Cartera completa' }, ...demo.data.projects.map(project => ({ value: project.id, label: `${project.code} · ${project.name}` }))]} onChange={changeScope} compact />
       </FieldGroup>

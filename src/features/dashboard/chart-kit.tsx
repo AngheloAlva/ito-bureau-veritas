@@ -84,6 +84,7 @@ export function CategoryBars({ data, orientation, unit = '', height, ariaLabel, 
           className="size-full aspect-auto" barCategoryGap={horizontal ? '16%' : '18%'}
           chartProps={{ accessibilityLayer: false, margin: { top: horizontal ? 0 : 20, right: horizontal ? 34 : 0, bottom: 0, left: 0 }, onClick: pick, style: { cursor: 'pointer' } }}
         >
+          <EvilBarChart.Grid />
           {horizontal ? (
             <>
               <EvilBarChart.YAxis dataKey="label" width={labelWidth} interval={0} tick={{ fontSize: 12 }} tickMargin={6} />

@@ -117,7 +117,7 @@ export function DecompositionTree({ view, setFilter }: { view: PortfolioView; se
   return (
     <ChartCard title="Árbol de descomposición" subtitle="Seleccione un elemento para abrir el siguiente nivel; use el embudo para filtrar todo el tablero." hint={null}>
       {view.projects.length === 0 ? <p className="py-10 text-center text-sm text-muted-foreground">No hay proyectos en esta vista.</p> : (
-        <div ref={scroller} className="-mx-1 overflow-x-auto px-1 pb-3" tabIndex={0} role="region" aria-label="Árbol de descomposición (desplazable)">
+        <div ref={scroller} className="overflow-x-auto rounded-xl border border-border/60 bg-[radial-gradient(circle,color-mix(in_oklab,var(--muted-foreground)_28%,transparent)_1px,transparent_1.2px)] [background-size:16px_16px] p-4" tabIndex={0} role="region" aria-label="Árbol de descomposición (desplazable)">
           <div className="flex min-w-max items-start">
             <div className="w-56 shrink-0">
               <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{COLUMN_TITLES[0]}</p>

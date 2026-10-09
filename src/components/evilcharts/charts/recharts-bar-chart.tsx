@@ -15,6 +15,7 @@ import {
   isValidElement,
   use,
   useCallback,
+  useEffect,
   useId,
   useMemo,
   useRef,
@@ -333,6 +334,14 @@ function Bar({
   const id = useId().replace(/:/g, ""); // unique id scopes this bar's style defs
   // Devices set to "reduce motion" skip the grow-in animation entirely
   const shouldReduceMotion = useReducedMotion();
+  // Recharts' own tween only takes over once the one-shot intro has finished, so data changes
+  // (e.g. dashboard filters) animate bars between values without doubling the intro.
+  const [introDone, setIntroDone] = useState(false);
+  useEffect(() => {
+    const ms = Math.max(0, (dataLength * BAR_STAGGER + BAR_GROW_DURATION) * 1000 - (Date.now() - introStartedAt));
+    const t = setTimeout(() => setIntroDone(true), ms + 50);
+    return () => clearTimeout(t);
+  }, [dataLength, introStartedAt]);
 
   // The root renders the skeleton bar while loading, so real bars step aside
   if (isLoading) return null;
@@ -376,7 +385,9 @@ function Bar({
         radius={resolvedRadius}
         // Recharts' built-in bar animation is permanently disabled — every bar
         // instead grows in from its baseline via the staggered motion.dev shape.
-        isAnimationActive={false}
+        isAnimationActive={introDone && !shouldReduceMotion}
+        animationDuration={450}
+        animationEasing="ease-out"
         style={isClickable || enableHoverHighlight ? { cursor: "pointer" } : undefined}
         shape={(props: unknown) => (
           <CustomBar {...(props as BarShapeProps)} {...customBarProps} animationType={revealType} />

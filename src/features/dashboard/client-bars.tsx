@@ -53,6 +53,7 @@ export function ClientBars({ filter, toggle }: ChartProps) {
             chartProps={{ accessibilityLayer: false, margin: { top: 0, right: 8, bottom: 0, left: 0 }, style: { cursor: 'pointer' },
               onClick: (s: { activeTooltipIndex?: string | number | null }) => { const i = Number(s?.activeTooltipIndex); if (Number.isInteger(i)) cats[i]?.onPick?.(); } }}
           >
+            <EvilBarChart.Grid />
             <EvilBarChart.YAxis dataKey="label" width={96} interval={0} tick={{ fontSize: 12 }} tickMargin={6} />
             <EvilBarChart.XAxis hide />
             <ChartTooltip cursor={false} content={<ClientTooltip />} />

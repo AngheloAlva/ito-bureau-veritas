@@ -6,6 +6,7 @@ import {
   isValidElement,
   use,
   useCallback,
+  useEffect,
   useId,
   useMemo,
   useRef,
@@ -320,6 +321,12 @@ function Area({
   const id = useId().replace(/:/g, ""); // unique id scopes this area's style defs
   // Devices set to "reduce motion" skip the intro reveal entirely
   const shouldReduceMotion = useReducedMotion();
+  // After the one-shot reveal mask, Recharts tweens the series between data updates (filter changes).
+  const [introDone, setIntroDone] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setIntroDone(true), REVEAL_DURATION * 1000 + 100);
+    return () => clearTimeout(t);
+  }, []);
 
   // The root renders the skeleton area while loading, so real areas step aside
   if (isLoading) return null;
@@ -361,7 +368,9 @@ function Area({
         // Recharts' built-in area animation is permanently disabled — it drew
         // the line after the dots had already popped in. The motion.dev reveal
         // mask drives the intro instead, wiping fill, stroke, and dots in together.
-        isAnimationActive={false}
+        isAnimationActive={introDone && !shouldReduceMotion}
+        animationDuration={450}
+        animationEasing="ease-out"
         style={{
           ...(maskId ? { mask: `url(#${maskId})` } : {}),
           ...(isClickable ? { cursor: "pointer" } : {}),

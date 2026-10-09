@@ -27,7 +27,7 @@ dashboard for managers who visit monthly (summary first, drill down on demand), 
 - [x] T5 AI assistant: visible project picker, simulated chat with suggested prompts, answers with generated charts, pin to dashboard.
 - [ ] T6 Chart builder (metric × dimension × chart type) + saved views on dashboard.
 - [x] T7 Interactive illustrated site diagram (pumping station / gallery / water pipeline) with critical points + side panel.
-- [ ] T8 Remove header scope selector (page-level scope), polish, docs (README, guion), full verification.
+- [x] T8 Remove header scope selector (page-level scope), polish, docs (README, guion), full verification.
 
 ## Acceptance / checks
 - `pnpm test`, `pnpm typecheck`, `pnpm lint`, `pnpm build` pass; browser screenshots at 1440×900 per new view.
@@ -47,6 +47,8 @@ dashboard for managers who visit monthly (summary first, drill down on demand), 
 - Prod server running on :3001 (rebuilt 12:48) for internal showing.
 
 - Published (user-authorized): public GitHub repo https://github.com/AngheloAlva/ito-bureau-veritas, main fast-forwarded to feature branch; Vercel project ingenieria-simple/ito-bureau-veritas connected to GitHub, production https://ito-bureau-veritas.vercel.app (6 routes 200, CSS verified, 0 console errors). .vercelignore added (codegraph socket broke upload).
+
+- T8 done: 4c8675b header selector removed + Sheet 'Cerrar'; 7b1bf30 delay spread (RED: 1–15 d=4, max delays 26,33,26,26,26 → GREEN; late buckets 5/6/4, max delays 26/55/8/24/47); 9d4d9ac README/guion/alcance. Parent: portfolio/assistant/site-map/domain tests 28/28, eslint clean on T8 files, /tmp/t8-tablero.png reviewed. README test count to refresh after T6.
 
 ## Remaining backlog (T6, T8) — started same day, 13:00
 - T6 chart builder + saved views; assistant 'fijar al tablero'.

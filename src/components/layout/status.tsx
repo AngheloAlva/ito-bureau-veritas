@@ -15,7 +15,6 @@ export function DemoStatus() {
   useEffect(() => {
     if (!demo.notice) return;
     shown.current = { text: demo.notice, at: Date.now() };
-    setDismissed('');
     const timer = setTimeout(() => setDismissed(demo.notice ?? ''), 6000);
     return () => clearTimeout(timer);
   }, [demo.notice]);

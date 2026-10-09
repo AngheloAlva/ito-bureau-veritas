@@ -2,10 +2,11 @@
 
 import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
-import { ArrowSquareOutIcon, CheckIcon, CopyIcon } from '@phosphor-icons/react';
+import { ArrowSquareOutIcon, CheckIcon, CopyIcon, PushPinIcon } from '@phosphor-icons/react';
 import { Card } from '@/components/ui/card';
 import { Button, buttonVariants } from '@/components/ui/button';
 import type { Artifact } from '@/lib/assistant-intents';
+import { loadCustomCharts, MAX_CUSTOM_CHARTS, saveCustomCharts, type SnapshotArtifact } from '@/lib/chart-builder';
 import { toneClasses } from '@/lib/tones';
 import { cn } from 'cn';
 
@@ -16,14 +17,32 @@ function CopyButton({ text }: { text: string }) {
   </Button>;
 }
 
-function Frame({ title, href, copy, children }: { title: string; href?: string; copy?: string; children: ReactNode }) {
+function PinButton({ artifact }: { artifact: SnapshotArtifact }) {
+  const [state, setState] = useState<'idle' | 'pinned' | 'full'>('idle');
+  const pin = () => {
+    try {
+      const list = loadCustomCharts(window.localStorage);
+      if (list.length >= MAX_CUSTOM_CHARTS) { setState('full'); return; }
+      saveCustomCharts(window.localStorage, [...list, { id: crypto.randomUUID(), title: artifact.title, kind: 'snapshot', source: 'asistente', artifact, createdAt: new Date().toISOString() }]);
+      setState('pinned');
+    } catch { setState('full'); }
+  };
+  if (state === 'pinned') return <Link href="/tablero" className={buttonVariants({ variant: 'secondary', size: 'sm' })}><CheckIcon data-icon="inline-start" />Fijado · Ver en el tablero</Link>;
+  return <>
+    <Button type="button" variant="outline" size="sm" onClick={pin}><PushPinIcon data-icon="inline-start" />Fijar en el tablero</Button>
+    {state === 'full' ? <span role="status" className="self-center text-xs text-muted-foreground">No se pudo fijar: límite de {MAX_CUSTOM_CHARTS} vistas alcanzado o almacenamiento no disponible.</span> : null}
+  </>;
+}
+
+function Frame({ title, href, copy, pin, children }: { title: string; href?: string; copy?: string; pin?: SnapshotArtifact; children: ReactNode }) {
   return <Card size="sm" className="animate-in fade-in slide-in-from-bottom-1 duration-500 motion-reduce:animate-none">
     <div className="flex flex-col gap-4 px-(--card-spacing)">
       <div className="flex flex-col gap-0.5"><h3 className="text-sm font-semibold">{title}</h3><p className="text-xs text-muted-foreground">Generado por el asistente · simulado</p></div>
       {children}
-      {href || copy ? <div className="flex flex-wrap gap-2">
+      {href || copy || pin ? <div className="flex flex-wrap gap-2">
         {href ? <Link href={href} className={buttonVariants({ variant: 'outline', size: 'sm' })}><ArrowSquareOutIcon data-icon="inline-start" />Abrir en el tablero</Link> : null}
         {copy ? <CopyButton text={copy} /> : null}
+        {pin ? <PinButton artifact={pin} /> : null}
       </div> : null}
     </div>
   </Card>;
@@ -42,13 +61,13 @@ function Bar({ a }: { a: Extract<Artifact, { kind: 'bar' }> }) {
   const max = Math.max(1, ...a.series.map(s => s.value));
   const copy = a.series.map(s => `${s.label}: ${s.value} ${a.unit}`).join('\n');
   const label = (s: (typeof a.series)[number]) => s.href ? <Link href={s.href} className="underline-offset-2 hover:underline focus-visible:underline">{s.label}</Link> : s.label;
-  if (a.orientation === 'vertical') return <Frame title={a.title} href={a.dashboardHref} copy={copy}>
+  if (a.orientation === 'vertical') return <Frame title={a.title} href={a.dashboardHref} copy={copy} pin={a}>
     <ul className="flex h-44 items-end gap-3">{a.series.map(s => <li key={s.label} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1 text-xs">
       <span className="font-semibold tabular-nums">{s.value} {a.unit}</span>
       <span className={cn('w-full rounded-t-md', toneClasses(s.tone).solid)} style={{ height: `${Math.max(4, s.value / max * 100)}%` }} />
       <span className="truncate text-muted-foreground">{label(s)}</span></li>)}</ul>
   </Frame>;
-  return <Frame title={a.title} href={a.dashboardHref}>
+  return <Frame title={a.title} href={a.dashboardHref} pin={a}>
     <ul className="flex flex-col gap-2.5">{a.series.map(s => { const t = toneClasses(s.tone); return <li key={s.label} className="grid grid-cols-[5.5rem_1fr_3.5rem] items-center gap-3 text-xs">
       <span className="truncate font-medium">{label(s)}</span>
       <span className="h-3 overflow-hidden rounded-full bg-muted"><span className={cn('block h-full rounded-full', t.solid)} style={{ width: `${Math.max(s.value ? 3 : 0, s.value / max * 100)}%` }} /></span>
@@ -60,7 +79,7 @@ function Donut({ a }: { a: Extract<Artifact, { kind: 'donut' }> }) {
   const total = a.series.reduce((n, s) => n + s.value, 0);
   const R = 52, C = 2 * Math.PI * R;
   let offset = 0;
-  return <Frame title={a.title} href={a.dashboardHref}>
+  return <Frame title={a.title} href={a.dashboardHref} pin={a}>
     <div className="flex flex-wrap items-center gap-6">
       <svg viewBox="0 0 140 140" className="size-36 shrink-0" role="img" aria-label={`${a.title}: ${a.series.map(s => `${s.label} ${s.value}`).join(', ')}`}>
         <circle cx="70" cy="70" r={R} fill="none" strokeWidth="18" className="stroke-muted" />
@@ -87,7 +106,7 @@ function Line({ a }: { a: Extract<Artifact, { kind: 'line' }> }) {
   const actual = act.map(({ p, i }, k) => `${k ? 'L' : 'M'}${x(i).toFixed(1)} ${y(p.actual ?? 0).toFixed(1)}`).join(' ');
   const lastAct = act[act.length - 1];
   const ticks = [0, 0.5, 1].map(f => Math.round(max * f));
-  return <Frame title={a.title} href={a.dashboardHref}>
+  return <Frame title={a.title} href={a.dashboardHref} pin={a}>
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`${a.title}. Último real: ${lastAct?.p.actual ?? 0} de ${lastAct?.p.planned ?? 0} programados.`}>
       {ticks.map(t => <g key={t}><line x1={L} x2={W - Rr} y1={y(t)} y2={y(t)} className="stroke-border" strokeDasharray="3 4" /><text x={L - 6} y={y(t) + 3} textAnchor="end" className="fill-muted-foreground text-[10px]">{t}</text></g>)}
       {a.points.map((p, i) => i % Math.ceil(n / 6) === 0 ? <text key={p.label} x={x(i)} y={H - 8} textAnchor="middle" className="fill-muted-foreground text-[10px]">{p.label}</text> : null)}

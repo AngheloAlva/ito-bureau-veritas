@@ -15,6 +15,8 @@ and friendlier form controls (white fields with full borders, compact filter pop
       tables with proper rounded corners (header corner cell); form dialog actions on one row (Cancelar + primary).
 - [x] P3 Integrate, verify, merge to main, confirm Vercel.
 
+- [ ] P4 Final touches: even vertical gaps in create dialogs; 'Evidencia de corrección' placeholder not selectable; site-map zone cards health badge right-aligned on title row + 2–4px more bottom padding.
+
 ## Progress / evidence
 - P1 done: root cause = vendored EvilCharts bar/area hard-coded isAnimationActive={false} with mount-only intro; now Recharts tween (450ms) after intro, reduced-motion off. Grid via chart-kit CategoryBars + client bars; dotted tree canvas. Writer: 109/109, typecheck, lint; parent reviewed /tmp/p1-tree.png, /tmp/p1-anim-800.png. No unit RED (presentation-only).
 

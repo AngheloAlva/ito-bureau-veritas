@@ -16,13 +16,13 @@ Clic: abrir un proyecto atrasado y ver el Gantt. Decir: «Compara plan y real po
 
 Clic: elegir una zona y abrir sus proyectos. Decir: «Es una ilustración esquemática que ubica el trabajo por área; no es un plano real.»
 
-## 3:15–4:15 · Asistente IA (`/asistente`)
+## 3:15–4:15 · Análisis IA (`/analisis`)
 
 Clic: formular una consulta sugerida y abrir la vista generada; guardarla. Decir: «Es simulado: reglas deterministas, sin servicios externos. Las vistas guardadas quedan solo en este navegador.»
 
 ## 4:15–8:00 · Resumen y hallazgos (flujo operativo, caso H-001)
 
-Ir al Resumen y abrir H-001 («Caso de demostración · empezar aquí»). Decir: «Falta respaldo; eso no significa que la instalación falló.» Clic: «Iniciar corrección» → «Preparar corrección» → remitir con evidencia → «Verificar y cerrar» con comentario. Volver al Resumen: activos y vencidos bajan en uno. Decir: «Los estados no se saltan y todo queda en la cronología.» Cerrar con Análisis asistido (simulado) si hay tiempo y «Restablecer demo».
+Ir al Resumen y abrir H-001 («Caso de demostración · empezar aquí»). Decir: «Falta respaldo; eso no significa que la instalación falló.» Clic: «Iniciar corrección» → «Preparar corrección» → remitir con evidencia → «Verificar y cerrar» con comentario. Volver al Resumen: activos y vencidos bajan en uno. Decir: «Los estados no se saltan y todo queda en la cronología.» Cerrar con Análisis IA («Analizar registros y priorizar») si hay tiempo y «Restablecer demo».
 
 ## Detalle del flujo operativo (referencia)
 
@@ -50,7 +50,7 @@ Si hay tiempo, primero «Devolver a corrección» con «Falta identificar el tra
 
 ### 3:45–4:45 · Cifras y análisis
 
-Volver al Resumen: activos y vencidos bajan en uno y los cerrados suben en uno. Abrir Análisis asistido, elegir cartera o P-001 y pulsar «Analizar registros»; se muestran los pasos del análisis. H-001 ya no es prioridad activa. Abrir una fuente (enlace interno, misma pestaña). Mostrar «Concentración de pendientes»: el punto crítico es P-002 × Civil. Revisar razones y límites. «Es simulado: reglas deterministas, no IA generativa». Pulsar «Generar borrador de informe» e imprimir si hay tiempo.
+Volver al Resumen: activos y vencidos bajan en uno y los cerrados suben en uno. Abrir Análisis IA, elegir cartera o P-001 y pulsar «Analizar registros y priorizar»; se muestran los pasos del análisis. H-001 ya no es prioridad activa. Abrir una fuente (enlace interno, misma pestaña). Mostrar «Concentración de pendientes»: el punto crítico es P-002 × Civil. Revisar razones y límites. «Es simulado: reglas deterministas, no IA generativa». Pulsar «Generar borrador de informe» e imprimir si hay tiempo.
 
 Para mostrar la advertencia, crear un registro después del análisis y volver: aparece «Análisis desactualizado»; «Analizar registros» lo actualiza. Recargar la página descarta el análisis.
 

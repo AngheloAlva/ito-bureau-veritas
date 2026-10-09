@@ -40,7 +40,7 @@ Las pruebas usan el soporte TypeScript nativo de Node; puede aparecer un aviso i
 
 - `/tablero`: tablero ejecutivo de cartera (42 proyectos ficticios) con filtro cruzado, árbol de descomposición y proyectos con problemas.
 - `/programa`: programa de trabajo con Gantt plan vs real.
-- `/asistente`: asistente IA simulado con vistas generadas.
+- `/analisis`: Análisis IA en formato chat (prioridades, mapa de concentración, informe imprimible y gráficos generados); `/asistente` redirige aquí.
 - `/mapa`: mapa de faena ilustrado.
 - `/`: indicadores, distribución y alertas calculados desde el mismo estado de los listados.
 - `/proyectos` y `/proyectos/[id]`: contexto, avance ficticio registrado, visitas, hallazgos y documentos.
@@ -50,14 +50,14 @@ Las pruebas usan el soporte TypeScript nativo de Node; puede aparecer un aviso i
 
 Seleccione **Rol de demostración** y **Persona de demostración**. Diego Soto es el responsable inicial de H-001; Ana Rojas verifica. Lucía Pérez permite demostrar reasignaciones. No es autenticación ni autorización de producción.
 
-La cabecera ya no incluye selector de alcance global: cada vista tiene sus propios filtros (listados con filtro de proyecto, `/analisis` y `/asistente` con selectores visibles, `/tablero` con filtro cruzado). Por defecto se muestra la cartera completa y los enlaces con `?project=` siguen funcionando. Las fichas de detalle siempre muestran el proyecto propio del registro y lo declaran, independientemente del selector de cartera.
+La cabecera ya no incluye selector de alcance global: cada vista tiene sus propios filtros (listados con filtro de proyecto, `/analisis` con selector visible, `/tablero` con filtro cruzado). Por defecto se muestra la cartera completa y los enlaces con `?project=` siguen funcionando. Las fichas de detalle siempre muestran el proyecto propio del registro y lo declaran, independientemente del selector de cartera.
 
 ## Tablero ejecutivo y análisis
 
 - **Filtro cruzado en la URL**: al seleccionar un segmento en un gráfico del tablero, el resto se recalcula y el filtro queda en la URL (se puede compartir y recargar).
 - **Árbol de descomposición**: desglosa hitos por cliente, situación y otras dimensiones, con recuentos coherentes con el filtro activo.
 - **Gantt plan vs real**: el programa de trabajo compara fechas planificadas y reales por hito.
-- **Asistente IA simulado**: determinista, sin servicios externos ni claves; interpreta intenciones por reglas y genera vistas. Las vistas del constructor de gráficos se guardan solo en este navegador.
+- **Análisis IA (simulado)**: determinista, sin servicios externos ni claves; interpreta intenciones por reglas y genera vistas. Las vistas del constructor de gráficos se guardan solo en este navegador.
 - **Mapa de faena ilustrado**: representación esquemática, no georreferenciada.
 - La cartera es un conjunto estático, determinista y ficticio (42 proyectos, fecha de referencia 08/10/2026). Es una propuesta complementaria; Power BI sigue siendo el requisito de las bases.
 
@@ -91,7 +91,7 @@ Documentos/evidencias son archivos de texto reales incluidos en `public/demo/`, 
 
 El **control operativo T1–T4 está verificado**, tras corregir la densidad inicial: proyecto 3:2 en escritorio, avance físico etiquetado separado del análisis simulado, tablas con filtros de columna sincronizados con URL y cola de tres prioridades ampliable a ocho. La trazabilidad relaciona registros reales de la demo; no es embudo aditivo ni tendencia histórica. El contexto queda en flujo normal: fijar toda la columna izquierda cubriría contenido inferior.
 
-Evidencia acumulativa: **108/108 pruebas, tipos, lint y build PASS** (9 de octubre de 2026). La línea base independiente y el último escritor compilaron; el retest enfocado reutilizó el build del escritor, sin compilación independiente adicional. Véase [cierre operativo T4](docs/verificacion.md#cierre-operativo-t4). El [cierre previo T6](docs/verificacion.md#cierre-t6--segundo-refinamiento) conserva su historia de 38 pruebas, no la cobertura actual. Falta revisión humana del usuario; no se reclama su aprobación visual ni aprobación nativa.
+Evidencia acumulativa: **109/109 pruebas, tipos, lint y build PASS** (9 de octubre de 2026). Gráficos del tablero con EvilCharts (Recharts). La línea base independiente y el último escritor compilaron; el retest enfocado reutilizó el build del escritor, sin compilación independiente adicional. Véase [cierre operativo T4](docs/verificacion.md#cierre-operativo-t4). El [cierre previo T6](docs/verificacion.md#cierre-t6--segundo-refinamiento) conserva su historia de 38 pruebas, no la cobertura actual. Falta revisión humana del usuario; no se reclama su aprobación visual ni aprobación nativa.
 
 Véanse [guion de 5–7 minutos](docs/guion-demo.md), [alcance real/simulado/excluido](docs/alcance.md) y la especificación original `ESPECIFICACION_DEMO_ITO_IA.md` (preservada).
 

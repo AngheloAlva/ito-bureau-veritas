@@ -31,7 +31,7 @@ export function Overview() {
         <aside aria-label="Gráficos del alcance" className="flex min-w-0 flex-col gap-6">
           <SeverityChart counts={stats.bySeverity} total={stats.total} scope={scope} />
           <ProjectChart rows={projectBreakdown(data, projectId || undefined)} />
-          <Link className="record-link inline-flex min-h-10 items-center px-1 text-sm" href={`/analisis${projectId ? `?project=${encodeURIComponent(projectId)}` : ''}`}>Abrir análisis simulado →</Link>
+          <Link className="record-link inline-flex min-h-10 items-center px-1 text-sm" href={`/analisis${projectId ? `?project=${encodeURIComponent(projectId)}` : ''}`}>Abrir Análisis IA →</Link>
         </aside>
       </div>
       <Traceability trace={trace} />
